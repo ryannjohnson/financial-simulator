@@ -5,7 +5,7 @@ export enum Currency {
 }
 
 export type AmountJSON = {
-  currency: string;
+  currency: Currency;
   value: number;
 };
 
@@ -35,7 +35,7 @@ export class Amount {
   public add(amount: Amount): Amount {
     if (this.currency !== amount.currency) {
       throw new Error(
-        `Account does not support multiple currencies, found "${this.currency}" and "${amount.currency}"`
+        `Account does not support multiple currencies, found "${this.currency}" and "${amount.currency}"`,
       );
     }
 
@@ -52,7 +52,7 @@ export class Amount {
   public toString(): string {
     switch (this.currency) {
       case Currency.USD:
-        const dollars = this.value * 100;
+        const dollars = this.value / 100;
         return `$${dollars.toFixed(2)}`;
       default:
         throw new Error(`Amount currency "${this.currency}" has no serializer`);

@@ -1,8 +1,7 @@
-import parse from 'csv-parse';
-
 import { Currency } from '../../amount';
 import { generateLocalUUID } from '../../utils';
 import { Transaction } from '../transaction';
+import { parseCSVString as parse } from './common';
 
 type Record = {
   Amount: string; // -123.45
@@ -20,23 +19,8 @@ const parseOptions = {
   skip_empty_lines: true,
 };
 
-/**
- * TODO: Convert to a streamable interface.
- */
 export function parseCSVString(fullDocument: string): Promise<Transaction[]> {
-  return new Promise((resolve, reject) => {
-    parse(
-      fullDocument,
-      parseOptions,
-      (error: Error | undefined, records: Record[]) => {
-        if (error) {
-          return reject(error);
-        }
-
-        resolve(records.map(toTransaction));
-      },
-    );
-  });
+  return parse(parseOptions, fullDocument, toTransaction);
 }
 
 function toTransaction(record: Record): Transaction {
