@@ -37,7 +37,7 @@ function toTransaction(record: Record): Transaction {
 function toAmountValue(record: Record): number {
   const debitMatch = record.Debit.match(amountPattern);
   if (debitMatch) {
-    return parseInt(record.Debit.replace('.', ''), 10);
+    return parseInt(record.Debit.replace('.', ''), 10) * -1;
   }
 
   const creditMatch = record.Credit.match(amountPattern);

@@ -42,6 +42,16 @@ export class Amount {
     return new Amount(this.currency, this.value + amount.value);
   }
 
+  public subtract(amount: Amount): Amount {
+    if (this.currency !== amount.currency) {
+      throw new Error(
+        `Account does not support multiple currencies, found "${this.currency}" and "${amount.currency}"`,
+      );
+    }
+
+    return new Amount(this.currency, this.value - amount.value);
+  }
+
   public toJSON(): AmountJSON {
     return {
       currency: this.currency,
@@ -52,8 +62,10 @@ export class Amount {
   public toString(): string {
     switch (this.currency) {
       case Currency.USD:
-        const dollars = this.value / 100;
-        return `$${dollars.toFixed(2)}`;
+        return Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }).format(this.value / 100);
       default:
         throw new Error(`Amount currency "${this.currency}" has no serializer`);
     }

@@ -39,14 +39,14 @@ export class CalendarDate {
     const match = value.match(stringPattern);
     if (!match) {
       throw new Error(
-        `CalendarDate fromString value "${value}" is not a valid YYYY-MM-DD format`
+        `CalendarDate fromString value "${value}" is not a valid YYYY-MM-DD format`,
       );
     }
 
     return new CalendarDate(
       parseInt(match[1], 10),
       stringToMonth(match[2]),
-      parseInt(match[3], 10)
+      parseInt(match[3], 10),
     );
   }
 
@@ -57,7 +57,7 @@ export class CalendarDate {
 
     if (`${year}`.length !== 4) {
       throw new Error(
-        `CalendarDate year "${year}" must be a four digit number`
+        `CalendarDate year "${year}" must be a four digit number`,
       );
     }
 
@@ -72,6 +72,10 @@ export class CalendarDate {
    */
   public compare(date: CalendarDate): number {
     return this.toString().localeCompare(date.toString());
+  }
+
+  public toDate(): Date {
+    return new Date(this.year, this.month, this.day);
   }
 
   public toJSON(): CalendarDateJSON {

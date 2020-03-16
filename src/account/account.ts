@@ -66,6 +66,46 @@ export class Account {
     return transactions ? transactions : [];
   }
 
+  public *getTransactionsByCalendarMonthReversed() {
+    const calendarDates = this.getUniqueCalendarDateStrings()
+      .sort()
+      .reverse()
+      .map(d => CalendarDate.fromString(d));
+
+    if (calendarDates.length === 0) {
+      return;
+    }
+
+    let currentYear = calendarDates[0].year;
+    let currentMonth = calendarDates[0].month;
+    let transactions: Transaction[] = [];
+
+    for (const calendarDate of calendarDates) {
+      const { month, year } = calendarDate;
+
+      if (year !== currentYear || month !== currentMonth) {
+        yield { month: currentMonth, transactions, year: currentYear };
+        transactions = [];
+        currentYear = year;
+        currentMonth = month;
+      }
+
+      transactions = [
+        ...transactions,
+        ...this.getTransactionsByCalendarDate(calendarDate),
+      ];
+    }
+
+    yield { month: currentMonth, transactions, year: currentYear };
+  }
+
+  /**
+   * Order is not gauranteed.
+   */
+  public getUniqueCalendarDateStrings(): string[] {
+    return Array.from(this.transactionsByCalendarDate.keys());
+  }
+
   public toJSON(): AccountJSON {
     return {
       balance: this.balance.toJSON(),
