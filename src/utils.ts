@@ -1,3 +1,9 @@
+import * as uuid from 'uuid';
+
+export function generateLocalUUID(): string {
+  return uuid.v1().toString();
+}
+
 export function isObject(value: any): value is Object {
   return typeof value === 'object' && value !== null;
 }

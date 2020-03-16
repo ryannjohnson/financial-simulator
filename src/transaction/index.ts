@@ -1,2 +1,1 @@
-export { Importer } from './importer';
-export { Transaction } from './transaction';
+export { Transaction, TransactionJSON } from './transaction';

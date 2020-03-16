@@ -1,6 +1,7 @@
 import parse from 'csv-parse';
 
 import { Currency } from '../../amount';
+import { generateLocalUUID } from '../../utils';
 import { Transaction } from '../transaction';
 
 type Record = {
@@ -29,7 +30,7 @@ export function parseCSVString(fullDocument: string): Promise<Transaction[]> {
         }
 
         resolve(records.map(toTransaction));
-      }
+      },
     );
   });
 }
@@ -42,6 +43,7 @@ function toTransaction(record: Record): Transaction {
     },
     date: record['Posted Date'],
     description: record.Description,
+    id: generateLocalUUID(),
   });
 }
 

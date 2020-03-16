@@ -1,12 +1,39 @@
-import { Amount } from '../amount';
+import { Amount, AmountJSON } from '../amount';
 import { CalendarDate } from '../calendar-date';
-import { Transaction } from '../transaction';
+import { Transaction, TransactionJSON } from '../transaction';
+import { isString } from '../utils';
+
+export type AccountJSON = {
+  balance: AmountJSON;
+  id: string;
+  name: string;
+  transactions: TransactionJSON[];
+};
 
 export class Account {
+  public static fromJSON(value: AccountJSON): Account {
+    const balance = Amount.fromJSON(value.balance);
+    const transactions = value.transactions.map(Transaction.fromJSON);
+    const { id, name } = value;
+    if (!isString(id)) {
+      throw new Error(`Account id must be a string`);
+    }
+    if (!isString(name)) {
+      throw new Error(`Account name must be a string`);
+    }
+
+    return new Account(id, name, balance, transactions);
+  }
+
   public transactions: Transaction[];
   private transactionsByCalendarDate: Map<string, Transaction[]>;
 
-  constructor(public balance: Amount, transactions: Transaction[]) {
+  constructor(
+    public id: string,
+    public name: string,
+    public balance: Amount,
+    transactions: Transaction[],
+  ) {
     this.transactions = [...transactions].sort(byCalendarDateDesc);
 
     this.transactionsByCalendarDate = new Map<string, Transaction[]>();
@@ -37,6 +64,15 @@ export class Account {
     const transactions = this.transactionsByCalendarDate.get(dateString);
 
     return transactions ? transactions : [];
+  }
+
+  public toJSON(): AccountJSON {
+    return {
+      balance: this.balance.toJSON(),
+      id: this.id,
+      name: this.name,
+      transactions: this.transactions.map(t => t.toJSON()),
+    };
   }
 }
 

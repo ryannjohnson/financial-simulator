@@ -1,6 +1,7 @@
 import parse from 'csv-parse';
 
 import { Currency } from '../../amount';
+import { generateLocalUUID } from '../../utils';
 import { Transaction } from '../transaction';
 
 type Record = {
@@ -33,7 +34,7 @@ export function parseCSVString(fullDocument: string): Promise<Transaction[]> {
         }
 
         resolve(records.map(toTransaction));
-      }
+      },
     );
   });
 }
@@ -49,7 +50,7 @@ function toTransaction(record: Record): Transaction {
   const dateMatch = record['Posting Date'].match(datePattern);
   if (!dateMatch) {
     throw new Error(
-      `Chase Posting Date "${record['Posting Date']}" is invalid`
+      `Chase Posting Date "${record['Posting Date']}" is invalid`,
     );
   }
 
@@ -60,6 +61,7 @@ function toTransaction(record: Record): Transaction {
     },
     date: `${dateMatch[3]}-${dateMatch[1]}-${dateMatch[2]}`,
     description: record.Description,
+    id: generateLocalUUID(),
   });
 }
 
