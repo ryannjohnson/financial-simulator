@@ -42,6 +42,22 @@ export function getDailyBalances(
   return { currency, startsOn, values };
 }
 
+export class LumpSumEvent implements DailyBalanceEvent {
+  constructor(private amount: Amount, private on: CalendarDate) {}
+
+  public getAmountChangedOn(date: CalendarDate): Amount {
+    if (this.on.daysUntil(date) !== 0) {
+      return Amount.zero(this.amount.currency);
+    }
+
+    return this.amount;
+  }
+
+  public getStartsOn(): CalendarDate {
+    return this.on;
+  }
+}
+
 export class RegularEvent implements DailyBalanceEvent {
   constructor(
     private daysInterval: number,
