@@ -20,6 +20,14 @@ export enum Month {
 export type CalendarDateJSON = string;
 
 export class CalendarDate {
+  public static fromDate(value: Date): CalendarDate {
+    return new CalendarDate(
+      value.getFullYear(),
+      value.getMonth() + 1,
+      value.getDate(),
+    );
+  }
+
   public static fromMoment(value: Moment): CalendarDate {
     return CalendarDate.fromString(value.format('YYYY-MM-DD'));
   }
@@ -50,6 +58,13 @@ export class CalendarDate {
     );
   }
 
+  /**
+   * TODO: Add timezone support.
+   */
+  public static today(): CalendarDate {
+    return CalendarDate.fromDate(new Date());
+  }
+
   constructor(public year: number, public month: Month, public day: number) {
     if (day < 1 || day > 31) {
       throw new Error(`CalendarDate day "${day}" must be between 1 and 31`);
@@ -67,6 +82,12 @@ export class CalendarDate {
     }
   }
 
+  public addDays(days: number): CalendarDate {
+    return CalendarDate.fromDate(
+      new Date(this.year, this.month - 1, this.day + days),
+    );
+  }
+
   /**
    * For sorting.
    */
@@ -74,8 +95,16 @@ export class CalendarDate {
     return this.toString().localeCompare(date.toString());
   }
 
+  /**
+   * Positive means the date is forward in time.
+   */
+  public daysUntil(date: CalendarDate): number {
+    const diffMilliseconds = date.toDate().valueOf() - this.toDate().valueOf();
+    return Math.floor(diffMilliseconds / MILLISECONDS_PER_DAY);
+  }
+
   public toDate(): Date {
-    return new Date(this.year, this.month, this.day);
+    return new Date(this.year, this.month - 1, this.day);
   }
 
   public toJSON(): CalendarDateJSON {
@@ -89,6 +118,9 @@ export class CalendarDate {
     return `${year}-${month}-${day}`;
   }
 }
+
+// TODO: Fix for leap years.
+const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
 const stringPattern = /^(\d{4})-(\d{2})-(\d{2})$/;
 

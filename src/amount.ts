@@ -26,6 +26,10 @@ export class Amount {
     return new Amount(toCurrency(value.currency), value.value);
   }
 
+  public static zero(currency: Currency): Amount {
+    return new Amount(currency, 0);
+  }
+
   constructor(public currency: Currency, public value: number) {
     if (!Number.isInteger(value)) {
       throw new Error(`Amount value "${value}" must be an integer`);
