@@ -5,17 +5,19 @@ export { App };
 import { Amount, Currency } from '../amount';
 import { CalendarDate, Month } from '../calendar-date';
 import {
-  BiWeeklyEvent,
   getDailyBalances,
   MonthlyEvent,
+  RegularEvent,
 } from '../timeline/daily-balance';
 
 const events = [
-  new BiWeeklyEvent(
+  new RegularEvent(
+    14,
     new Amount(Currency.USD, 500000),
     new CalendarDate(2020, Month.January, 1),
   ),
-  new BiWeeklyEvent(
+  new RegularEvent(
+    21,
     new Amount(Currency.USD, -250000),
     new CalendarDate(2020, Month.January, 3),
   ),

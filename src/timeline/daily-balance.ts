@@ -42,8 +42,9 @@ export function getDailyBalances(
   return { currency, startsOn, values };
 }
 
-export class BiWeeklyEvent implements DailyBalanceEvent {
+export class RegularEvent implements DailyBalanceEvent {
   constructor(
+    private daysInterval: number,
     private amount: Amount,
     private startsOn: CalendarDate,
     private endsOn?: CalendarDate,
@@ -60,7 +61,7 @@ export class BiWeeklyEvent implements DailyBalanceEvent {
       return Amount.zero(this.amount.currency);
     }
 
-    if (daysUntil % 14 !== 0) {
+    if (daysUntil % this.daysInterval !== 0) {
       return Amount.zero(this.amount.currency);
     }
 
