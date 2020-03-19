@@ -119,6 +119,14 @@ export class CalendarDate {
   }
 
   /**
+   * Positive means the date is in the past.
+   */
+  public daysAfter(date: CalendarDate): number {
+    const diffMilliseconds = this.toDate().valueOf() - date.toDate().valueOf();
+    return Math.floor(diffMilliseconds / MILLISECONDS_PER_DAY);
+  }
+
+  /**
    * Positive means the date is forward in time.
    */
   public daysUntil(date: CalendarDate): number {

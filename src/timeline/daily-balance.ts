@@ -18,13 +18,22 @@ export function calculateDailyBalances({
   let balance = new Amount(currency, 0);
   let values = Array<number>(durationInDays).fill(0);
 
-  for (let i = 0; i < durationInDays; i++) {
+  let earliestDate = startsOn;
+  for (const event of events) {
+    if (earliestDate.daysAfter(event.startsOn) > 0) {
+      earliestDate = event.startsOn;
+    }
+  }
+
+  for (let i = startsOn.daysUntil(earliestDate); i < durationInDays; i++) {
     const date = startsOn.addDays(i);
     for (const event of events) {
       const amountChanged = event.yieldsOn(date);
       balance = balance.add(amountChanged);
     }
-    values[i] = balance.value;
+    if (i >= 0) {
+      values[i] = balance.value;
+    }
   }
 
   return values;
