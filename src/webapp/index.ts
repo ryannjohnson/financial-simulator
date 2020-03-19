@@ -5,31 +5,52 @@ export { App };
 import { Amount, Currency } from '../amount';
 import { CalendarDate, Month } from '../calendar-date';
 import {
-  getDailyBalances,
-  LumpSumEvent,
-  MonthlyEvent,
-  RegularEvent,
-} from '../timeline/daily-balance';
+  calculateDailyBalances,
+  ContinuousCompoundingInterestFormula,
+  Event,
+  LumpSumFormula,
+  MonthlySumFormula,
+  PeriodicCompoundingInterestFormula,
+  RecurringSumFormula,
+} from '../timeline';
 
 const events = [
-  new LumpSumEvent(
-    new Amount(Currency.USD, 10000),
+  new Event(
+    new LumpSumFormula(toUSD(10000)),
     new CalendarDate(2019, Month.December, 1),
+    null,
   ),
-  new RegularEvent(
-    14,
-    new Amount(Currency.USD, 500000),
+  new Event(
+    new RecurringSumFormula(toUSD(10000), 14),
     new CalendarDate(2020, Month.January, 1),
+    null,
   ),
-  new RegularEvent(
-    21,
-    new Amount(Currency.USD, -250000),
+  new Event(
+    new MonthlySumFormula(toUSD(-10000)),
     new CalendarDate(2020, Month.January, 3),
+    null,
   ),
-  new MonthlyEvent(
-    new Amount(Currency.USD, -100000),
-    new CalendarDate(2020, Month.January, 3),
+  new Event(
+    new PeriodicCompoundingInterestFormula(toUSD(10000), 0.1, 12),
+    new CalendarDate(2020, Month.January, 9),
+    null,
+  ),
+  new Event(
+    new ContinuousCompoundingInterestFormula(toUSD(5000), -0.1),
+    new CalendarDate(2020, Month.January, 9),
+    null,
   ),
 ];
 
-console.log(getDailyBalances(Currency.USD, events, 100));
+function toUSD(x: number): Amount {
+  return new Amount(Currency.USD, Math.round(x * 100));
+}
+
+console.log(
+  calculateDailyBalances({
+    currency: Currency.USD,
+    durationInDays: 100,
+    events,
+    startsOn: new CalendarDate(2019, Month.December, 1),
+  }),
+);

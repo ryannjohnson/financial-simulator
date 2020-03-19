@@ -2,6 +2,9 @@ import moment, { Moment } from 'moment';
 
 import { padLeft } from './utils';
 
+// TODO: Is this the right way to work with days and years?
+export const DAYS_PER_YEAR = 365.25;
+
 export enum Month {
   January = 1,
   February = 2,
@@ -85,6 +88,26 @@ export class CalendarDate {
   public addDays(days: number): CalendarDate {
     return CalendarDate.fromDate(
       new Date(this.year, this.month - 1, this.day + days),
+    );
+  }
+
+  public addMonths(months: number): CalendarDate {
+    let date = CalendarDate.fromDate(
+      new Date(this.year, this.month - 1 + months, this.day),
+    );
+
+    while (this.day !== date.day) {
+      // Could turn to the next month if the destination month doens't
+      // have enough days in it.
+      date = date.addDays(-1);
+    }
+
+    return date;
+  }
+
+  public addYears(years: number): CalendarDate {
+    return CalendarDate.fromDate(
+      new Date(this.year + years, this.month - 1, this.day),
     );
   }
 
