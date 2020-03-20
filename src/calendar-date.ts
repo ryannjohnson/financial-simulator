@@ -129,7 +129,7 @@ export class CalendarDate {
   /**
    * Positive means the date is forward in time.
    */
-  public daysUntil(date: CalendarDate): number {
+  public daysBefore(date: CalendarDate): number {
     const diffMilliseconds = date.toDate().valueOf() - this.toDate().valueOf();
     return Math.floor(diffMilliseconds / MILLISECONDS_PER_DAY);
   }

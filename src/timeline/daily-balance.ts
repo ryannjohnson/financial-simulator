@@ -1,4 +1,4 @@
-import { Amount, Currency } from '../amount';
+import { Currency } from '../amount';
 import { CalendarDate } from '../calendar-date';
 import { Event } from './event';
 
@@ -9,32 +9,31 @@ type Options = {
   startsOn: CalendarDate;
 };
 
-export function calculateDailyBalances({
+export function calculateDailyBalanceValues({
   currency,
   durationInDays,
   events,
   startsOn,
 }: Options): number[] {
-  let balance = new Amount(currency, 0);
-  let values = Array<number>(durationInDays).fill(0);
-
-  let earliestDate = startsOn;
   for (const event of events) {
-    if (earliestDate.daysAfter(event.startsOn) > 0) {
-      earliestDate = event.startsOn;
+    if (event.formula.getCurrency() !== currency) {
+      throw new Error(
+        `Currency "${event.formula.getCurrency()}" doesn't match expected "${currency}"`,
+      );
     }
   }
 
-  for (let i = startsOn.daysUntil(earliestDate); i < durationInDays; i++) {
-    const date = startsOn.addDays(i);
-    for (const event of events) {
-      const amountChanged = event.yieldsOn(date);
-      balance = balance.add(amountChanged);
-    }
-    if (i >= 0) {
-      values[i] = balance.value;
-    }
+  const balanceValues = Array<number>(durationInDays).fill(0);
+
+  const generators = events.map(e =>
+    e.yieldBalanceValues(startsOn, durationInDays),
+  );
+
+  for (let i = 0; i < durationInDays; i++) {
+    balanceValues[i] = generators
+      .map(g => g.next().value)
+      .reduce((a, v) => a + v, 0);
   }
 
-  return values;
+  return balanceValues;
 }

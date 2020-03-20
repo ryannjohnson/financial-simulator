@@ -20,9 +20,9 @@ export class ContinuousCompoundingInterestFormula implements Formula {
   /**
    * https://en.wikipedia.org/wiki/Compound_interest#Continuous_compounding
    */
-  public yieldsOnDay(day: number): Amount {
+  public yieldsValueOnDay(day: number): number {
     if (day === 0) {
-      return Amount.zero(this.principalSum.currency);
+      return 0;
     }
 
     const nextAccumulation = totalAccumulation(
@@ -47,7 +47,7 @@ export class ContinuousCompoundingInterestFormula implements Formula {
       this.principalSum.value * incrementalAccumulation,
     );
 
-    return new Amount(this.principalSum.currency, incrementalValue);
+    return incrementalValue;
   }
 }
 

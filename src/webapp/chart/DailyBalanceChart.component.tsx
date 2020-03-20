@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Amount, Currency } from '../../amount';
 import { CalendarDate, Month } from '../../calendar-date';
 import {
-  calculateDailyBalances,
+  calculateDailyBalanceValues,
   ContinuousCompoundingInterestFormula,
   Event,
   LumpSumFormula,
@@ -26,7 +26,7 @@ const events = [
   new Event(
     new LumpSumFormula(toUSD(-10000)),
     new CalendarDate(2019, Month.January, 1),
-    null,
+    new CalendarDate(2019, Month.January, 1),
   ),
   new Event(
     new ContinuousCompoundingInterestFormula(toUSD(10000), 0.1),
@@ -39,7 +39,7 @@ function toUSD(x: number): Amount {
   return new Amount(Currency.USD, Math.round(x * 100));
 }
 
-const dailyBalances = calculateDailyBalances({
+const dailyBalances = calculateDailyBalanceValues({
   currency: Currency.USD,
   durationInDays: 365 * 3,
   events,

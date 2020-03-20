@@ -11,11 +11,7 @@ export class LumpSumFormula implements Formula {
     return this.amount.currency;
   }
 
-  public yieldsOnDay(days: number): Amount {
-    if (days === 0) {
-      return this.amount;
-    }
-
-    return Amount.zero(this.amount.currency);
+  public yieldsValueOnDay(): number {
+    return this.amount.value;
   }
 }

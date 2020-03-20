@@ -1,4 +1,4 @@
-export { calculateDailyBalances } from './daily-balance';
+export { calculateDailyBalanceValues } from './daily-balance';
 export { Event } from './event';
 export { ContinuousCompoundingInterestFormula } from './formula/continuous-compounding-interest';
 export { LumpSumFormula } from './formula/lump-sum';

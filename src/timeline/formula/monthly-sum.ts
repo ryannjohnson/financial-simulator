@@ -12,20 +12,20 @@ export class MonthlySumFormula implements Formula {
     return this.amount.currency;
   }
 
-  public yieldsOnDay(days: number, startsOn: CalendarDate): Amount {
+  public yieldsValueOnDay(days: number, startsOn: CalendarDate): number {
     const date = startsOn.addDays(days);
 
     if (startsOn.day < date.day) {
-      return Amount.zero(this.amount.currency);
+      return 0;
     }
 
     if (date.day < startsOn.day) {
       const isLastDay = date.addDays(1).month !== date.month;
       if (!isLastDay) {
-        return Amount.zero(this.amount.currency);
+        return 0;
       }
     }
 
-    return this.amount;
+    return this.amount.value;
   }
 }

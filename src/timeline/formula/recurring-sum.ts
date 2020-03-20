@@ -14,11 +14,11 @@ export class RecurringSumFormula implements Formula {
     return this.amount.currency;
   }
 
-  public yieldsOnDay(days: number): Amount {
+  public yieldsValueOnDay(days: number): number {
     if (days % this.everyXDays === 0) {
-      return this.amount;
+      return this.amount.value;
     }
 
-    return Amount.zero(this.amount.currency);
+    return 0;
   }
 }
