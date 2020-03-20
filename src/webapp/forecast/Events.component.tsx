@@ -8,9 +8,16 @@ import EventComponent from './Event.component';
 type Props = {
   addEvent: typeof actions.forecast.addEvent;
   eventWrappers: EventJSONWrapper[];
+  renderChart: typeof actions.forecast.renderChart;
+  setEvent: typeof actions.forecast.setEvent;
 };
 
-export default function EventsComponent({ addEvent, eventWrappers }: Props) {
+export default function EventsComponent({
+  addEvent,
+  eventWrappers,
+  renderChart,
+  setEvent,
+}: Props) {
   const [selectedFormulaType, selectFormulaType] = React.useState(
     FormulaType.LumpSum,
   );
@@ -19,6 +26,8 @@ export default function EventsComponent({ addEvent, eventWrappers }: Props) {
     () => addEvent(selectedFormulaType),
     [selectedFormulaType],
   );
+
+  const renderChartHandler = React.useCallback(() => renderChart(), []);
 
   const setFormulaTypeHandler = React.useCallback(
     event => {
@@ -29,9 +38,10 @@ export default function EventsComponent({ addEvent, eventWrappers }: Props) {
 
   return (
     <div>
+      <button onClick={renderChartHandler}>Render chart</button>
       <ul>
         {eventWrappers.map(({ event, id }) => (
-          <EventComponent key={id} {...event} />
+          <EventComponent key={id} {...event} setEvent={e => setEvent(id, e)} />
         ))}
       </ul>
       <select onChange={setFormulaTypeHandler} value={selectedFormulaType}>

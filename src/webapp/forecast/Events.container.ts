@@ -12,6 +12,8 @@ const mapState = (state: RootState) => {
 
 const mapDispatch = {
   addEvent: actions.forecast.addEvent,
+  renderChart: actions.forecast.renderChart,
+  setEvent: actions.forecast.setEvent,
 };
 
 export default connect(mapState, mapDispatch)(EventsComponent);

@@ -1,7 +1,7 @@
 import { Amount, AmountJSON, Currency } from '../../amount';
 import { Formula, FormulaType } from './formula';
 
-type LumpSumFormulaJSON = {
+export type LumpSumFormulaJSON = {
   amount: AmountJSON;
 };
 

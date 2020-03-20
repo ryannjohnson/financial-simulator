@@ -6,6 +6,7 @@ import { generateLocalUUID } from '../../../utils';
 import * as types from '../types';
 
 export type State = {
+  chartValues: number[];
   defaultCurrency: Currency;
   eventWrappers: EventJSONWrapper[];
 };
@@ -50,10 +51,45 @@ export function reducer(
     };
   }
 
+  if (action.type === types.forecast.RENDER_CHART) {
+    const chartValues = Array.from(
+      timeline.calculateDailyBalanceValues({
+        currency: state.defaultCurrency,
+        durationInDays: 365,
+        events: state.eventWrappers.map(a => timeline.Event.fromJSON(a.event)),
+        startsOn: CalendarDate.today(),
+      }),
+    );
+
+    return {
+      ...state,
+      chartValues,
+    };
+  }
+
+  if (action.type === types.forecast.SET_EVENT) {
+    let eventWrappers: EventJSONWrapper[] = [];
+
+    for (const eventWrapper of state.eventWrappers) {
+      if (eventWrapper.id !== action.id) {
+        eventWrappers = [...eventWrappers, eventWrapper];
+      } else {
+        const newEventWrapper = { id: action.id, event: action.event };
+        eventWrappers = [...eventWrappers, newEventWrapper];
+      }
+    }
+
+    return {
+      ...state,
+      eventWrappers,
+    };
+  }
+
   return state;
 }
 
 const initialState: State = {
+  chartValues: [],
   defaultCurrency: Currency.USD,
   eventWrappers: [],
 };

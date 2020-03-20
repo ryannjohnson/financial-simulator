@@ -9,12 +9,12 @@ type Options = {
   startsOn: CalendarDate;
 };
 
-export function calculateDailyBalanceValues({
+export function* calculateDailyBalanceValues({
   currency,
   durationInDays,
   events,
   startsOn,
-}: Options): number[] {
+}: Options): Generator<number> {
   for (const event of events) {
     if (event.formula.getCurrency() !== currency) {
       throw new Error(
@@ -23,17 +23,11 @@ export function calculateDailyBalanceValues({
     }
   }
 
-  const balanceValues = Array<number>(durationInDays).fill(0);
-
   const generators = events.map(e =>
     e.yieldBalanceValues(startsOn, durationInDays),
   );
 
   for (let i = 0; i < durationInDays; i++) {
-    balanceValues[i] = generators
-      .map(g => g.next().value)
-      .reduce((a, v) => a + v, 0);
+    yield generators.map(g => g.next().value).reduce((a, v) => a + v, 0);
   }
-
-  return balanceValues;
 }
