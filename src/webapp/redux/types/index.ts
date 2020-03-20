@@ -1,3 +1,4 @@
 import * as accounts from './accounts';
+import * as forecast from './forecast';
 
-export { accounts };
+export { accounts, forecast };

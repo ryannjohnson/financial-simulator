@@ -14,7 +14,7 @@ export type AmountJSON = {
  * account, and negative removed it from a person's net worth.
  */
 export class Amount {
-  public static fromJSON(value: any): Amount {
+  public static fromJSON(value: AmountJSON): Amount {
     if (!isObject(value)) {
       throw new Error('Amount JSON value must be an object');
     }

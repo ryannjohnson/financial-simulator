@@ -4,15 +4,15 @@ import { TransactionJSON } from '../../../transaction';
 import { generateLocalUUID } from '../../../utils';
 import * as types from '../types';
 
-type AccountsState = {
+type State = {
   defaultCurrency: Currency;
   items: AccountJSON[];
 };
 
 export function reducer(
-  state: AccountsState = initialState,
+  state: State = initialState,
   action: types.accounts.Action,
-): AccountsState {
+): State {
   if (action.type === types.accounts.ADD) {
     const amount = new Amount(state.defaultCurrency, 0);
     const id = generateLocalUUID();

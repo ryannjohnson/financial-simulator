@@ -1,15 +1,34 @@
-import { Amount, Currency } from '../../amount';
+import { Amount, AmountJSON, Currency } from '../../amount';
 import { CalendarDate } from '../../calendar-date';
-import { Formula } from './formula';
+import { Formula, FormulaType } from './formula';
+
+export type MonthlySumFormulaJSON = {
+  amount: AmountJSON;
+};
 
 /**
  * Cash received in regular intervals.
  */
 export class MonthlySumFormula implements Formula {
+  public static fromJSON(value: MonthlySumFormulaJSON): MonthlySumFormula {
+    const amount = Amount.fromJSON(value.amount);
+    return new MonthlySumFormula(amount);
+  }
+
   constructor(public readonly amount: Amount) {}
 
   public getCurrency(): Currency {
     return this.amount.currency;
+  }
+
+  public getType(): FormulaType {
+    return FormulaType.MonthlySum;
+  }
+
+  public toJSON(): MonthlySumFormulaJSON {
+    return {
+      amount: this.amount.toJSON(),
+    };
   }
 
   public yieldsValueOnDay(days: number, startsOn: CalendarDate): number {

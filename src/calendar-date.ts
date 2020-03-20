@@ -35,7 +35,7 @@ export class CalendarDate {
     return CalendarDate.fromString(value.format('YYYY-MM-DD'));
   }
 
-  public static fromJSON(value: any): CalendarDate {
+  public static fromJSON(value: CalendarDateJSON): CalendarDate {
     if (typeof value !== 'string') {
       throw new Error('CalendarDate JSON value must be a string');
     }

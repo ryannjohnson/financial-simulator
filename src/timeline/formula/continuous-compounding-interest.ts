@@ -1,13 +1,32 @@
-import { Amount, Currency } from '../../amount';
+import { Amount, AmountJSON, Currency } from '../../amount';
 import { DAYS_PER_YEAR } from '../../calendar-date';
-import { Formula } from './formula';
+import { numberFromJSON } from '../../utils';
+import { Formula, FormulaType } from './formula';
 
 const E = 2.718281828459045;
+
+export type ContinuousCompoundingInterestFormulaJSON = {
+  nominalAnnualInterestRate: number;
+  principalSum: AmountJSON;
+};
 
 /**
  * Cash invested in a financial vehicle that accrues interest over time.
  */
 export class ContinuousCompoundingInterestFormula implements Formula {
+  public static fromJSON(
+    value: ContinuousCompoundingInterestFormulaJSON,
+  ): ContinuousCompoundingInterestFormula {
+    const principalSum = Amount.fromJSON(value.principalSum);
+    const nominalAnnualInterestRate = numberFromJSON(
+      value.nominalAnnualInterestRate,
+    );
+    return new ContinuousCompoundingInterestFormula(
+      principalSum,
+      nominalAnnualInterestRate,
+    );
+  }
+
   constructor(
     public readonly principalSum: Amount,
     public readonly nominalAnnualInterestRate: number, // 1.0 = 100% annual interest.
@@ -15,6 +34,17 @@ export class ContinuousCompoundingInterestFormula implements Formula {
 
   public getCurrency(): Currency {
     return this.principalSum.currency;
+  }
+
+  public getType(): FormulaType {
+    return FormulaType.ContinuousCompoundingInterest;
+  }
+
+  public toJSON(): ContinuousCompoundingInterestFormulaJSON {
+    return {
+      nominalAnnualInterestRate: this.nominalAnnualInterestRate,
+      principalSum: this.principalSum.toJSON(),
+    };
   }
 
   /**
