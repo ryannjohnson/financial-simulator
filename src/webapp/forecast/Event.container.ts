@@ -13,6 +13,7 @@ const mapState = (state: RootState, props: { eventId: string }) => {
 };
 
 const mapDispatch = {
+  removeEvent: actions.forecast.removeEvent,
   setEvent: actions.forecast.setEvent,
 };
 

@@ -1,9 +1,12 @@
 import * as React from 'react';
 
 import * as timeline from '../../../timeline';
-import AmountComponent from '../../components/Amount.component';
-
-type SetFormulaFn = (formula: timeline.Formula) => void;
+import ContinuousCompoundingInterestComponent from './ContinuousCompoundingInterest.component';
+import LumpSumComponent from './LumpSum.component';
+import MonthlySumComponent from './MonthlySum.component';
+import PeriodicCompoundingInterestComponent from './PeriodicCompoundingInterest.component';
+import RecurringSumComponent from './RecurringSum.component';
+import { SetFormulaFn } from './props';
 
 type Props = {
   formula: any;
@@ -16,32 +19,23 @@ export default function FormulaComponent({
   formulaType,
   setFormula,
 }: Props) {
+  const props = {
+    ...formula,
+    setFormula,
+  };
+
   switch (formulaType) {
+    case timeline.FormulaType.ContinuousCompoundingInterest:
+      return <ContinuousCompoundingInterestComponent {...props} />;
     case timeline.FormulaType.LumpSum:
-      return <LumpSumComponent {...formula} setFormula={setFormula} />;
+      return <LumpSumComponent {...props} />;
+    case timeline.FormulaType.MonthlySum:
+      return <MonthlySumComponent {...props} />;
+    case timeline.FormulaType.PeriodicCompoundingInterest:
+      return <PeriodicCompoundingInterestComponent {...props} />;
+    case timeline.FormulaType.RecurringSum:
+      return <RecurringSumComponent {...props} />;
     default:
       return <div>Unmapped formulaType {formulaType}</div>;
   }
-}
-
-type FormulaProps = {
-  setFormula: SetFormulaFn;
-};
-
-function LumpSumComponent({
-  amount,
-  setFormula,
-}: FormulaProps & timeline.LumpSumFormulaJSON) {
-  const setAmountHandler = React.useCallback(
-    newAmount => {
-      setFormula(new timeline.LumpSumFormula(newAmount));
-    },
-    [amount],
-  );
-
-  return (
-    <div>
-      <AmountComponent {...amount} setAmount={setAmountHandler} />
-    </div>
-  );
 }

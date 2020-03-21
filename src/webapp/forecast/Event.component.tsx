@@ -9,6 +9,7 @@ import FormulaComponent from './formula/Formula.component';
 
 type Props = timeline.EventJSON & {
   eventId: string;
+  removeEvent: (id: string) => void;
   setEvent: (id: string, event: timeline.Event) => void;
 };
 
@@ -17,14 +18,20 @@ export default function EventComponent({
   eventId,
   formula,
   formulaType,
+  removeEvent,
   setEvent,
   startsOn,
 }: Props) {
   return (
     <div>
+      <hr />
+      <div>
+        <button onClick={() => removeEvent(eventId)}>Remove</button>{' '}
+        {formulaType}
+      </div>
       <Row>
         <RowItem>
-          <FormElementComponent title="Starts on:">
+          <FormElementComponent title="Starts">
             <CalendarDateComponent
               setValue={value => {
                 if (endsOn) {
@@ -47,7 +54,7 @@ export default function EventComponent({
           </FormElementComponent>
         </RowItem>
         <RowItem>
-          <FormElementComponent title="Ends on:">
+          <FormElementComponent title="Ends">
             <NullableCalendarDateComponent
               setValue={value => {
                 if (value) {

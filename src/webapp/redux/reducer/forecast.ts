@@ -88,6 +88,13 @@ export function reducer(
     };
   }
 
+  if (action.type === types.forecast.REMOVE_EVENT) {
+    return {
+      ...state,
+      eventWrappers: state.eventWrappers.filter(({ id }) => id !== action.id),
+    };
+  }
+
   if (action.type === types.forecast.RENDER_CHART) {
     return {
       ...state,

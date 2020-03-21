@@ -16,6 +16,10 @@ export function importEvents(events: Event[]): types.forecast.ImportEvents {
   };
 }
 
+export function removeEvent(id: string): types.forecast.RemoveEvent {
+  return { id, type: types.forecast.REMOVE_EVENT };
+}
+
 export function setEvent(id: string, event: Event): types.forecast.SetEvent {
   return { event: event.toJSON(), id, type: types.forecast.SET_EVENT };
 }

@@ -18,6 +18,7 @@ export default function AmountComponent({ currency, setAmount, value }: Props) {
         )
       }
       step={1}
+      type="number"
       value={value}
     />
   );

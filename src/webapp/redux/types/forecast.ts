@@ -3,6 +3,7 @@ import { EventJSON, FormulaType } from '../../../timeline';
 export const ADD_EVENT = 'FORECAST_ADD_EVENT';
 export const EXPORT_EVENTS = 'FORECAST_EXPORT_EVENTS';
 export const IMPORT_EVENTS = 'FORECAST_IMPORT_EVENTS';
+export const REMOVE_EVENT = 'FORECAST_REMOVE_EVENT';
 export const RENDER_CHART = 'FORECAST_RENDER_CHART';
 export const SET_EVENT = 'FORECAST_SET_EVENT';
 
@@ -20,6 +21,11 @@ export interface ImportEvents {
   type: typeof IMPORT_EVENTS;
 }
 
+export interface RemoveEvent {
+  id: string;
+  type: typeof REMOVE_EVENT;
+}
+
 export interface RenderChart {
   type: typeof RENDER_CHART;
 }
@@ -34,5 +40,6 @@ export type Action =
   | AddEvent
   | ExportEvents
   | ImportEvents
+  | RemoveEvent
   | RenderChart
   | SetEvent;

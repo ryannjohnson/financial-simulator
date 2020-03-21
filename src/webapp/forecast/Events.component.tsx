@@ -45,6 +45,8 @@ export default function EventsComponent({
         ))}
       </div>
 
+      <hr />
+
       <select
         onChange={event => selectFormulaType(event.target.value as any)}
         value={selectedFormulaType}
