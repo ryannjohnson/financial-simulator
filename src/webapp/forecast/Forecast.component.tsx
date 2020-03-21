@@ -21,10 +21,10 @@ export default function ForecastComponent({ chartValues }: Props) {
 const containerStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'row',
+  height: 'calc(100vh - 30px)',
 };
 
 const chartContainerStyle: React.CSSProperties = {
-  height: '400px',
+  flexGrow: 1,
   position: 'relative',
-  width: '400px',
 };

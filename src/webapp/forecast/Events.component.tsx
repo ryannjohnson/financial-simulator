@@ -2,21 +2,18 @@ import * as React from 'react';
 
 import { FormulaType } from '../../timeline';
 import * as actions from '../redux/actions';
-import { EventJSONWrapper } from '../redux/reducer/forecast';
-import EventComponent from './Event.component';
+import EventContainer from './Event.container';
 
 type Props = {
   addEvent: typeof actions.forecast.addEvent;
-  eventWrappers: EventJSONWrapper[];
+  eventIds: string[];
   renderChart: typeof actions.forecast.renderChart;
-  setEvent: typeof actions.forecast.setEvent;
 };
 
 export default function EventsComponent({
   addEvent,
-  eventWrappers,
+  eventIds,
   renderChart,
-  setEvent,
 }: Props) {
   const [selectedFormulaType, selectFormulaType] = React.useState(
     FormulaType.LumpSum,
@@ -27,8 +24,6 @@ export default function EventsComponent({
     [selectedFormulaType],
   );
 
-  const renderChartHandler = React.useCallback(() => renderChart(), []);
-
   const setFormulaTypeHandler = React.useCallback(
     event => {
       selectFormulaType(event.target.value);
@@ -38,12 +33,16 @@ export default function EventsComponent({
 
   return (
     <div>
-      <button onClick={renderChartHandler}>Render chart</button>
-      <ul>
-        {eventWrappers.map(({ event, id }) => (
-          <EventComponent key={id} {...event} setEvent={e => setEvent(id, e)} />
+      <button onClick={React.useCallback(() => renderChart(), [])}>
+        Render chart
+      </button>
+
+      <div>
+        {eventIds.map(eventId => (
+          <EventContainer key={eventId} eventId={eventId} />
         ))}
-      </ul>
+      </div>
+
       <select onChange={setFormulaTypeHandler} value={selectedFormulaType}>
         {formulaTypes.map(formulaType => (
           <option key={formulaType} value={formulaType}>
@@ -51,6 +50,7 @@ export default function EventsComponent({
           </option>
         ))}
       </select>
+
       <button onClick={addEventHandler}>+ Add</button>
     </div>
   );

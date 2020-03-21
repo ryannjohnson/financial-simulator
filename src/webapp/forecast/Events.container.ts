@@ -2,11 +2,12 @@ import { connect } from 'react-redux';
 
 import * as actions from '../redux/actions';
 import { RootState } from '../redux/reducer';
+import * as selectors from '../redux/selectors';
 import EventsComponent from './Events.component';
 
 const mapState = (state: RootState) => {
   return {
-    eventWrappers: state.forecast.eventWrappers,
+    eventIds: selectors.forecast.getEventWrappers(state).map(a => a.id),
   };
 };
 
