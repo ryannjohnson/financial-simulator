@@ -1,41 +1,43 @@
 import * as React from 'react';
 
-import { FormulaType } from '../../timeline';
+import { Event, EventJSON, FormulaType } from '../../timeline';
 import * as actions from '../redux/actions';
 import EventContainer from './Event.container';
 
 type Props = {
   addEvent: typeof actions.forecast.addEvent;
   eventIds: string[];
+  exportEvents: typeof actions.forecast.exportEvents;
+  importEvents: typeof actions.forecast.importEvents;
   renderChart: typeof actions.forecast.renderChart;
 };
 
 export default function EventsComponent({
   addEvent,
   eventIds,
+  exportEvents,
+  importEvents,
   renderChart,
 }: Props) {
   const [selectedFormulaType, selectFormulaType] = React.useState(
     FormulaType.LumpSum,
   );
 
-  const addEventHandler = React.useCallback(
-    () => addEvent(selectedFormulaType),
-    [selectedFormulaType],
-  );
-
-  const setFormulaTypeHandler = React.useCallback(
-    event => {
-      selectFormulaType(event.target.value);
-    },
-    [selectedFormulaType],
-  );
+  const importEventsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const eventsJSON: EventJSON[] = JSON.parse(reader.result as string);
+      const events = eventsJSON.map(a => Event.fromJSON(a));
+      importEvents(events);
+    };
+    reader.readAsText(event.target.files![0]);
+  };
 
   return (
     <div>
-      <button onClick={React.useCallback(() => renderChart(), [])}>
-        Render chart
-      </button>
+      <input onChange={importEventsHandler} type="file" />
+      <button onClick={exportEvents}>Export</button>
+      <button onClick={renderChart}>Render</button>
 
       <div>
         {eventIds.map(eventId => (
@@ -43,7 +45,10 @@ export default function EventsComponent({
         ))}
       </div>
 
-      <select onChange={setFormulaTypeHandler} value={selectedFormulaType}>
+      <select
+        onChange={event => selectFormulaType(event.target.value as any)}
+        value={selectedFormulaType}
+      >
         {formulaTypes.map(formulaType => (
           <option key={formulaType} value={formulaType}>
             {formulaType}
@@ -51,7 +56,7 @@ export default function EventsComponent({
         ))}
       </select>
 
-      <button onClick={addEventHandler}>+ Add</button>
+      <button onClick={() => addEvent(selectedFormulaType)}>+ Add</button>
     </div>
   );
 }

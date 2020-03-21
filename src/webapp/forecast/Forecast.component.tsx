@@ -1,18 +1,16 @@
 import * as React from 'react';
 
-import ChartComponent from '../chart/Chart.component';
 import EventsContainer from './Events.container';
+import ForecastChartContainer from './ForecastChart.container';
 
-type Props = {
-  chartValues: number[];
-};
-
-export default function ForecastComponent({ chartValues }: Props) {
+export default function ForecastComponent() {
   return (
     <div style={containerStyle}>
-      <EventsContainer />
+      <div style={eventsContainerStyle}>
+        <EventsContainer />
+      </div>
       <div style={chartContainerStyle}>
-        <ChartComponent values={chartValues} />
+        <ForecastChartContainer />
       </div>
     </div>
   );
@@ -27,4 +25,11 @@ const containerStyle: React.CSSProperties = {
 const chartContainerStyle: React.CSSProperties = {
   flexGrow: 1,
   position: 'relative',
+  zIndex: 4,
+};
+
+const eventsContainerStyle: React.CSSProperties = {
+  paddingRight: '30px',
+  position: 'relative',
+  zIndex: 5,
 };

@@ -13,6 +13,8 @@ const mapState = (state: RootState) => {
 
 const mapDispatch = {
   addEvent: actions.forecast.addEvent,
+  exportEvents: actions.forecast.exportEvents,
+  importEvents: actions.forecast.importEvents,
   renderChart: actions.forecast.renderChart,
   setEvent: actions.forecast.setEvent,
 };

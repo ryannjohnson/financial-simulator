@@ -1,13 +1,17 @@
 import { Amount, Currency } from '../../../amount';
-import { CalendarDate } from '../../../calendar-date';
+import { CalendarDate, CalendarDateJSON } from '../../../calendar-date';
 import * as timeline from '../../../timeline';
 import { FormulaType } from '../../../timeline';
 import { generateLocalUUID } from '../../../utils';
 import * as types from '../types';
 
 export type State = {
-  chartValues: number[];
-  defaultCurrency: Currency;
+  chart: {
+    currency: Currency;
+    endsOn: CalendarDateJSON;
+    startsOn: CalendarDateJSON;
+    values: number[];
+  };
   eventWrappers: EventJSONWrapper[];
 };
 
@@ -22,7 +26,7 @@ export function reducer(
 ): State {
   if (action.type === types.forecast.ADD_EVENT) {
     const { formulaType } = action;
-    const amount = Amount.zero(state.defaultCurrency);
+    const amount = Amount.zero(state.chart.currency);
     const today = CalendarDate.today();
     let formula: timeline.Formula;
 
@@ -51,19 +55,43 @@ export function reducer(
     };
   }
 
-  if (action.type === types.forecast.RENDER_CHART) {
-    const chartValues = Array.from(
-      timeline.calculateDailyBalanceValues({
-        currency: state.defaultCurrency,
-        durationInDays: 365,
-        events: state.eventWrappers.map(a => timeline.Event.fromJSON(a.event)),
-        startsOn: CalendarDate.today(),
-      }),
-    );
+  if (action.type === types.forecast.EXPORT_EVENTS) {
+    const eventsJSON = state.eventWrappers.map(a => a.event);
+    const blob = new Blob([JSON.stringify(eventsJSON, null, 2)], {
+      type: 'application/json',
+    });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    const date = new Date().toISOString();
+    a.download = `${date.split('T')[0]}_ForecastEvents.json`;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+
+    return state;
+  }
+
+  if (action.type === types.forecast.IMPORT_EVENTS) {
+    state = {
+      ...state,
+      eventWrappers: action.events.map(event => ({
+        id: generateLocalUUID(),
+        event,
+      })),
+    };
 
     return {
       ...state,
-      chartValues,
+      chart: getChart(state),
+    };
+  }
+
+  if (action.type === types.forecast.RENDER_CHART) {
+    return {
+      ...state,
+      chart: getChart(state),
     };
   }
 
@@ -89,8 +117,14 @@ export function reducer(
 }
 
 const initialState: State = {
-  chartValues: [],
-  defaultCurrency: Currency.USD,
+  chart: {
+    currency: Currency.USD,
+    endsOn: CalendarDate.today()
+      .addYears(5)
+      .toJSON(),
+    startsOn: CalendarDate.today().toJSON(),
+    values: [],
+  },
   eventWrappers: [],
 };
 
@@ -98,4 +132,21 @@ function byStartsOn(a: EventJSONWrapper, b: EventJSONWrapper): number {
   return (
     a.event.startsOn.localeCompare(b.event.startsOn) || a.id.localeCompare(b.id)
   );
+}
+
+function getChart(state: State) {
+  const startsOn = CalendarDate.fromJSON(state.chart.startsOn);
+  const endsOn = CalendarDate.fromJSON(state.chart.endsOn);
+
+  return {
+    ...state.chart,
+    values: Array.from(
+      timeline.calculateDailyBalanceValues({
+        currency: state.chart.currency,
+        durationInDays: startsOn.daysBefore(endsOn) + 1,
+        events: state.eventWrappers.map(a => timeline.Event.fromJSON(a.event)),
+        startsOn,
+      }),
+    ),
+  };
 }

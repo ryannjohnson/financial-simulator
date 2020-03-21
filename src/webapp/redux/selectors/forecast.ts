@@ -1,5 +1,9 @@
 import { RootState } from '../reducer';
 
+export function getChart(state: RootState) {
+  return state.forecast.chart;
+}
+
 export function getEventWrappers(state: RootState) {
   return state.forecast.eventWrappers;
 }
