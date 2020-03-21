@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
-import { RootState } from '../redux/reducer';
+import { State } from '../redux/reducer';
 import * as selectors from '../redux/selectors';
 import ChartComponent from '../chart/Chart.component';
 
-const mapState = (state: RootState) => {
+const mapState = (state: State) => {
   return {
     ...selectors.forecast.getChart(state),
   };

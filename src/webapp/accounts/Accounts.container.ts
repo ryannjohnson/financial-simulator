@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
 import * as actions from '../redux/actions';
-import { RootState } from '../redux/reducer';
+import { State } from '../redux/reducer';
 import AccountsComponent from './Accounts.component';
 
-const mapState = (state: RootState) => {
+const mapState = (state: State) => {
   return {
     accounts: state.accounts.items,
   };

@@ -1,3 +1,4 @@
+import { Currency } from '../../../amount';
 import { EventJSON, FormulaType } from '../../../timeline';
 
 export const ADD_EVENT = 'FORECAST_ADD_EVENT';
@@ -8,6 +9,7 @@ export const RENDER_CHART = 'FORECAST_RENDER_CHART';
 export const SET_EVENT = 'FORECAST_SET_EVENT';
 
 export interface AddEvent {
+  currency: Currency;
   formulaType: FormulaType;
   type: typeof ADD_EVENT;
 }
@@ -27,6 +29,7 @@ export interface RemoveEvent {
 }
 
 export interface RenderChart {
+  events: EventJSON[];
   type: typeof RENDER_CHART;
 }
 

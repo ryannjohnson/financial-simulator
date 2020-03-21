@@ -1,8 +1,10 @@
 import * as React from 'react';
 
+import { Currency } from '../../amount';
 import { Event, EventJSON, FormulaType } from '../../timeline';
 import * as actions from '../redux/actions';
 import EventContainer from './Event.container';
+import RenderChartContainer from './RenderChart.container';
 
 const DEFAULT_FORMULA_TYPE = FormulaType.RecurringSum;
 
@@ -11,7 +13,6 @@ type Props = {
   eventIds: string[];
   exportEvents: typeof actions.forecast.exportEvents;
   importEvents: typeof actions.forecast.importEvents;
-  renderChart: typeof actions.forecast.renderChart;
 };
 
 export default function EventsComponent({
@@ -19,7 +20,6 @@ export default function EventsComponent({
   eventIds,
   exportEvents,
   importEvents,
-  renderChart,
 }: Props) {
   const [selectedFormulaType, selectFormulaType] = React.useState(
     DEFAULT_FORMULA_TYPE,
@@ -39,7 +39,7 @@ export default function EventsComponent({
     <div>
       <input onChange={importEventsHandler} type="file" />
       <button onClick={exportEvents}>Export</button>
-      <button onClick={renderChart}>Render</button>
+      <RenderChartContainer />
 
       <div>
         {eventIds.map(eventId => (
@@ -60,7 +60,9 @@ export default function EventsComponent({
         ))}
       </select>
 
-      <button onClick={() => addEvent(selectedFormulaType)}>+ Add</button>
+      <button onClick={() => addEvent(selectedFormulaType, Currency.USD)}>
+        + Add
+      </button>
     </div>
   );
 }

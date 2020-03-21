@@ -1,8 +1,12 @@
+import { Currency } from '../../../amount';
 import { Event, FormulaType } from '../../../timeline';
 import * as types from '../types';
 
-export function addEvent(formulaType: FormulaType): types.forecast.AddEvent {
-  return { formulaType, type: types.forecast.ADD_EVENT };
+export function addEvent(
+  formulaType: FormulaType,
+  currency: Currency,
+): types.forecast.AddEvent {
+  return { currency, formulaType, type: types.forecast.ADD_EVENT };
 }
 
 export function exportEvents(): types.forecast.ExportEvents {
@@ -24,6 +28,9 @@ export function setEvent(id: string, event: Event): types.forecast.SetEvent {
   return { event: event.toJSON(), id, type: types.forecast.SET_EVENT };
 }
 
-export function renderChart(): types.forecast.RenderChart {
-  return { type: types.forecast.RENDER_CHART };
+export function renderChart(events: Event[]): types.forecast.RenderChart {
+  return {
+    events: events.map(a => a.toJSON()),
+    type: types.forecast.RENDER_CHART,
+  };
 }

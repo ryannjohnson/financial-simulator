@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import { RootState } from '../redux/reducer';
+import { State } from '../redux/reducer';
 import HistoricalChartComponent from './HistoricalChart.component';
 
-const mapState = (state: RootState) => {
+const mapState = (state: State) => {
   return {
     accounts: state.accounts.items,
   };

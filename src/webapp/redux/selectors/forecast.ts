@@ -1,14 +1,14 @@
-import { RootState } from '../reducer';
+import { State } from '../reducer';
 
-export function getChart(state: RootState) {
+export function getChart(state: State) {
   return state.forecast.chart;
 }
 
-export function getEventWrappers(state: RootState) {
+export function getEventWrappers(state: State) {
   return state.forecast.eventWrappers;
 }
 
-export function getEventWrapper(state: RootState, id: string) {
+export function getEventWrapper(state: State, id: string) {
   const eventWrappers = getEventWrappers(state);
   const eventWrapper = eventWrappers.find(
     eventWrapper => eventWrapper.id === id,
