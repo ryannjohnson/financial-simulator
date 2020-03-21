@@ -51,7 +51,7 @@ export function reducer(
 
     return {
       ...state,
-      eventWrappers: [...state.eventWrappers, eventWrapper].sort(byStartsOn),
+      eventWrappers: [...state.eventWrappers, eventWrapper],
     };
   }
 
@@ -99,6 +99,7 @@ export function reducer(
     return {
       ...state,
       chart: getChart(state),
+      eventWrappers: [...state.eventWrappers].sort(byStartsOn),
     };
   }
 

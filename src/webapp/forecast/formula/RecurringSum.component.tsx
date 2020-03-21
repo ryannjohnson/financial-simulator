@@ -21,7 +21,7 @@ export default function RecurringSumComponent({
           }}
         />
       </FormElementComponent>
-      <FormElementComponent title="Amount">
+      <FormElementComponent title="Every X days">
         <NumberComponent
           setValue={newEveryXDays => {
             setFormula(

@@ -4,6 +4,8 @@ import { Event, EventJSON, FormulaType } from '../../timeline';
 import * as actions from '../redux/actions';
 import EventContainer from './Event.container';
 
+const DEFAULT_FORMULA_TYPE = FormulaType.RecurringSum;
+
 type Props = {
   addEvent: typeof actions.forecast.addEvent;
   eventIds: string[];
@@ -20,7 +22,7 @@ export default function EventsComponent({
   renderChart,
 }: Props) {
   const [selectedFormulaType, selectFormulaType] = React.useState(
-    FormulaType.LumpSum,
+    DEFAULT_FORMULA_TYPE,
   );
 
   const importEventsHandler = (event: React.ChangeEvent<HTMLInputElement>) => {

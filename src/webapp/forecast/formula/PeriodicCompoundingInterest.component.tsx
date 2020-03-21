@@ -30,7 +30,6 @@ export default function PeriodicCompoundingInterestComponent({
       </FormElementComponent>
       <FormElementComponent title="Nominal annual interest rate">
         <NumberComponent
-          value={nominalAnnualInterestRate}
           setValue={newNominalAnnualInterestRate => {
             setFormula(
               timeline.PeriodicCompoundingInterestFormula.fromJSON({
@@ -40,11 +39,12 @@ export default function PeriodicCompoundingInterestComponent({
               }),
             );
           }}
+          step={0.001}
+          value={nominalAnnualInterestRate}
         />
       </FormElementComponent>
       <FormElementComponent title="Compounding frequency per year">
         <NumberComponent
-          value={compoundingFrequencyPerYear}
           setValue={newCompoundingFrequencyPerYear => {
             setFormula(
               timeline.PeriodicCompoundingInterestFormula.fromJSON({
@@ -54,6 +54,8 @@ export default function PeriodicCompoundingInterestComponent({
               }),
             );
           }}
+          step={1}
+          value={compoundingFrequencyPerYear}
         />
       </FormElementComponent>
     </div>

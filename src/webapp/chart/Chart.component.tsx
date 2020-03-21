@@ -14,7 +14,9 @@ export default class ChartComponent extends React.Component<Props> {
   private lineSeries: lightweightCharts.ISeriesApi<'Line'> | null = null;
 
   componentDidMount() {
-    this.chart = lightweightCharts.createChart(this.containerRef!);
+    this.chart = lightweightCharts.createChart(this.containerRef!, {
+      localization: { priceFormatter },
+    });
     this.lineSeries = this.chart.addLineSeries();
   }
 
@@ -51,3 +53,10 @@ const containerStyle: React.CSSProperties = {
   right: 0,
   bottom: 0,
 };
+
+const formatter = Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
+const priceFormatter = (priceValue: number) => formatter.format(priceValue);

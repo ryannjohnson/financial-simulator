@@ -28,7 +28,6 @@ export default function ContinuousCompoundingInterestComponent({
       </FormElementComponent>
       <FormElementComponent title="Nominal annual interest rate">
         <NumberComponent
-          value={nominalAnnualInterestRate}
           setValue={newNominalAnnualInterestRate => {
             setFormula(
               timeline.ContinuousCompoundingInterestFormula.fromJSON({
@@ -37,6 +36,8 @@ export default function ContinuousCompoundingInterestComponent({
               }),
             );
           }}
+          step={0.001}
+          value={nominalAnnualInterestRate}
         />
       </FormElementComponent>
     </div>
