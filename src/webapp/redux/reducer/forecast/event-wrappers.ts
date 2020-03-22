@@ -5,7 +5,7 @@ import { FormulaType } from '../../../../timeline';
 import { generateLocalUUID } from '../../../../utils';
 import * as types from '../../types';
 import * as actions from '../../actions';
-import { addTrack, setTrack } from './timeline';
+import { setTrack } from './timeline';
 import { EventWrapper, State, Track } from './props';
 
 const TRACK_DEFAULT_NAME = 'Untitled';
@@ -28,10 +28,6 @@ export function addEvent(state: State, action: types.forecast.AddEvent): State {
     formula = new timeline.RecurringSumFormula(amount, 7);
   } else {
     throw new Error(`FormulaType "${formulaType}" has not been implemented`);
-  }
-
-  if (state.timeline.tracks.length === 0) {
-    state = addTrack(state, actions.forecast.addTrack(TRACK_DEFAULT_NAME));
   }
 
   const event = new timeline.Event(formula, today, today);
@@ -229,9 +225,9 @@ function addEventToEarliestTrack(
     const track = state.timeline.tracks[i];
     let foundOverlap = false;
 
-    for (const eventId of track.eventIds) {
-      const eventWrapper = getEventWrapperById(state, eventId);
-      const trackEvent = timeline.Event.fromJSON(eventWrapper.event);
+    for (const trackEventId of track.eventIds) {
+      const trackEventWrapper = getEventWrapperById(state, trackEventId);
+      const trackEvent = timeline.Event.fromJSON(trackEventWrapper.event);
       foundOverlap = areOverlapping(event, trackEvent);
       if (foundOverlap) {
         break;
@@ -283,7 +279,7 @@ function removeEventFromTracks(state: State, eventId: string): State {
 
 function areOverlapping(a: timeline.Event, b: timeline.Event): boolean {
   const [a0, a1] = a.getDateRange();
-  const [b0, b1] = a.getDateRange();
+  const [b0, b1] = b.getDateRange();
 
   if (!a1) {
     if (!b1) {
