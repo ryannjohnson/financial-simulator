@@ -1,5 +1,3 @@
-import moment, { Moment } from 'moment';
-
 import { padLeft } from './utils';
 
 // TODO: Is this the right way to work with days and years?
@@ -29,10 +27,6 @@ export class CalendarDate {
       value.getMonth() + 1,
       value.getDate(),
     );
-  }
-
-  public static fromMoment(value: Moment): CalendarDate {
-    return CalendarDate.fromString(value.format('YYYY-MM-DD'));
   }
 
   public static fromJSON(value: CalendarDateJSON): CalendarDate {
@@ -69,20 +63,10 @@ export class CalendarDate {
   }
 
   constructor(public year: number, public month: Month, public day: number) {
-    if (day < 1 || day > 31) {
-      throw new Error(`CalendarDate day "${day}" must be between 1 and 31`);
-    }
-
-    if (`${year}`.length !== 4) {
-      throw new Error(
-        `CalendarDate year "${year}" must be a four digit number`,
-      );
-    }
-
-    const dateString = this.toString();
-    if (!moment(dateString).isValid()) {
-      throw new Error(`CalendarDate "${dateString}" is invalid`);
-    }
+    const value = new Date(year, month - 1, day);
+    this.year = value.getFullYear();
+    this.month = value.getMonth() + 1;
+    this.day = value.getDate();
   }
 
   public addDays(days: number): CalendarDate {

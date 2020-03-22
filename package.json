@@ -34,7 +34,6 @@
     "@types/react": "^16.9.23",
     "@types/react-datepicker": "^2.11.0",
     "@types/react-dom": "^16.9.5",
-    "@types/react-plotly.js": "^2.2.4",
     "@types/react-redux": "^7.1.7",
     "@types/uuid": "^7.0.0",
     "tsdx": "^0.12.3",
@@ -44,11 +43,9 @@
   "dependencies": {
     "csv": "^5.3.2",
     "lightweight-charts": "^2.0.0",
-    "moment": "^2.24.0",
     "react": "^16.13.0",
     "react-datepicker": "^2.14.0",
     "react-dom": "^16.13.0",
-    "react-plotly.js": "^2.4.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "uuid": "^7.0.2"
