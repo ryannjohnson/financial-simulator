@@ -1,6 +1,6 @@
 import { CalendarDateJSON } from '../../../calendar-date';
 import { EventJSON } from '../../../timeline';
-import { Track } from '../reducer/forecast/props';
+import { ChartSampleSize, Track } from '../reducer/forecast/props';
 
 export const ADD_EVENT = 'FORECAST_ADD_EVENT';
 export const ADD_TRACK = 'FORECAST_ADD_TRACK';
@@ -42,7 +42,8 @@ export interface RemoveEvent {
 }
 
 export interface RenderChart {
-  events: EventJSON[];
+  eventIds: string[];
+  sampleSize: ChartSampleSize;
   type: typeof RENDER_CHART;
 }
 

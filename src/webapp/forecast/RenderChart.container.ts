@@ -7,7 +7,7 @@ import RenderChartComponent from './RenderChart.component';
 
 const mapState = (state: State) => {
   return {
-    events: selectors.forecast.getEventWrappers(state).map(a => a.event),
+    eventIds: selectors.forecast.getEventWrappers(state).map(a => a.id),
   };
 };
 

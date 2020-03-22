@@ -134,6 +134,25 @@ export class CalendarDate {
     return Math.floor(diffMilliseconds / MILLISECONDS_PER_DAY);
   }
 
+  /**
+   * Calling object is the subject being evaluated against the `target`.
+   *
+   * If the calling date has less days in it than the target month, then
+   * this will return `true`.
+   */
+  public isSameDayOfMonthAs(target: CalendarDate): boolean {
+    if (this.day > target.day) {
+      return false;
+    }
+
+    if (this.day < target.day) {
+      const isLastDay = this.addDays(1).month !== this.month;
+      return isLastDay;
+    }
+
+    return true;
+  }
+
   public toDate(): Date {
     return new Date(this.year, this.month - 1, this.day);
   }

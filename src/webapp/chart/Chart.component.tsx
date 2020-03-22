@@ -5,7 +5,12 @@ import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
 
 type Props = {
   startsOn: CalendarDateJSON;
-  values: number[];
+  values: Value[];
+};
+
+export type Value = {
+  time: CalendarDate;
+  value: number;
 };
 
 export default class ChartComponent extends React.Component<Props> {
@@ -21,17 +26,7 @@ export default class ChartComponent extends React.Component<Props> {
   }
 
   componentDidUpdate() {
-    const startsOn = CalendarDate.fromJSON(this.props.startsOn);
-
-    this.lineSeries!.setData(
-      this.props.values.map((value, i) => {
-        return {
-          time: startsOn.addDays(i),
-          value: value / 100, // TODO: Make it not just for USD.
-        };
-      }),
-    );
-
+    this.lineSeries!.setData(this.props.values);
     this.chart!.timeScale().fitContent();
   }
 
@@ -57,4 +52,5 @@ const formatter = Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
 
-const priceFormatter = (priceValue: number) => formatter.format(priceValue);
+const priceFormatter = (priceValue: number) =>
+  formatter.format(priceValue / 100);

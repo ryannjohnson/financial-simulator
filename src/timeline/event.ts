@@ -38,10 +38,9 @@ export class Event {
     let balanceValue = 0;
 
     const daysLate = this.startsOn.daysBefore(startsOn);
-    const emptyDays = daysLate * -1;
     const daysToYield = Math.max(days, days + daysLate);
 
-    for (let i = 0; i < emptyDays; i++) {
+    for (let i = 0; daysLate < i; i--) {
       yield balanceValue;
     }
 

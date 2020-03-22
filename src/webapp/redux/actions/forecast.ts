@@ -1,6 +1,6 @@
 import { CalendarDate } from '../../../calendar-date';
 import { Event } from '../../../timeline';
-import { Track } from '../reducer/forecast/props';
+import { ChartSampleSize, Track } from '../reducer/forecast/props';
 import * as types from '../types';
 
 export function addEvent(event: Event): types.forecast.AddEvent {
@@ -26,9 +26,13 @@ export function removeEvent(id: string): types.forecast.RemoveEvent {
   return { id, type: types.forecast.REMOVE_EVENT };
 }
 
-export function renderChart(events: Event[]): types.forecast.RenderChart {
+export function renderChart(
+  eventIds: string[],
+  sampleSize: ChartSampleSize,
+): types.forecast.RenderChart {
   return {
-    events: events.map(a => a.toJSON()),
+    eventIds,
+    sampleSize,
     type: types.forecast.RENDER_CHART,
   };
 }

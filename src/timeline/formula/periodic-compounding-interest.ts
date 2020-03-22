@@ -60,6 +60,10 @@ export class PeriodicCompoundingInterestFormula implements Formula {
    * https://en.wikipedia.org/wiki/Compound_interest#Periodic_compounding
    */
   public yieldsValueOnDay(day: number): number {
+    if (day === 0) {
+      return this.principalSum.value;
+    }
+
     const isInterestDay = day > 0 && day % this.daysPerPeriod < 1;
 
     if (!isInterestDay) {
@@ -74,15 +78,11 @@ export class PeriodicCompoundingInterestFormula implements Formula {
       periodsAccrued / this.compoundingFrequencyPerYear,
     );
 
-    let previousAccumulation = 0;
-
-    if (periodsAccrued > 1) {
-      previousAccumulation = totalAccumulation(
-        this.nominalAnnualInterestRate,
-        this.compoundingFrequencyPerYear,
-        (periodsAccrued - 1) / this.compoundingFrequencyPerYear,
-      );
-    }
+    const previousAccumulation = totalAccumulation(
+      this.nominalAnnualInterestRate,
+      this.compoundingFrequencyPerYear,
+      (periodsAccrued - 1) / this.compoundingFrequencyPerYear,
+    );
 
     const incrementalAccumulation = nextAccumulation - previousAccumulation;
 

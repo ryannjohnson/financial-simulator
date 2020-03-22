@@ -52,7 +52,7 @@ export class ContinuousCompoundingInterestFormula implements Formula {
    */
   public yieldsValueOnDay(day: number): number {
     if (day === 0) {
-      return 0;
+      return this.principalSum.value;
     }
 
     const nextAccumulation = totalAccumulation(
@@ -60,14 +60,10 @@ export class ContinuousCompoundingInterestFormula implements Formula {
       day / DAYS_PER_YEAR,
     );
 
-    let previousAccumulation = 0;
-
-    if (day > 1) {
-      previousAccumulation = totalAccumulation(
-        this.nominalAnnualInterestRate,
-        (day - 1) / DAYS_PER_YEAR,
-      );
-    }
+    const previousAccumulation = totalAccumulation(
+      this.nominalAnnualInterestRate,
+      (day - 1) / DAYS_PER_YEAR,
+    );
 
     const incrementalAccumulation = nextAccumulation - previousAccumulation;
 

@@ -5,7 +5,7 @@ import * as timeline from '../../../../timeline';
 export type State = {
   chart: {
     currency: Currency;
-    values: number[];
+    values: ChartValue[];
   };
   eventWrappers: EventWrapper[];
   selectedEventId: string | null;
@@ -25,4 +25,20 @@ export type Track = {
   eventIds: string[];
   id: string;
   name: string;
+};
+
+export enum ChartSampleSize {
+  Day,
+  Week,
+  Month,
+  Year,
+}
+
+export type ChartValue = {
+  time: {
+    year: number;
+    month: number;
+    day: number;
+  };
+  value: number;
 };
