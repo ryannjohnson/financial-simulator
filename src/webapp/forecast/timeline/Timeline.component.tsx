@@ -87,10 +87,3 @@ const spansContainerStyle: React.CSSProperties = {
   top: 0,
   width: '100%',
 };
-
-const spanContainerStyle: React.CSSProperties = {
-  height: `${TRACK_PIXEL_HEIGHT}px`,
-  left: 0,
-  position: 'absolute',
-  width: '100%',
-};
