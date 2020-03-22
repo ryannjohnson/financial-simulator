@@ -1,14 +1,10 @@
-import { Currency } from '../../../amount';
 import { CalendarDate } from '../../../calendar-date';
-import { Event, FormulaType } from '../../../timeline';
+import { Event } from '../../../timeline';
 import { Track } from '../reducer/forecast/props';
 import * as types from '../types';
 
-export function addEvent(
-  formulaType: FormulaType,
-  currency: Currency,
-): types.forecast.AddEvent {
-  return { currency, formulaType, type: types.forecast.ADD_EVENT };
+export function addEvent(event: Event): types.forecast.AddEvent {
+  return { event: event.toJSON(), type: types.forecast.ADD_EVENT };
 }
 
 export function addTrack(name: string): types.forecast.AddTrack {
@@ -35,6 +31,10 @@ export function renderChart(events: Event[]): types.forecast.RenderChart {
     events: events.map(a => a.toJSON()),
     type: types.forecast.RENDER_CHART,
   };
+}
+
+export function selectEvent(id: string | null): types.forecast.SelectEvent {
+  return { id, type: types.forecast.SELECT_EVENT };
 }
 
 export function setEvent(id: string, event: Event): types.forecast.SetEvent {

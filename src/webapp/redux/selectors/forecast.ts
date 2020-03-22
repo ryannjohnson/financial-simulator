@@ -19,6 +19,10 @@ export function getEventWrapper(state: State, id: string) {
   return eventWrapper;
 }
 
+export function getSelectedEventId(state: State) {
+  return state.forecast.selectedEventId;
+}
+
 export function getTrack(state: State, id: string) {
   const track = state.forecast.timeline.tracks.find(t => t.id === id);
   if (!track) {

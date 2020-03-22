@@ -7,7 +7,7 @@ import EventsComponent from './Events.component';
 
 const mapState = (state: State) => {
   return {
-    eventIds: selectors.forecast.getEventWrappers(state).map(a => a.id),
+    selectedEventId: selectors.forecast.getSelectedEventId(state),
   };
 };
 

@@ -26,6 +26,8 @@ export function reducer(
       return eventWrappers.removeEvent(state, action);
     case types.forecast.RENDER_CHART:
       return chart.renderChart(state, action);
+    case types.forecast.SELECT_EVENT:
+      return eventWrappers.selectEvent(state, action);
     case types.forecast.SET_EVENT:
       return eventWrappers.setEvent(state, action);
     case types.forecast.SET_EVENT_CALENDAR_DATES:
@@ -45,11 +47,12 @@ const initialState: State = {
     values: [],
   },
   eventWrappers: [],
+  selectedEventId: null,
   timeline: {
     endsOn: CalendarDate.today()
       .addYears(5)
       .toJSON(),
-    tracks: [],
     startsOn: CalendarDate.today().toJSON(),
+    tracks: [],
   },
 };

@@ -8,10 +8,11 @@ export type State = {
     values: number[];
   };
   eventWrappers: EventWrapper[];
+  selectedEventId: string | null;
   timeline: {
     endsOn: CalendarDateJSON;
-    tracks: Track[];
     startsOn: CalendarDateJSON;
+    tracks: Track[];
   };
 };
 

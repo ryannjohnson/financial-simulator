@@ -8,6 +8,8 @@ type Props = {
   endsOn: CalendarDateJSON | null;
   eventId: string;
   formulaType: FormulaType;
+  isSelected: boolean;
+  selectEvent: typeof actions.forecast.selectEvent;
   setEventCalendarDates: typeof actions.forecast.setEventCalendarDates;
   setEventEndsOn: typeof actions.forecast.setEventEndsOn;
   setEventStartsOn: typeof actions.forecast.setEventStartsOn;
@@ -37,6 +39,7 @@ enum ClickTarget {
 }
 
 export default class SpanComponent extends React.Component<Props, State> {
+  private containerRef: HTMLDivElement | null = null;
   private grabRef: HTMLDivElement | null = null;
   private leftHandleRef: HTMLDivElement | null = null;
   private rightHandleRef: HTMLDivElement | null = null;
@@ -46,6 +49,10 @@ export default class SpanComponent extends React.Component<Props, State> {
   };
 
   componentDidMount() {
+    this.containerRef!.addEventListener(
+      'mousedown',
+      this.containerMouseDownHandler,
+    );
     this.grabRef!.addEventListener('mousedown', this.grabMouseDownHandler);
     this.leftHandleRef!.addEventListener(
       'mousedown',
@@ -60,6 +67,10 @@ export default class SpanComponent extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
+    this.containerRef!.removeEventListener(
+      'mousedown',
+      this.containerMouseDownHandler,
+    );
     this.grabRef!.removeEventListener('mousedown', this.grabMouseDownHandler);
     this.leftHandleRef!.removeEventListener(
       'mousedown',
@@ -79,6 +90,10 @@ export default class SpanComponent extends React.Component<Props, State> {
     const days = startsOn.daysBefore(endsOn) + 1;
     return { days, endsOn, startsOn };
   }
+
+  containerMouseDownHandler = (_: MouseEvent) => {
+    this.props.selectEvent(this.props.eventId);
+  };
 
   grabMouseDownHandler = (event: MouseEvent) => {
     this.setState(this.toMouseDownState(event, ClickTarget.Grab));
@@ -167,30 +182,44 @@ export default class SpanComponent extends React.Component<Props, State> {
     const spanLeft = spanStartsOnDay / timeline.days;
     const spanWidth = spanDays / timeline.days;
 
-    const dynamicContainerStyle = {
+    const dynamicContainerStyle: React.CSSProperties = {
       left: `${spanLeft * 100}%`,
       width: `${spanWidth * 100}%`,
     };
 
+    const dynamicSelectedStyle: React.CSSProperties = this.props.isSelected
+      ? selectedStyle
+      : {};
+
     return (
-      <div style={{ ...containerStyle, ...dynamicContainerStyle }}>
-        <div ref={ref => (this.grabRef = ref)} style={grabStyle}>
+      <div
+        ref={ref => (this.containerRef = ref)}
+        style={{ ...containerStyle, ...dynamicContainerStyle }}
+      >
+        <div
+          ref={ref => (this.grabRef = ref)}
+          style={{ ...grabStyle, ...dynamicSelectedStyle }}
+        >
           {this.props.formulaType}
         </div>
         <div style={bottomStyle}>
           <div
             ref={ref => (this.leftHandleRef = ref)}
-            style={leftHandleStyle}
+            style={{ ...leftHandleStyle, ...dynamicSelectedStyle }}
           />
           <div
             ref={ref => (this.rightHandleRef = ref)}
-            style={rightHandleStyle}
+            style={{ ...rightHandleStyle, ...dynamicSelectedStyle }}
           />
         </div>
       </div>
     );
   }
 }
+
+const unselectedStyle: React.CSSProperties = {
+  background: 'rgba(0, 0, 0, 0.1)',
+};
 
 const containerStyle: React.CSSProperties = {
   background: 'rgb(127, 127, 255)',
@@ -206,7 +235,7 @@ const containerStyle: React.CSSProperties = {
 };
 
 const grabStyle: React.CSSProperties = {
-  background: 'rgba(0, 0, 0, 0.1)',
+  ...unselectedStyle,
   cursor: 'grab',
   height: '50%',
   zIndex: 10,
@@ -219,7 +248,7 @@ const bottomStyle: React.CSSProperties = {
 };
 
 const handleStyle: React.CSSProperties = {
-  background: 'rgba(0,0,0, 0.1)',
+  ...unselectedStyle,
   bottom: 0,
   height: '100%',
   position: 'absolute',
@@ -238,4 +267,8 @@ const rightHandleStyle: React.CSSProperties = {
   cursor: 'e-resize',
   right: 0,
   zIndex: 5,
+};
+
+const selectedStyle: React.CSSProperties = {
+  background: 'rgba(0, 0, 0, 0.25)',
 };

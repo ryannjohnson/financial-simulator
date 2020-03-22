@@ -1,7 +1,5 @@
-import { Amount } from '../../../../amount';
 import { CalendarDate } from '../../../../calendar-date';
 import * as timeline from '../../../../timeline';
-import { FormulaType } from '../../../../timeline';
 import { generateLocalUUID } from '../../../../utils';
 import * as types from '../../types';
 import * as actions from '../../actions';
@@ -11,33 +9,15 @@ import { EventWrapper, State, Track } from './props';
 const TRACK_DEFAULT_NAME = 'Untitled';
 
 export function addEvent(state: State, action: types.forecast.AddEvent): State {
-  const { formulaType } = action;
-  const amount = Amount.zero(action.currency);
-  const today = CalendarDate.today();
-  let formula: timeline.Formula;
-
-  if (formulaType === FormulaType.ContinuousCompoundingInterest) {
-    formula = new timeline.ContinuousCompoundingInterestFormula(amount, 0);
-  } else if (formulaType === FormulaType.LumpSum) {
-    formula = new timeline.LumpSumFormula(amount);
-  } else if (formulaType === FormulaType.MonthlySum) {
-    formula = new timeline.MonthlySumFormula(amount);
-  } else if (formulaType === FormulaType.PeriodicCompoundingInterest) {
-    formula = new timeline.PeriodicCompoundingInterestFormula(amount, 0, 1);
-  } else if (formulaType === FormulaType.RecurringSum) {
-    formula = new timeline.RecurringSumFormula(amount, 7);
-  } else {
-    throw new Error(`FormulaType "${formulaType}" has not been implemented`);
-  }
-
-  const event = new timeline.Event(formula, today, today);
-
   const eventWrapper: EventWrapper = {
-    event: event.toJSON(),
+    event: action.event,
     id: generateLocalUUID(),
   };
 
+  const event = timeline.Event.fromJSON(action.event);
+
   state = addEventToEarliestTrack(state, eventWrapper.id, event);
+  state = selectEvent(state, actions.forecast.selectEvent(eventWrapper.id));
 
   return { ...state, eventWrappers: [...state.eventWrappers, eventWrapper] };
 }
@@ -81,10 +61,21 @@ export function removeEvent(
   action: types.forecast.RemoveEvent,
 ): State {
   state = removeEventFromTracks(state, action.id);
+  state = selectEvent(state, actions.forecast.selectEvent(null));
 
   return {
     ...state,
     eventWrappers: state.eventWrappers.filter(({ id }) => id !== action.id),
+  };
+}
+
+export function selectEvent(
+  state: State,
+  action: types.forecast.SelectEvent,
+): State {
+  return {
+    ...state,
+    selectedEventId: action.id,
   };
 }
 

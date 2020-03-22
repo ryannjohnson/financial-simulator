@@ -11,10 +11,12 @@ type Props = {
 
 const mapState = (state: State, props: Props) => {
   const { event } = selectors.forecast.getEventWrapper(state, props.eventId);
+  const selectedEventId = selectors.forecast.getSelectedEventId(state);
 
   return {
     endsOn: event.endsOn,
     formulaType: event.formulaType,
+    isSelected: props.eventId === selectedEventId,
     startsOn: event.startsOn,
     timelineEndsOn: state.forecast.timeline.endsOn,
     timelineStartsOn: state.forecast.timeline.startsOn,
@@ -22,6 +24,7 @@ const mapState = (state: State, props: Props) => {
 };
 
 const mapDispatch = {
+  selectEvent: actions.forecast.selectEvent,
   setEventCalendarDates: actions.forecast.setEventCalendarDates,
   setEventEndsOn: actions.forecast.setEventEndsOn,
   setEventStartsOn: actions.forecast.setEventStartsOn,

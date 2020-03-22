@@ -26,7 +26,7 @@ export default class ChartComponent extends React.Component<Props> {
     this.lineSeries!.setData(
       this.props.values.map((value, i) => {
         return {
-          time: startsOn.addDays(i).toString(),
+          time: startsOn.addDays(i),
           value: value / 100, // TODO: Make it not just for USD.
         };
       }),
@@ -47,11 +47,9 @@ export default class ChartComponent extends React.Component<Props> {
 }
 
 const containerStyle: React.CSSProperties = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
+  height: '100%',
+  position: 'relative',
+  width: '100%',
 };
 
 const formatter = Intl.NumberFormat('en-US', {
