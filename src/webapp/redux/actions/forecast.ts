@@ -43,6 +43,7 @@ export function setEvent(id: string, event: Event): types.forecast.SetEvent {
 
 export function setEventCalendarDates(
   eventId: string,
+  trackIndex: number,
   startsOn: CalendarDate,
   endsOn: CalendarDate | null,
 ): types.forecast.SetEventCalendarDates {
@@ -50,6 +51,7 @@ export function setEventCalendarDates(
     endsOn: endsOn ? endsOn.toJSON() : null,
     eventId,
     startsOn: startsOn.toJSON(),
+    trackIndex,
     type: types.forecast.SET_EVENT_CALENDAR_DATES,
   };
 }

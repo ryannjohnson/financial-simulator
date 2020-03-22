@@ -32,9 +32,13 @@ export function getTimelineStartsOn(state: State) {
 }
 
 export function getTrack(state: State, id: string) {
-  const track = state.forecast.timeline.tracks.find(t => t.id === id);
+  const track = getTracks(state).find(t => t.id === id);
   if (!track) {
     throw new Error(`Track not found by id "${id}"`);
   }
   return track;
+}
+
+export function getTracks(state: State) {
+  return state.forecast.timeline.tracks;
 }

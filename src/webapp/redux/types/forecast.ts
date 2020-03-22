@@ -61,6 +61,7 @@ export interface SetEventCalendarDates {
   endsOn: CalendarDateJSON | null;
   eventId: string;
   startsOn: CalendarDateJSON;
+  trackIndex: number;
   type: typeof SET_EVENT_CALENDAR_DATES;
 }
 

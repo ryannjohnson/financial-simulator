@@ -3,6 +3,7 @@ import * as React from 'react';
 import { CalendarDate, CalendarDateJSON } from '../../../calendar-date';
 import { FormulaType } from '../../../timeline';
 import * as actions from '../../redux/actions';
+import { TRACK_PIXEL_HEIGHT } from './constants';
 
 type Props = {
   endsOn: CalendarDateJSON | null;
@@ -16,6 +17,7 @@ type Props = {
   startsOn: CalendarDateJSON;
   timelineEndsOn: CalendarDateJSON;
   timelineStartsOn: CalendarDateJSON;
+  trackIndex: number;
 };
 
 type State = {
@@ -84,6 +86,15 @@ export default class SpanComponent extends React.Component<Props, State> {
     window.removeEventListener('mouseup', this.mouseUpHandler);
   }
 
+  getTimelineBox() {
+    // WARNING: This is brittle as it has knowledge of the timeline
+    // around it.
+    //
+    // TODO: Is there a better way to do this?
+    const timelineElement = this.containerRef!.parentElement!.parentElement!;
+    return timelineElement.getBoundingClientRect();
+  }
+
   getTimelineStats() {
     const startsOn = CalendarDate.fromJSON(this.props.timelineStartsOn);
     const endsOn = CalendarDate.fromJSON(this.props.timelineEndsOn);
@@ -139,12 +150,17 @@ export default class SpanComponent extends React.Component<Props, State> {
     const days = Math.round(dx * daysPerPixel);
 
     if (clickTarget === ClickTarget.Grab) {
+      const timelineBox = this.getTimelineBox();
+      const offsetY = event.pageY - timelineBox.y;
+      const trackIndex = Math.floor(offsetY / TRACK_PIXEL_HEIGHT);
+
       const newStartsOn = CalendarDate.fromJSON(startsOn).addDays(days);
       const newEndsOn = endsOn
         ? CalendarDate.fromJSON(endsOn).addDays(days)
         : null;
       this.props.setEventCalendarDates(
         this.props.eventId,
+        trackIndex,
         newStartsOn,
         newEndsOn,
       );
@@ -184,6 +200,7 @@ export default class SpanComponent extends React.Component<Props, State> {
 
     const dynamicContainerStyle: React.CSSProperties = {
       left: `${spanLeft * 100}%`,
+      top: `${this.props.trackIndex * TRACK_PIXEL_HEIGHT}px`,
       width: `${spanWidth * 100}%`,
     };
 
@@ -226,7 +243,7 @@ const containerStyle: React.CSSProperties = {
   borderRadius: '5px',
   display: 'flex',
   flexDirection: 'column',
-  height: '100%',
+  height: `${TRACK_PIXEL_HEIGHT}px`,
   minWidth: '1px',
   overflow: 'hidden',
   position: 'absolute',

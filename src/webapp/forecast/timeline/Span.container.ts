@@ -12,6 +12,13 @@ type Props = {
 const mapState = (state: State, props: Props) => {
   const { event } = selectors.forecast.getEventWrapper(state, props.eventId);
   const selectedEventId = selectors.forecast.getSelectedEventId(state);
+  // TODO: Make this more efficient if performance suffers.
+  const trackIndex = selectors.forecast
+    .getTracks(state)
+    .findIndex(track => track.eventIds.includes(props.eventId));
+  if (trackIndex === -1) {
+    throw new Error(`Event id "${props.eventId}" doesn't have a track`);
+  }
 
   return {
     endsOn: event.endsOn,
@@ -20,6 +27,7 @@ const mapState = (state: State, props: Props) => {
     startsOn: event.startsOn,
     timelineEndsOn: state.forecast.timeline.endsOn,
     timelineStartsOn: state.forecast.timeline.startsOn,
+    trackIndex,
   };
 };
 

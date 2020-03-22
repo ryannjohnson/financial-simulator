@@ -131,15 +131,14 @@ export function setEventCalendarDates(
   const endsOn = action.endsOn ? CalendarDate.fromJSON(action.endsOn) : null;
   event.setDateRange(startsOn, endsOn);
 
-  const track = state.timeline.tracks.find(a => a.eventIds.includes(id));
-  if (!track) {
-    throw new Error(
-      `Event id "${action.eventId}" doesn't belong to any tracks`,
-    );
-  }
+  const maxTrackIndex = state.timeline.tracks.length - 1;
+  const trackIndex = Math.min(Math.max(action.trackIndex, 0), maxTrackIndex);
+  const track = state.timeline.tracks[trackIndex];
 
+  let isAlreadyOnTrack = false;
   for (const eventId of track.eventIds) {
     if (eventId === action.eventId) {
+      isAlreadyOnTrack = true;
       continue;
     }
 
@@ -149,6 +148,10 @@ export function setEventCalendarDates(
       // TODO: Figure out what the closest is that these dates can be moved
       return state;
     }
+  }
+
+  if (!isAlreadyOnTrack) {
+    state = moveEventIdToTrackIndex(state, action.eventId, action.trackIndex);
   }
 
   let eventWrappers: EventWrapper[] = [];
@@ -174,12 +177,20 @@ export function setEventStartsOn(
   const { event: eventJSON, id } = getEventWrapperById(state, action.eventId);
   const event = timeline.Event.fromJSON(eventJSON);
   const startsOn = CalendarDate.fromJSON(action.startsOn);
+  const trackIndex = state.timeline.tracks.findIndex(t =>
+    t.eventIds.includes(action.eventId),
+  );
 
   // TODO: Implement logic that tries to snuggle it up close to the
   // nearest obstacle.
   return setEventCalendarDates(
     state,
-    actions.forecast.setEventCalendarDates(id, startsOn, event.getEndsOn()),
+    actions.forecast.setEventCalendarDates(
+      id,
+      trackIndex,
+      startsOn,
+      event.getEndsOn(),
+    ),
   );
 }
 
@@ -190,12 +201,20 @@ export function setEventEndsOn(
   const { event: eventJSON, id } = getEventWrapperById(state, action.eventId);
   const event = timeline.Event.fromJSON(eventJSON);
   const endsOn = action.endsOn ? CalendarDate.fromJSON(action.endsOn) : null;
+  const trackIndex = state.timeline.tracks.findIndex(t =>
+    t.eventIds.includes(action.eventId),
+  );
 
   // TODO: Implement logic that tries to snuggle it up close to the
   // nearest obstacle.
   return setEventCalendarDates(
     state,
-    actions.forecast.setEventCalendarDates(id, event.getStartsOn(), endsOn),
+    actions.forecast.setEventCalendarDates(
+      id,
+      trackIndex,
+      event.getStartsOn(),
+      endsOn,
+    ),
   );
 }
 
@@ -219,6 +238,30 @@ function getEventWrapperById(state: State, id: string): EventWrapper {
     throw new Error(`Event could not be found by id "${id}"`);
   }
   return eventWrapper;
+}
+
+function moveEventIdToTrackIndex(
+  state: State,
+  eventId: string,
+  trackIndex: number,
+): State {
+  state = removeEventFromTracks(state, eventId);
+  return {
+    ...state,
+    timeline: {
+      ...state.timeline,
+      tracks: state.timeline.tracks.map((track, i) => {
+        if (i !== trackIndex) {
+          return track;
+        }
+
+        return {
+          ...track,
+          eventIds: [...track.eventIds, eventId],
+        };
+      }),
+    },
+  };
 }
 
 function addEventToEarliestTrack(
