@@ -5,8 +5,12 @@ import * as selectors from '../redux/selectors';
 import ChartComponent from '../chart/Chart.component';
 
 const mapState = (state: State) => {
+  const { startsOn } = state.forecast.timeline;
+  const { values } = selectors.forecast.getChart(state);
+
   return {
-    ...selectors.forecast.getChart(state),
+    startsOn,
+    values,
   };
 };
 

@@ -28,7 +28,7 @@ export class Event {
     protected startsOn: CalendarDate,
     protected endsOn: CalendarDate | null,
   ) {
-    this.setRange(startsOn, endsOn);
+    this.setDateRange(startsOn, endsOn);
   }
 
   public *yieldBalanceValues(
@@ -58,7 +58,7 @@ export class Event {
     return [this.startsOn, this.endsOn];
   }
 
-  public setRange(startsOn: CalendarDate, endsOn: CalendarDate | null) {
+  public setDateRange(startsOn: CalendarDate, endsOn: CalendarDate | null) {
     this.startsOn = startsOn;
     this.endsOn = endsOn;
     this.endsAfterDays = endsOn

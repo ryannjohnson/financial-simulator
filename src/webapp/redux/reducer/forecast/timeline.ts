@@ -1,27 +1,40 @@
+import { generateLocalUUID } from '../../../../utils';
 import * as types from '../../types';
+import { State, Track } from './props';
 
-export type State = {
-  tracks: Array<{
-    eventIds: string[];
-    name: string;
-  }>;
-};
-
-export function reducer(
-  state: State = initialState,
-  action: types.forecast.Action,
-): State {
-  switch (action.type) {
-    default:
-      return state;
-  }
+export function addTrack(state: State, action: types.forecast.AddTrack): State {
+  return {
+    ...state,
+    timeline: {
+      ...state.timeline,
+      tracks: [
+        ...state.timeline.tracks,
+        {
+          eventIds: [],
+          id: generateLocalUUID(),
+          name: action.name,
+        },
+      ],
+    },
+  };
 }
 
-const initialState: State = {
-  tracks: [
-    {
-      eventIds: [],
-      name: 'Untitled track',
+export function setTrack(state: State, action: types.forecast.SetTrack): State {
+  let tracks: Track[] = [];
+
+  for (const track of state.timeline.tracks) {
+    if (track.id !== action.id) {
+      tracks = [...tracks, track];
+    } else {
+      tracks = [...tracks, action.track];
+    }
+  }
+
+  return {
+    ...state,
+    timeline: {
+      ...state.timeline,
+      tracks,
     },
-  ],
-};
+  };
+}

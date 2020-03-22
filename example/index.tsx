@@ -4,4 +4,21 @@ import * as ReactDOM from 'react-dom';
 
 import { App } from '../src/webapp';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const AppContainer = () => {
+  return (
+    <div style={appContainerStyle}>
+      <App />
+    </div>
+  );
+};
+
+const appContainerStyle: React.CSSProperties = {
+  height: '100vh',
+  left: 0,
+  overflow: 'hidden',
+  position: 'absolute',
+  top: 0,
+  width: '100vw',
+};
+
+ReactDOM.render(<AppContainer />, document.getElementById('root'));

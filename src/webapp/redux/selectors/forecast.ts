@@ -18,3 +18,11 @@ export function getEventWrapper(state: State, id: string) {
   }
   return eventWrapper;
 }
+
+export function getTrack(state: State, id: string) {
+  const track = state.forecast.timeline.tracks.find(t => t.id === id);
+  if (!track) {
+    throw new Error(`Track not found by id "${id}"`);
+  }
+  return track;
+}
