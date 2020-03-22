@@ -1,19 +1,24 @@
 import * as React from 'react';
 
 import { CalendarDate, CalendarDateJSON } from '../../../calendar-date';
+import { FormulaType } from '../../../timeline';
 import * as actions from '../../redux/actions';
 
 type Props = {
   endsOn: CalendarDateJSON | null;
   eventId: string;
+  formulaType: FormulaType;
   setEventCalendarDates: typeof actions.forecast.setEventCalendarDates;
+  setEventEndsOn: typeof actions.forecast.setEventEndsOn;
+  setEventStartsOn: typeof actions.forecast.setEventStartsOn;
   startsOn: CalendarDateJSON;
   timelineEndsOn: CalendarDateJSON;
   timelineStartsOn: CalendarDateJSON;
 };
 
 type State = {
-  clickedWith: {
+  mouseDownDetails: {
+    clickTarget: ClickTarget;
     endsOn: CalendarDateJSON | null;
     page: Point;
     startsOn: CalendarDateJSON;
@@ -25,23 +30,47 @@ type Point = {
   y: number;
 };
 
+enum ClickTarget {
+  Grab,
+  LeftHandle,
+  RightHandle,
+}
+
 export default class SpanComponent extends React.Component<Props, State> {
-  private moverRef: HTMLDivElement | null = null;
+  private grabRef: HTMLDivElement | null = null;
+  private leftHandleRef: HTMLDivElement | null = null;
+  private rightHandleRef: HTMLDivElement | null = null;
 
   state: State = {
-    clickedWith: null,
+    mouseDownDetails: null,
   };
 
   componentDidMount() {
-    this.moverRef!.addEventListener('mousedown', this.moverMouseDownHandler);
-    window.addEventListener('mousemove', this.moverMouseMoveHandler);
-    window.addEventListener('mouseup', this.moverMouseUpHandler);
+    this.grabRef!.addEventListener('mousedown', this.grabMouseDownHandler);
+    this.leftHandleRef!.addEventListener(
+      'mousedown',
+      this.leftHandleMouseDownHandler,
+    );
+    this.rightHandleRef!.addEventListener(
+      'mousedown',
+      this.rightHandleMouseDownHandler,
+    );
+    window.addEventListener('mousemove', this.mouseMoveHandler);
+    window.addEventListener('mouseup', this.mouseUpHandler);
   }
 
   componentWillUnmount() {
-    this.moverRef!.removeEventListener('mousedown', this.moverMouseDownHandler);
-    window.removeEventListener('mousemove', this.moverMouseMoveHandler);
-    window.removeEventListener('mouseup', this.moverMouseUpHandler);
+    this.grabRef!.removeEventListener('mousedown', this.grabMouseDownHandler);
+    this.leftHandleRef!.removeEventListener(
+      'mousedown',
+      this.leftHandleMouseDownHandler,
+    );
+    this.rightHandleRef!.removeEventListener(
+      'mousedown',
+      this.rightHandleMouseDownHandler,
+    );
+    window.removeEventListener('mousemove', this.mouseMoveHandler);
+    window.removeEventListener('mouseup', this.mouseUpHandler);
   }
 
   getTimelineStats() {
@@ -51,9 +80,22 @@ export default class SpanComponent extends React.Component<Props, State> {
     return { days, endsOn, startsOn };
   }
 
-  moverMouseDownHandler = (event: MouseEvent) => {
-    this.setState({
-      clickedWith: {
+  grabMouseDownHandler = (event: MouseEvent) => {
+    this.setState(this.toMouseDownState(event, ClickTarget.Grab));
+  };
+
+  leftHandleMouseDownHandler = (event: MouseEvent) => {
+    this.setState(this.toMouseDownState(event, ClickTarget.LeftHandle));
+  };
+
+  rightHandleMouseDownHandler = (event: MouseEvent) => {
+    this.setState(this.toMouseDownState(event, ClickTarget.RightHandle));
+  };
+
+  toMouseDownState = (event: MouseEvent, clickTarget: ClickTarget) => {
+    return {
+      mouseDownDetails: {
+        clickTarget,
         endsOn: this.props.endsOn,
         page: {
           x: event.pageX,
@@ -61,38 +103,54 @@ export default class SpanComponent extends React.Component<Props, State> {
         },
         startsOn: this.props.startsOn,
       },
-    });
+    };
   };
 
-  moverMouseMoveHandler = (event: MouseEvent) => {
-    if (!this.state.clickedWith) {
+  mouseMoveHandler = (event: MouseEvent) => {
+    if (!this.state.mouseDownDetails) {
       return;
     }
 
-    const { endsOn, page, startsOn } = this.state.clickedWith;
-    const spanContainer = this.moverRef!.parentElement!.parentElement!;
+    const { clickTarget, endsOn, page, startsOn } = this.state.mouseDownDetails;
+    const spanContainer = this.grabRef!.parentElement!.parentElement!;
     const timelineWidth = spanContainer.offsetWidth;
-    const { days: timelineDays } = this.getTimelineStats();
+    const {
+      days: timelineDays,
+      endsOn: timelineEndsOn,
+    } = this.getTimelineStats();
 
     const daysPerPixel = timelineDays / timelineWidth;
     const dx = event.pageX - page.x;
     const days = Math.round(dx * daysPerPixel);
 
-    const startsOnCalendarDate = CalendarDate.fromJSON(startsOn).addDays(days);
-    const endsOnCalendarDate = endsOn
-      ? CalendarDate.fromJSON(endsOn).addDays(days)
-      : null;
+    if (clickTarget === ClickTarget.Grab) {
+      const newStartsOn = CalendarDate.fromJSON(startsOn).addDays(days);
+      const newEndsOn = endsOn
+        ? CalendarDate.fromJSON(endsOn).addDays(days)
+        : null;
+      this.props.setEventCalendarDates(
+        this.props.eventId,
+        newStartsOn,
+        newEndsOn,
+      );
+    }
 
-    this.props.setEventCalendarDates(
-      this.props.eventId,
-      startsOnCalendarDate,
-      endsOnCalendarDate,
-    );
+    if (clickTarget === ClickTarget.LeftHandle) {
+      const newStartsOn = CalendarDate.fromJSON(startsOn).addDays(days);
+      this.props.setEventStartsOn(this.props.eventId, newStartsOn);
+    }
+
+    if (clickTarget === ClickTarget.RightHandle) {
+      const newEndsOn = endsOn
+        ? CalendarDate.fromJSON(endsOn).addDays(days)
+        : timelineEndsOn.addDays(days);
+      this.props.setEventEndsOn(this.props.eventId, newEndsOn);
+    }
   };
 
-  moverMouseUpHandler = (_: MouseEvent) => {
+  mouseUpHandler = (_: MouseEvent) => {
     this.setState({
-      clickedWith: null,
+      mouseDownDetails: null,
     });
   };
 
@@ -116,8 +174,19 @@ export default class SpanComponent extends React.Component<Props, State> {
 
     return (
       <div style={{ ...containerStyle, ...dynamicContainerStyle }}>
-        <div ref={ref => (this.moverRef = ref)} style={moverStyle}></div>
-        <div></div>
+        <div ref={ref => (this.grabRef = ref)} style={grabStyle}>
+          {this.props.formulaType}
+        </div>
+        <div style={bottomStyle}>
+          <div
+            ref={ref => (this.leftHandleRef = ref)}
+            style={leftHandleStyle}
+          />
+          <div
+            ref={ref => (this.rightHandleRef = ref)}
+            style={rightHandleStyle}
+          />
+        </div>
       </div>
     );
   }
@@ -133,10 +202,40 @@ const containerStyle: React.CSSProperties = {
   overflow: 'hidden',
   position: 'absolute',
   top: 0,
+  userSelect: 'none',
 };
 
-const moverStyle: React.CSSProperties = {
+const grabStyle: React.CSSProperties = {
   background: 'rgba(0, 0, 0, 0.1)',
   cursor: 'grab',
   height: '50%',
+  zIndex: 10,
+};
+
+const bottomStyle: React.CSSProperties = {
+  flexGrow: 1,
+  position: 'relative',
+  zIndex: 1,
+};
+
+const handleStyle: React.CSSProperties = {
+  background: 'rgba(0,0,0, 0.1)',
+  bottom: 0,
+  height: '100%',
+  position: 'absolute',
+  width: '5px',
+};
+
+const leftHandleStyle: React.CSSProperties = {
+  ...handleStyle,
+  cursor: 'w-resize',
+  left: 0,
+  zIndex: 4,
+};
+
+const rightHandleStyle: React.CSSProperties = {
+  ...handleStyle,
+  cursor: 'e-resize',
+  right: 0,
+  zIndex: 5,
 };

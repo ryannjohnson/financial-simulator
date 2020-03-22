@@ -54,6 +54,28 @@ export function setEventCalendarDates(
   };
 }
 
+export function setEventEndsOn(
+  eventId: string,
+  endsOn: CalendarDate | null,
+): types.forecast.SetEventEndsOn {
+  return {
+    endsOn: endsOn ? endsOn.toJSON() : null,
+    eventId,
+    type: types.forecast.SET_EVENT_ENDS_ON,
+  };
+}
+
+export function setEventStartsOn(
+  eventId: string,
+  startsOn: CalendarDate,
+): types.forecast.SetEventStartsOn {
+  return {
+    eventId,
+    startsOn: startsOn.toJSON(),
+    type: types.forecast.SET_EVENT_STARTS_ON,
+  };
+}
+
 export function setTrack(id: string, track: Track): types.forecast.SetTrack {
   return { id, track, type: types.forecast.SET_TRACK };
 }

@@ -11,6 +11,8 @@ export const REMOVE_EVENT = 'FORECAST_REMOVE_EVENT';
 export const RENDER_CHART = 'FORECAST_RENDER_CHART';
 export const SET_EVENT = 'FORECAST_SET_EVENT';
 export const SET_EVENT_CALENDAR_DATES = 'FORECAST_SET_EVENT_CALENDAR_DATES';
+export const SET_EVENT_ENDS_ON = 'FORECAST_SET_EVENT_ENDS_ON';
+export const SET_EVENT_STARTS_ON = 'FORECAST_SET_EVENT_STARTS_ON';
 export const SET_TRACK = 'FORECAST_SET_TRACK';
 
 export interface AddEvent {
@@ -56,6 +58,18 @@ export interface SetEventCalendarDates {
   type: typeof SET_EVENT_CALENDAR_DATES;
 }
 
+export interface SetEventEndsOn {
+  endsOn: CalendarDateJSON | null;
+  eventId: string;
+  type: typeof SET_EVENT_ENDS_ON;
+}
+
+export interface SetEventStartsOn {
+  eventId: string;
+  startsOn: CalendarDateJSON;
+  type: typeof SET_EVENT_STARTS_ON;
+}
+
 export interface SetTrack {
   track: Track;
   id: string;
@@ -71,4 +85,6 @@ export type Action =
   | RenderChart
   | SetEvent
   | SetEventCalendarDates
+  | SetEventEndsOn
+  | SetEventStartsOn
   | SetTrack;

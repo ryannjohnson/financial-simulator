@@ -179,6 +179,38 @@ export function setEventCalendarDates(
   };
 }
 
+export function setEventStartsOn(
+  state: State,
+  action: types.forecast.SetEventStartsOn,
+): State {
+  const { event: eventJSON, id } = getEventWrapperById(state, action.eventId);
+  const event = timeline.Event.fromJSON(eventJSON);
+  const startsOn = CalendarDate.fromJSON(action.startsOn);
+
+  // TODO: Implement logic that tries to snuggle it up close to the
+  // nearest obstacle.
+  return setEventCalendarDates(
+    state,
+    actions.forecast.setEventCalendarDates(id, startsOn, event.getEndsOn()),
+  );
+}
+
+export function setEventEndsOn(
+  state: State,
+  action: types.forecast.SetEventEndsOn,
+): State {
+  const { event: eventJSON, id } = getEventWrapperById(state, action.eventId);
+  const event = timeline.Event.fromJSON(eventJSON);
+  const endsOn = action.endsOn ? CalendarDate.fromJSON(action.endsOn) : null;
+
+  // TODO: Implement logic that tries to snuggle it up close to the
+  // nearest obstacle.
+  return setEventCalendarDates(
+    state,
+    actions.forecast.setEventCalendarDates(id, event.getStartsOn(), endsOn),
+  );
+}
+
 function getEventWrapperById(state: State, id: string): EventWrapper {
   const eventWrapper = state.eventWrappers.find(a => a.id === id);
   if (!eventWrapper) {

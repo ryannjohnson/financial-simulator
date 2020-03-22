@@ -28,7 +28,7 @@ export class Event {
     protected startsOn: CalendarDate,
     protected endsOn: CalendarDate | null,
   ) {
-    this.setDateRange(startsOn, endsOn);
+    this.setEndsAfterDays();
   }
 
   public *yieldBalanceValues(
@@ -58,12 +58,34 @@ export class Event {
     return [this.startsOn, this.endsOn];
   }
 
+  public getEndsOn() {
+    return this.endsOn;
+  }
+
+  public getStartsOn() {
+    return this.startsOn;
+  }
+
   public setDateRange(startsOn: CalendarDate, endsOn: CalendarDate | null) {
     this.startsOn = startsOn;
     this.endsOn = endsOn;
-    this.endsAfterDays = endsOn
-      ? startsOn.daysBefore(endsOn)
+    this.setEndsAfterDays();
+  }
+
+  public setEndsOn(endsOn: CalendarDate | null) {
+    this.endsOn = endsOn;
+    this.setEndsAfterDays();
+  }
+
+  protected setEndsAfterDays() {
+    this.endsAfterDays = this.endsOn
+      ? this.startsOn.daysBefore(this.endsOn)
       : Number.MAX_SAFE_INTEGER;
+  }
+
+  public setStartsOn(startsOn: CalendarDate) {
+    this.startsOn = startsOn;
+    this.setEndsAfterDays();
   }
 
   public toJSON(): EventJSON {

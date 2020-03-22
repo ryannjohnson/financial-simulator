@@ -32,6 +32,15 @@ const topContainerStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'row',
   flexGrow: 1,
+  overflow: 'hidden',
+  position: 'relative',
+};
+
+const eventsContainerStyle: React.CSSProperties = {
+  paddingRight: '30px',
+  position: 'relative',
+  overflow: 'auto',
+  zIndex: 5,
 };
 
 const chartContainerStyle: React.CSSProperties = {
@@ -40,14 +49,9 @@ const chartContainerStyle: React.CSSProperties = {
   zIndex: 4,
 };
 
-const eventsContainerStyle: React.CSSProperties = {
-  paddingRight: '30px',
-  position: 'relative',
-  zIndex: 5,
-};
-
 const timelineContainerStyle: React.CSSProperties = {
   height: '30%',
-  maxHeight: '250px',
+  maxHeight: '500px',
+  minHeight: '300px',
   overflow: 'auto',
 };

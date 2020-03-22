@@ -14,6 +14,7 @@ const mapState = (state: State, props: Props) => {
 
   return {
     endsOn: event.endsOn,
+    formulaType: event.formulaType,
     startsOn: event.startsOn,
     timelineEndsOn: state.forecast.timeline.endsOn,
     timelineStartsOn: state.forecast.timeline.startsOn,
@@ -22,6 +23,8 @@ const mapState = (state: State, props: Props) => {
 
 const mapDispatch = {
   setEventCalendarDates: actions.forecast.setEventCalendarDates,
+  setEventEndsOn: actions.forecast.setEventEndsOn,
+  setEventStartsOn: actions.forecast.setEventStartsOn,
 };
 
 export default connect(mapState, mapDispatch)(SpanComponent);
