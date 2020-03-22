@@ -37,7 +37,7 @@ export default function TimelineComponent({
         ))}
         <div style={spansContainerStyle}>
           {eventIds.map(eventId => (
-            <SpanContainer eventId={eventId} />
+            <SpanContainer eventId={eventId} key={eventId} />
           ))}
         </div>
       </div>
