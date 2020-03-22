@@ -80,6 +80,8 @@ export function removeEvent(
   state: State,
   action: types.forecast.RemoveEvent,
 ): State {
+  state = removeEventFromTracks(state, action.id);
+
   return {
     ...state,
     eventWrappers: state.eventWrappers.filter(({ id }) => id !== action.id),
