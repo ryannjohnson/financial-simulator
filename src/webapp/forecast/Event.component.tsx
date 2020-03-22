@@ -24,7 +24,6 @@ export default function EventComponent({
 }: Props) {
   return (
     <div>
-      <hr />
       <div>
         <button onClick={() => removeEvent(eventId)}>Remove</button>{' '}
         {formulaType}

@@ -47,13 +47,12 @@ export function importEvents(
   state: State,
   action: types.forecast.ImportEvents,
 ): State {
-  return {
-    ...state,
-    eventWrappers: action.events.map(event => ({
-      id: generateLocalUUID(),
-      event,
-    })),
-  };
+  for (const eventJSON of action.events) {
+    const event = timeline.Event.fromJSON(eventJSON);
+    state = addEvent(state, actions.forecast.addEvent(event));
+  }
+
+  return state;
 }
 
 export function removeEvent(
@@ -102,7 +101,7 @@ export function setEvent(state: State, action: types.forecast.SetEvent): State {
     }
 
     if (!hasBeenMovedToAnotherTrack && trackEventIds.has(eventWrapper.id)) {
-      const existingEvent = timeline.Event.fromJSON(action.event);
+      const existingEvent = timeline.Event.fromJSON(eventWrapper.event);
       if (areOverlapping(event, existingEvent)) {
         // There are many ways to set an event, so let this be flexible.
         state = removeEventFromTracks(state, action.id);
