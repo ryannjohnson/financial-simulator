@@ -199,6 +199,20 @@ export function setEventEndsOn(
   );
 }
 
+export function setTimelineCalendarDates(
+  state: State,
+  action: types.forecast.SetTimelineCalendarDates,
+): State {
+  return {
+    ...state,
+    timeline: {
+      ...state.timeline,
+      endsOn: action.endsOn,
+      startsOn: action.startsOn,
+    },
+  };
+}
+
 function getEventWrapperById(state: State, id: string): EventWrapper {
   const eventWrapper = state.eventWrappers.find(a => a.id === id);
   if (!eventWrapper) {

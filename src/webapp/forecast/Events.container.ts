@@ -8,6 +8,8 @@ import EventsComponent from './Events.component';
 const mapState = (state: State) => {
   return {
     selectedEventId: selectors.forecast.getSelectedEventId(state),
+    timelineEndsOn: selectors.forecast.getTimelineEndsOn(state),
+    timelineStartsOn: selectors.forecast.getTimelineStartsOn(state),
   };
 };
 
@@ -17,6 +19,7 @@ const mapDispatch = {
   importEvents: actions.forecast.importEvents,
   renderChart: actions.forecast.renderChart,
   setEvent: actions.forecast.setEvent,
+  setTimelineCalendarDates: actions.forecast.setTimelineCalendarDates,
 };
 
 export default connect(mapState, mapDispatch)(EventsComponent);

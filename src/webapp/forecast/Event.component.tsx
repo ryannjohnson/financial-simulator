@@ -5,6 +5,8 @@ import * as timeline from '../../timeline';
 import CalendarDateComponent from '../components/CalendarDate.component';
 import NullableCalendarDateComponent from '../components/NullableCalendarDate.component';
 import FormElementComponent from '../components/FormElement.component';
+import Row from './components/Row.component';
+import RowItem from './components/RowItem.component';
 import FormulaComponent from './formula/Formula.component';
 
 type Props = timeline.EventJSON & {
@@ -94,22 +96,3 @@ export default function EventComponent({
     </div>
   );
 }
-
-function Row({ children }: { children: React.ReactNode }) {
-  return <div style={rowStyle}>{children}</div>;
-}
-
-const rowStyle: React.CSSProperties = {
-  alignItems: 'stretch',
-  display: 'flex',
-  flexDirection: 'row',
-  margin: '0 -.25em',
-};
-
-function RowItem({ children }: { children: React.ReactNode }) {
-  return <div style={rowItemStyle}>{children}</div>;
-}
-
-const rowItemStyle: React.CSSProperties = {
-  margin: '0 .25em',
-};

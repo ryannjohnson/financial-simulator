@@ -36,6 +36,8 @@ export function reducer(
       return eventWrappers.setEventEndsOn(state, action);
     case types.forecast.SET_EVENT_STARTS_ON:
       return eventWrappers.setEventStartsOn(state, action);
+    case types.forecast.SET_TIMELINE_CALENDAR_DATES:
+      return eventWrappers.setTimelineCalendarDates(state, action);
     default:
       return state;
   }

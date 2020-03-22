@@ -76,6 +76,17 @@ export function setEventStartsOn(
   };
 }
 
+export function setTimelineCalendarDates(
+  startsOn: CalendarDate,
+  endsOn: CalendarDate,
+): types.forecast.SetTimelineCalendarDates {
+  return {
+    endsOn: endsOn.toJSON(),
+    startsOn: startsOn.toJSON(),
+    type: types.forecast.SET_TIMELINE_CALENDAR_DATES,
+  };
+}
+
 export function setTrack(id: string, track: Track): types.forecast.SetTrack {
   return { id, track, type: types.forecast.SET_TRACK };
 }

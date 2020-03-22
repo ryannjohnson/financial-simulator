@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Amount, Currency } from '../../amount';
-import { CalendarDate } from '../../calendar-date';
+import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
 import {
   ContinuousCompoundingInterestFormula,
   Event,
@@ -14,7 +14,11 @@ import {
   RecurringSumFormula,
 } from '../../timeline';
 import * as actions from '../redux/actions';
+import Row from './components/Row.component';
+import RowItem from './components/RowItem.component';
 import EventContainer from './Event.container';
+import CalendarDateComponent from '../components/CalendarDate.component';
+import FormElementComponent from '../components/FormElement.component';
 import RenderChartContainer from './RenderChart.container';
 
 const DEFAULT_FORMULA_TYPE = FormulaType.RecurringSum;
@@ -24,6 +28,9 @@ type Props = {
   exportEvents: typeof actions.forecast.exportEvents;
   importEvents: typeof actions.forecast.importEvents;
   selectedEventId: string | null;
+  setTimelineCalendarDates: typeof actions.forecast.setTimelineCalendarDates;
+  timelineEndsOn: CalendarDateJSON;
+  timelineStartsOn: CalendarDateJSON;
 };
 
 export default function EventsComponent({
@@ -31,6 +38,9 @@ export default function EventsComponent({
   exportEvents,
   importEvents,
   selectedEventId,
+  setTimelineCalendarDates,
+  timelineEndsOn,
+  timelineStartsOn,
 }: Props) {
   const [selectedFormulaType, selectFormulaType] = React.useState(
     DEFAULT_FORMULA_TYPE,
@@ -48,9 +58,40 @@ export default function EventsComponent({
 
   return (
     <div>
-      <input onChange={importEventsHandler} type="file" />
-      <button onClick={exportEvents}>Export</button>
       <RenderChartContainer />
+      <button onClick={exportEvents}>Export</button>
+      <input onChange={importEventsHandler} type="file" />
+
+      <hr />
+
+      <Row>
+        <RowItem>
+          <FormElementComponent title="Timeline starts">
+            <CalendarDateComponent
+              setValue={value => {
+                setTimelineCalendarDates(
+                  value,
+                  CalendarDate.fromJSON(timelineEndsOn),
+                );
+              }}
+              value={timelineStartsOn}
+            />
+          </FormElementComponent>
+        </RowItem>
+        <RowItem>
+          <FormElementComponent title="Timeline ends">
+            <CalendarDateComponent
+              setValue={value => {
+                setTimelineCalendarDates(
+                  CalendarDate.fromJSON(timelineStartsOn),
+                  value,
+                );
+              }}
+              value={timelineEndsOn}
+            />
+          </FormElementComponent>
+        </RowItem>
+      </Row>
 
       <hr />
 

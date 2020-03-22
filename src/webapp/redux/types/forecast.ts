@@ -13,6 +13,8 @@ export const SET_EVENT = 'FORECAST_SET_EVENT';
 export const SET_EVENT_CALENDAR_DATES = 'FORECAST_SET_EVENT_CALENDAR_DATES';
 export const SET_EVENT_ENDS_ON = 'FORECAST_SET_EVENT_ENDS_ON';
 export const SET_EVENT_STARTS_ON = 'FORECAST_SET_EVENT_STARTS_ON';
+export const SET_TIMELINE_CALENDAR_DATES =
+  'FORECAST_SET_TIMELINE_CALENDAR_DATES';
 export const SET_TRACK = 'FORECAST_SET_TRACK';
 
 export interface AddEvent {
@@ -74,6 +76,12 @@ export interface SetEventStartsOn {
   type: typeof SET_EVENT_STARTS_ON;
 }
 
+export interface SetTimelineCalendarDates {
+  endsOn: CalendarDateJSON;
+  startsOn: CalendarDateJSON;
+  type: typeof SET_TIMELINE_CALENDAR_DATES;
+}
+
 export interface SetTrack {
   track: Track;
   id: string;
@@ -92,4 +100,5 @@ export type Action =
   | SetEventCalendarDates
   | SetEventEndsOn
   | SetEventStartsOn
+  | SetTimelineCalendarDates
   | SetTrack;

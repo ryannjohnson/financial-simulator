@@ -23,6 +23,14 @@ export function getSelectedEventId(state: State) {
   return state.forecast.selectedEventId;
 }
 
+export function getTimelineEndsOn(state: State) {
+  return state.forecast.timeline.endsOn;
+}
+
+export function getTimelineStartsOn(state: State) {
+  return state.forecast.timeline.startsOn;
+}
+
 export function getTrack(state: State, id: string) {
   const track = state.forecast.timeline.tracks.find(t => t.id === id);
   if (!track) {
