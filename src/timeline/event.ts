@@ -1,9 +1,7 @@
 import { CalendarDate, CalendarDateJSON } from '../calendar-date';
-import { ContinuousCompoundingInterestFormula } from './formula/continuous-compounding-interest';
 import { Formula, FormulaType } from './formula/formula';
 import { LumpSumFormula } from './formula/lump-sum';
 import { MonthlySumFormula } from './formula/monthly-sum';
-import { PeriodicCompoundingInterestFormula } from './formula/periodic-compounding-interest';
 import { RecurringSumFormula } from './formula/recurring-sum';
 
 export type EventJSON = {
@@ -111,14 +109,10 @@ export class Event {
 
 function toFormula(formulaType: FormulaType, formula: any): Formula {
   switch (formulaType) {
-    case FormulaType.ContinuousCompoundingInterest:
-      return ContinuousCompoundingInterestFormula.fromJSON(formula);
     case FormulaType.LumpSum:
       return LumpSumFormula.fromJSON(formula);
     case FormulaType.MonthlySum:
       return MonthlySumFormula.fromJSON(formula);
-    case FormulaType.PeriodicCompoundingInterest:
-      return PeriodicCompoundingInterestFormula.fromJSON(formula);
     case FormulaType.RecurringSum:
       return RecurringSumFormula.fromJSON(formula);
     default:

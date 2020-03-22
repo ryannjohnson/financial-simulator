@@ -1,7 +1,7 @@
 import * as lightweightCharts from 'lightweight-charts';
 import * as React from 'react';
 
-import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
+import { CalendarDateJSON } from '../../calendar-date';
 
 type Props = {
   startsOn: CalendarDateJSON;
@@ -9,7 +9,7 @@ type Props = {
 };
 
 export type Value = {
-  time: CalendarDate;
+  time: { year: number; month: number; day: number };
   value: number;
 };
 

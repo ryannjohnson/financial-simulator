@@ -1,22 +1,70 @@
 import * as React from 'react';
 
-import * as timeline from '../../../timeline';
+import { LumpSumFormula, LumpSumFormulaJSON } from '../../../timeline';
 import AmountComponent from '../../components/Amount.component';
+import NumberComponent from '../../components/Number.component';
 import FormElementComponent from '../../components/FormElement.component';
 import { FormulaProps } from './props';
 
 export default function LumpSumComponent({
-  amount,
+  compoundingFrequencyPerYear,
+  nominalAnnualInterestRate,
+  principalSum,
   setFormula,
-}: FormulaProps & timeline.LumpSumFormulaJSON) {
+}: FormulaProps & LumpSumFormulaJSON) {
+  const isContinuous = compoundingFrequencyPerYear === null;
+
+  let compoundingFrequencyTitle = 'Compounding frequency per year';
+  if (isContinuous) {
+    compoundingFrequencyTitle += ' (continuous)';
+  }
+
   return (
     <div>
-      <FormElementComponent title="Amount">
+      <FormElementComponent title="Principal sum">
         <AmountComponent
-          {...amount}
-          setAmount={newAmount => {
-            setFormula(new timeline.LumpSumFormula(newAmount));
+          {...principalSum}
+          setAmount={newPrincipalSum => {
+            setFormula(
+              LumpSumFormula.fromJSON({
+                compoundingFrequencyPerYear,
+                nominalAnnualInterestRate,
+                principalSum: newPrincipalSum.toJSON(),
+              }),
+            );
           }}
+        />
+      </FormElementComponent>
+      <FormElementComponent title="Nominal annual interest rate">
+        <NumberComponent
+          setValue={newNominalAnnualInterestRate => {
+            setFormula(
+              LumpSumFormula.fromJSON({
+                compoundingFrequencyPerYear,
+                nominalAnnualInterestRate: newNominalAnnualInterestRate,
+                principalSum,
+              }),
+            );
+          }}
+          step={0.001}
+          value={nominalAnnualInterestRate}
+        />
+      </FormElementComponent>
+      <FormElementComponent title={compoundingFrequencyTitle}>
+        <NumberComponent
+          setValue={newCompoundingFrequencyPerYear => {
+            const value = newCompoundingFrequencyPerYear || null;
+            setFormula(
+              LumpSumFormula.fromJSON({
+                compoundingFrequencyPerYear: value,
+                nominalAnnualInterestRate,
+                principalSum,
+              }),
+            );
+          }}
+          min={0}
+          step={1}
+          value={compoundingFrequencyPerYear || 0}
         />
       </FormElementComponent>
     </div>

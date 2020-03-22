@@ -1,14 +1,16 @@
 import * as React from 'react';
 
 type Props = {
+  min?: number;
   setValue: (value: number) => void;
   step?: number;
   value: number;
 };
 
-export default function NumberComponent({ setValue, step, value }: Props) {
+export default function NumberComponent({ min, setValue, step, value }: Props) {
   return (
     <input
+      min={min}
       onChange={event => {
         let newValue: number;
 

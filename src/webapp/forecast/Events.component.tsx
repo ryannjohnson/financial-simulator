@@ -3,14 +3,12 @@ import * as React from 'react';
 import { Amount, Currency } from '../../amount';
 import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
 import {
-  ContinuousCompoundingInterestFormula,
   Event,
   EventJSON,
   Formula,
   FormulaType,
   LumpSumFormula,
   MonthlySumFormula,
-  PeriodicCompoundingInterestFormula,
   RecurringSumFormula,
 } from '../../timeline';
 import * as actions from '../redux/actions';
@@ -21,7 +19,7 @@ import CalendarDateComponent from '../components/CalendarDate.component';
 import FormElementComponent from '../components/FormElement.component';
 import RenderChartContainer from './RenderChart.container';
 
-const DEFAULT_FORMULA_TYPE = FormulaType.RecurringSum;
+const DEFAULT_FORMULA_TYPE = FormulaType.LumpSum;
 
 type Props = {
   addEvent: typeof actions.forecast.addEvent;
@@ -125,20 +123,13 @@ const formulaTypes = Object.values(FormulaType);
 function newEvent(formulaType: FormulaType) {
   const amount = Amount.zero(Currency.USD);
   const startsOn = CalendarDate.today();
-  let endsOn = startsOn.addMonths(1);
+  const endsOn = startsOn.addMonths(1);
   let formula: Formula;
 
-  if (formulaType === FormulaType.ContinuousCompoundingInterest) {
-    formula = new ContinuousCompoundingInterestFormula(amount, 0);
-    endsOn = startsOn.addYears(1);
-  } else if (formulaType === FormulaType.LumpSum) {
-    formula = new LumpSumFormula(amount);
-    endsOn = startsOn;
+  if (formulaType === FormulaType.LumpSum) {
+    formula = new LumpSumFormula(amount, 0, null);
   } else if (formulaType === FormulaType.MonthlySum) {
     formula = new MonthlySumFormula(amount);
-  } else if (formulaType === FormulaType.PeriodicCompoundingInterest) {
-    formula = new PeriodicCompoundingInterestFormula(amount, 0, 1);
-    endsOn = startsOn.addYears(1);
   } else if (formulaType === FormulaType.RecurringSum) {
     formula = new RecurringSumFormula(amount, 7);
   } else {
