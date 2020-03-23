@@ -6,6 +6,9 @@ import * as colors from '../../colors';
 import * as actions from '../../redux/actions';
 import { TRACK_PIXEL_HEIGHT } from './constants';
 
+// Number of pixels to try to stick handles to.
+const STICKY_PIXELS = 10;
+
 type Props = {
   endsOn: CalendarDateJSON | null;
   eventId: string;
@@ -25,6 +28,7 @@ type Props = {
 type State = {
   mouseDownDetails: {
     clickTarget: ClickTarget;
+    containerOffsetLeft: number;
     endsOn: CalendarDateJSON | null;
     page: Point;
     startsOn: CalendarDateJSON;
@@ -124,6 +128,7 @@ export default class SpanComponent extends React.Component<Props, State> {
     return {
       mouseDownDetails: {
         clickTarget,
+        containerOffsetLeft: this.containerRef!.offsetLeft,
         endsOn: this.props.endsOn,
         page: {
           x: event.pageX,
@@ -139,16 +144,29 @@ export default class SpanComponent extends React.Component<Props, State> {
       return;
     }
 
-    const { clickTarget, endsOn, page, startsOn } = this.state.mouseDownDetails;
-    const spanContainer = this.grabRef!.parentElement!.parentElement!;
-    const timelineWidth = spanContainer.offsetWidth;
+    const {
+      clickTarget,
+      containerOffsetLeft,
+      endsOn,
+      page,
+      startsOn,
+    } = this.state.mouseDownDetails;
+    const timelineElement = this.containerRef!.parentElement!;
+    const timelineWidth = timelineElement.offsetWidth;
     const {
       days: timelineDays,
       endsOn: timelineEndsOn,
     } = this.getTimelineStats();
 
     const daysPerPixel = timelineDays / timelineWidth;
-    const dx = event.pageX - page.x;
+    let dx = event.pageX - page.x;
+
+    // Make it stick to the left if at the beginning of the timeline.
+    const resultingX = containerOffsetLeft + dx;
+    if (resultingX < 0 && resultingX > -STICKY_PIXELS) {
+      dx = -containerOffsetLeft;
+    }
+
     const days = Math.round(dx * daysPerPixel);
 
     if (clickTarget === ClickTarget.Grab) {
