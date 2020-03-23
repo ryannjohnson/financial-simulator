@@ -163,7 +163,7 @@ export default class SpanComponent extends React.Component<Props, State> {
 
     // Make it stick to the left if at the beginning of the timeline.
     const resultingX = containerOffsetLeft + dx;
-    if (resultingX < 0 && resultingX > -STICKY_PIXELS) {
+    if (resultingX < STICKY_PIXELS / 2 && resultingX > -STICKY_PIXELS / 2) {
       dx = -containerOffsetLeft;
     }
 
