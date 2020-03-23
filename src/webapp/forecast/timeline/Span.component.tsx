@@ -2,12 +2,14 @@ import * as React from 'react';
 
 import { CalendarDate, CalendarDateJSON } from '../../../calendar-date';
 import { FormulaType } from '../../../timeline';
+import * as colors from '../../colors';
 import * as actions from '../../redux/actions';
 import { TRACK_PIXEL_HEIGHT } from './constants';
 
 type Props = {
   endsOn: CalendarDateJSON | null;
   eventId: string;
+  eventName: string;
   formulaType: FormulaType;
   isSelected: boolean;
   selectEvent: typeof actions.forecast.selectEvent;
@@ -91,7 +93,7 @@ export default class SpanComponent extends React.Component<Props, State> {
     // around it.
     //
     // TODO: Is there a better way to do this?
-    const timelineElement = this.containerRef!.parentElement!.parentElement!;
+    const timelineElement = this.containerRef!.parentElement!;
     return timelineElement.getBoundingClientRect();
   }
 
@@ -217,7 +219,7 @@ export default class SpanComponent extends React.Component<Props, State> {
           ref={ref => (this.grabRef = ref)}
           style={{ ...grabStyle, ...dynamicSelectedStyle }}
         >
-          {this.props.formulaType}
+          {this.props.eventName || `[${this.props.formulaType}]`}
         </div>
         <div style={bottomStyle}>
           <div
@@ -253,8 +255,15 @@ const containerStyle: React.CSSProperties = {
 
 const grabStyle: React.CSSProperties = {
   ...unselectedStyle,
+  alignItems: 'center',
+  boxSizing: 'border-box',
+  color: colors.WHITE,
   cursor: 'grab',
+  display: 'flex',
+  flexDirection: 'row',
+  fontSize: '11px',
   height: '50%',
+  paddingLeft: '5px',
   zIndex: 10,
 };
 

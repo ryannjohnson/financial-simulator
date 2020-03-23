@@ -1,4 +1,5 @@
 import { CalendarDate, CalendarDateJSON } from '../calendar-date';
+import { stringFromJSON } from '../utils';
 import { Formula, FormulaType } from './formula/formula';
 import { LumpSumFormula } from './formula/lump-sum';
 import { MonthlySumFormula } from './formula/monthly-sum';
@@ -8,6 +9,7 @@ export type EventJSON = {
   endsOn: CalendarDateJSON | null;
   formula: any;
   formulaType: FormulaType;
+  name: string;
   startsOn: CalendarDateJSON;
 };
 
@@ -16,7 +18,8 @@ export class Event {
     const formula = toFormula(value.formulaType, value.formula);
     const startsOn = CalendarDate.fromJSON(value.startsOn);
     const endsOn = value.endsOn ? CalendarDate.fromJSON(value.endsOn) : null;
-    return new Event(formula, startsOn, endsOn);
+    const name = stringFromJSON(value.name);
+    return new Event(formula, startsOn, endsOn, name);
   }
 
   protected endsAfterDays = 0;
@@ -25,6 +28,7 @@ export class Event {
     public formula: Formula,
     protected startsOn: CalendarDate,
     protected endsOn: CalendarDate | null,
+    protected name: string,
   ) {
     this.setEndsAfterDays();
   }
@@ -59,6 +63,10 @@ export class Event {
     return this.endsOn;
   }
 
+  public getName() {
+    return this.name;
+  }
+
   public getStartsOn() {
     return this.startsOn;
   }
@@ -90,6 +98,7 @@ export class Event {
       endsOn: this.endsOn ? this.endsOn.toJSON() : null,
       formula: this.formula.toJSON(),
       formulaType: this.formula.getType(),
+      name: this.name,
       startsOn: this.startsOn.toJSON(),
     };
   }

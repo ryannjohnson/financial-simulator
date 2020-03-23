@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import * as colors from '../../colors';
 import * as actions from '../../redux/actions';
 import { TRACK_PIXEL_HEIGHT } from './constants';
 import SpanContainer from './Span.container';
@@ -48,11 +49,14 @@ export default function TimelineComponent({
 const containerStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'row',
+  minHeight: '100%',
   overflowX: 'hidden',
   overflowY: 'auto',
 };
 
 const headersContainerStyle: React.CSSProperties = {
+  background: colors.whiteOverlay(5),
+  color: colors.WHITE,
   width: '275px',
 };
 
@@ -65,6 +69,8 @@ const tracksContainerStyle: React.CSSProperties = {
 
 const trackContainerStyle: React.CSSProperties = {
   alignItems: 'center',
+  borderBottom: `solid ${colors.whiteOverlay(2)} 0.5px`,
+  boxSizing: 'border-box',
   display: 'flex',
   flexDirection: 'row',
   height: `${TRACK_PIXEL_HEIGHT}px`,

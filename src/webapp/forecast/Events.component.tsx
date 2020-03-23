@@ -136,5 +136,5 @@ function newEvent(formulaType: FormulaType) {
     throw new Error(`FormulaType "${formulaType}" has not been implemented`);
   }
 
-  return new Event(formula, startsOn, endsOn);
+  return new Event(formula, startsOn, endsOn, '');
 }

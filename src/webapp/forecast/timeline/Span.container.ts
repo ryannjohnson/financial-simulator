@@ -21,6 +21,7 @@ const mapState = (state: State, props: Props) => {
   }
 
   return {
+    eventName: event.name,
     endsOn: event.endsOn,
     formulaType: event.formulaType,
     isSelected: props.eventId === selectedEventId,

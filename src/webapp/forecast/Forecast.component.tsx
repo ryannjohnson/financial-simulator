@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import * as colors from '../colors';
 import EventsContainer from './Events.container';
 import ForecastChartContainer from './ForecastChart.container';
 import TimelineContainer from './timeline/Timeline.container';
@@ -50,6 +51,7 @@ const chartContainerStyle: React.CSSProperties = {
 };
 
 const timelineContainerStyle: React.CSSProperties = {
+  background: colors.DARK_GRAY,
   height: '30%',
   maxHeight: '500px',
   minHeight: '300px',

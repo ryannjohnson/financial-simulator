@@ -3,6 +3,7 @@ import * as React from 'react';
 import { CalendarDate } from '../../calendar-date';
 import * as timeline from '../../timeline';
 import CalendarDateComponent from '../components/CalendarDate.component';
+import StringComponent from '../components/String.component';
 import NullableCalendarDateComponent from '../components/NullableCalendarDate.component';
 import FormElementComponent from '../components/FormElement.component';
 import Row from './components/Row.component';
@@ -20,6 +21,7 @@ export default function EventComponent({
   eventId,
   formula,
   formulaType,
+  name,
   removeEvent,
   setEvent,
   startsOn,
@@ -30,6 +32,27 @@ export default function EventComponent({
         <button onClick={() => removeEvent(eventId)}>Remove</button>{' '}
         {formulaType}
       </div>
+      <Row>
+        <RowItem>
+          <FormElementComponent title="Name">
+            <StringComponent
+              setValue={value => {
+                setEvent(
+                  eventId,
+                  timeline.Event.fromJSON({
+                    endsOn,
+                    formula,
+                    formulaType,
+                    name: value,
+                    startsOn,
+                  }),
+                );
+              }}
+              value={name}
+            />
+          </FormElementComponent>
+        </RowItem>
+      </Row>
       <Row>
         <RowItem>
           <FormElementComponent title="Starts">
@@ -46,6 +69,7 @@ export default function EventComponent({
                     endsOn,
                     formula,
                     formulaType,
+                    name,
                     startsOn: value.toJSON(),
                   }),
                 );
@@ -69,6 +93,7 @@ export default function EventComponent({
                     endsOn: value ? value.toJSON() : null,
                     formula,
                     formulaType,
+                    name,
                     startsOn,
                   }),
                 );
@@ -88,6 +113,7 @@ export default function EventComponent({
               endsOn,
               formula: value.toJSON(),
               formulaType,
+              name,
               startsOn,
             }),
           );
