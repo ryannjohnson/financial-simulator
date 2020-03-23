@@ -149,32 +149,36 @@ export default class SpanComponent extends React.Component<Props, State> {
       containerOffsetLeft,
       endsOn,
       page,
-      startsOn,
+      startsOn: startsOnJSON,
     } = this.state.mouseDownDetails;
+    const startsOn = CalendarDate.fromJSON(startsOnJSON);
     const timelineElement = this.containerRef!.parentElement!;
     const timelineWidth = timelineElement.offsetWidth;
     const {
       days: timelineDays,
       endsOn: timelineEndsOn,
+      startsOn: timelineStartsOn,
     } = this.getTimelineStats();
 
     const daysPerPixel = timelineDays / timelineWidth;
-    let dx = event.pageX - page.x;
+    const dx = event.pageX - page.x;
+    let days = Math.round(dx * daysPerPixel);
 
-    // Make it stick to the left if at the beginning of the timeline.
-    const resultingX = containerOffsetLeft + dx;
-    if (resultingX < STICKY_PIXELS / 2 && resultingX > -STICKY_PIXELS / 2) {
-      dx = -containerOffsetLeft;
-    }
-
-    const days = Math.round(dx * daysPerPixel);
+    const tryToStickToTimelineStartsOn = () => {
+      const resultingX = containerOffsetLeft + dx;
+      if (resultingX < STICKY_PIXELS / 2 && resultingX > -STICKY_PIXELS / 2) {
+        days = timelineStartsOn.daysAfter(startsOn);
+      }
+    };
 
     if (clickTarget === ClickTarget.Grab) {
+      tryToStickToTimelineStartsOn();
+
       const timelineBox = this.getTimelineBox();
       const offsetY = event.pageY - timelineBox.y;
       const trackIndex = Math.floor(offsetY / TRACK_PIXEL_HEIGHT);
 
-      const newStartsOn = CalendarDate.fromJSON(startsOn).addDays(days);
+      const newStartsOn = startsOn.addDays(days);
       const newEndsOn = endsOn
         ? CalendarDate.fromJSON(endsOn).addDays(days)
         : null;
@@ -187,7 +191,9 @@ export default class SpanComponent extends React.Component<Props, State> {
     }
 
     if (clickTarget === ClickTarget.LeftHandle) {
-      const newStartsOn = CalendarDate.fromJSON(startsOn).addDays(days);
+      tryToStickToTimelineStartsOn();
+
+      const newStartsOn = startsOn.addDays(days);
       this.props.setEventStartsOn(this.props.eventId, newStartsOn);
     }
 
