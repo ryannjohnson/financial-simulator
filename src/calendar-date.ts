@@ -41,17 +41,16 @@ export class CalendarDate {
    * Requires a "YYYY-MM-DD" format.
    */
   public static fromString(value: string): CalendarDate {
-    const match = value.match(stringPattern);
-    if (!match) {
+    if (value.length !== 10 || value[4] !== '-' || value[7] !== '-') {
       throw new Error(
         `CalendarDate fromString value "${value}" is not a valid YYYY-MM-DD format`,
       );
     }
 
     return new CalendarDate(
-      parseInt(match[1], 10),
-      stringToMonth(match[2]),
-      parseInt(match[3], 10),
+      parseInt(value.slice(0, 4), 10),
+      stringToMonth(value.slice(5, 7)),
+      parseInt(value.slice(8, 10), 10),
     );
   }
 
@@ -155,8 +154,6 @@ export class CalendarDate {
 
 // TODO: Fix for leap years.
 const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
-
-const stringPattern = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 const monthValues = new Set(Object.values(Month));
 
