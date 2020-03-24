@@ -4,13 +4,13 @@ import * as timeline from '../../../timeline';
 import AmountComponent from '../../components/Amount.component';
 import FormElementComponent from '../../components/FormElement.component';
 import NumberComponent from '../../components/Number.component';
-import { FormulaProps } from './props';
+import { EventFormulaProps } from './props';
 
 export default function RecurringSumComponent({
   amount,
   everyXDays,
   setFormula,
-}: FormulaProps & timeline.RecurringSumFormulaJSON) {
+}: EventFormulaProps & timeline.RecurringSumFormulaJSON) {
   return (
     <div>
       <FormElementComponent title="Amount">

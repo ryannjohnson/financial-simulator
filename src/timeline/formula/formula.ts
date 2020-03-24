@@ -1,15 +1,15 @@
 import { Currency } from '../../amount';
 import { CalendarDate } from '../../calendar-date';
 
-export enum FormulaType {
+export enum EventFormulaType {
   LumpSum = 'LUMP_SUM',
   MonthlySum = 'MONTHLY_SUM',
   RecurringSum = 'RECURRING_SUM',
 }
 
-export interface Formula {
+export interface EventFormula {
   getCurrency(): Currency;
-  getType(): FormulaType;
+  getType(): EventFormulaType;
   toJSON(): any;
 
   /**

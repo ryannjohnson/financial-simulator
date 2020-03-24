@@ -5,8 +5,8 @@ import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
 import {
   Event,
   EventJSON,
-  Formula,
-  FormulaType,
+  EventFormula,
+  EventFormulaType,
   LumpSumFormula,
   MonthlySumFormula,
   RecurringSumFormula,
@@ -19,7 +19,7 @@ import CalendarDateComponent from '../components/CalendarDate.component';
 import FormElementComponent from '../components/FormElement.component';
 import RenderChartContainer from './RenderChart.container';
 
-const DEFAULT_FORMULA_TYPE = FormulaType.LumpSum;
+const DEFAULT_FORMULA_TYPE = EventFormulaType.LumpSum;
 
 type Props = {
   addEvent: typeof actions.forecast.addEvent;
@@ -118,19 +118,19 @@ export default function EventsComponent({
   );
 }
 
-const formulaTypes = Object.values(FormulaType);
+const formulaTypes = Object.values(EventFormulaType);
 
-function newEvent(formulaType: FormulaType) {
+function newEvent(formulaType: EventFormulaType) {
   const amount = Amount.zero(Currency.USD);
   const startsOn = CalendarDate.today();
   const endsOn = startsOn.addMonths(1);
-  let formula: Formula;
+  let formula: EventFormula;
 
-  if (formulaType === FormulaType.LumpSum) {
+  if (formulaType === EventFormulaType.LumpSum) {
     formula = new LumpSumFormula(amount, 0, null);
-  } else if (formulaType === FormulaType.MonthlySum) {
+  } else if (formulaType === EventFormulaType.MonthlySum) {
     formula = new MonthlySumFormula(amount);
-  } else if (formulaType === FormulaType.RecurringSum) {
+  } else if (formulaType === EventFormulaType.RecurringSum) {
     formula = new RecurringSumFormula(amount, 7);
   } else {
     throw new Error(`FormulaType "${formulaType}" has not been implemented`);

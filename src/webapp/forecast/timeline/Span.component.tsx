@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { CalendarDate, CalendarDateJSON } from '../../../calendar-date';
-import { FormulaType } from '../../../timeline';
 import * as colors from '../../colors';
 import * as actions from '../../redux/actions';
 import { TRACK_PIXEL_HEIGHT } from './constants';
@@ -12,9 +11,8 @@ const STICKY_PIXELS = 10;
 type Props = {
   endsOn: CalendarDateJSON | null;
   eventId: string;
-  eventName: string;
-  formulaType: FormulaType;
   isSelected: boolean;
+  label: string;
   selectEvent: typeof actions.forecast.selectEvent;
   setEventCalendarDates: typeof actions.forecast.setEventCalendarDates;
   setEventEndsOn: typeof actions.forecast.setEventEndsOn;
@@ -243,7 +241,7 @@ export default class SpanComponent extends React.Component<Props, State> {
           ref={ref => (this.grabRef = ref)}
           style={{ ...grabStyle, ...dynamicSelectedStyle }}
         >
-          {this.props.eventName || `[${this.props.formulaType}]`}
+          {this.props.label}
         </div>
         <div style={bottomStyle}>
           <div

@@ -1,7 +1,7 @@
 import { Amount, AmountJSON, Currency } from '../../amount';
 import { DAYS_PER_YEAR } from '../../calendar-date';
 import { numberFromJSON } from '../../utils';
-import { Formula, FormulaType } from './formula';
+import { EventFormula, EventFormulaType } from './formula';
 
 export type LumpSumFormulaJSON = {
   compoundingFrequencyPerYear: number | null;
@@ -12,7 +12,7 @@ export type LumpSumFormulaJSON = {
 /**
  * Cash received and existing over time.
  */
-export class LumpSumFormula implements Formula {
+export class LumpSumFormula implements EventFormula {
   public static fromJSON(value: LumpSumFormulaJSON): LumpSumFormula {
     const principalSum = Amount.fromJSON(value.principalSum);
     const nominalAnnualInterestRate = numberFromJSON(
@@ -49,8 +49,8 @@ export class LumpSumFormula implements Formula {
     return this.principalSum.currency;
   }
 
-  public getType(): FormulaType {
-    return FormulaType.LumpSum;
+  public getType(): EventFormulaType {
+    return EventFormulaType.LumpSum;
   }
 
   public toJSON(): LumpSumFormulaJSON {

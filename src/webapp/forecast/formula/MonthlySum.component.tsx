@@ -3,12 +3,12 @@ import * as React from 'react';
 import * as timeline from '../../../timeline';
 import AmountComponent from '../../components/Amount.component';
 import FormElementComponent from '../../components/FormElement.component';
-import { FormulaProps } from './props';
+import { EventFormulaProps } from './props';
 
 export default function MonthlySumComponent({
   amount,
   setFormula,
-}: FormulaProps & timeline.MonthlySumFormulaJSON) {
+}: EventFormulaProps & timeline.MonthlySumFormulaJSON) {
   return (
     <div>
       <FormElementComponent title="Amount">

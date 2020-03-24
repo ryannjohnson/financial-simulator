@@ -1,6 +1,6 @@
 import { Amount, AmountJSON, Currency } from '../../amount';
 import { CalendarDate } from '../../calendar-date';
-import { Formula, FormulaType } from './formula';
+import { EventFormula, EventFormulaType } from './formula';
 
 export type MonthlySumFormulaJSON = {
   amount: AmountJSON;
@@ -9,7 +9,7 @@ export type MonthlySumFormulaJSON = {
 /**
  * Cash received in regular intervals.
  */
-export class MonthlySumFormula implements Formula {
+export class MonthlySumFormula implements EventFormula {
   public static fromJSON(value: MonthlySumFormulaJSON): MonthlySumFormula {
     const amount = Amount.fromJSON(value.amount);
     return new MonthlySumFormula(amount);
@@ -21,8 +21,8 @@ export class MonthlySumFormula implements Formula {
     return this.amount.currency;
   }
 
-  public getType(): FormulaType {
-    return FormulaType.MonthlySum;
+  public getType(): EventFormulaType {
+    return EventFormulaType.MonthlySum;
   }
 
   public toJSON(): MonthlySumFormulaJSON {

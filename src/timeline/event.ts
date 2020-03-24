@@ -1,6 +1,6 @@
 import { CalendarDate, CalendarDateJSON } from '../calendar-date';
 import { stringFromJSON } from '../utils';
-import { Formula, FormulaType } from './formula/formula';
+import { EventFormula, EventFormulaType } from './formula/formula';
 import { LumpSumFormula } from './formula/lump-sum';
 import { MonthlySumFormula } from './formula/monthly-sum';
 import { RecurringSumFormula } from './formula/recurring-sum';
@@ -8,7 +8,7 @@ import { RecurringSumFormula } from './formula/recurring-sum';
 export type EventJSON = {
   endsOn: CalendarDateJSON | null;
   formula: any;
-  formulaType: FormulaType;
+  formulaType: EventFormulaType;
   name: string;
   startsOn: CalendarDateJSON;
 };
@@ -25,7 +25,7 @@ export class Event {
   protected endsAfterDays = 0;
 
   constructor(
-    public formula: Formula,
+    public formula: EventFormula,
     protected startsOn: CalendarDate,
     protected endsOn: CalendarDate | null,
     protected name: string,
@@ -116,13 +116,13 @@ export class Event {
   }
 }
 
-function toFormula(formulaType: FormulaType, formula: any): Formula {
+function toFormula(formulaType: EventFormulaType, formula: any): EventFormula {
   switch (formulaType) {
-    case FormulaType.LumpSum:
+    case EventFormulaType.LumpSum:
       return LumpSumFormula.fromJSON(formula);
-    case FormulaType.MonthlySum:
+    case EventFormulaType.MonthlySum:
       return MonthlySumFormula.fromJSON(formula);
-    case FormulaType.RecurringSum:
+    case EventFormulaType.RecurringSum:
       return RecurringSumFormula.fromJSON(formula);
     default:
       throw new Error(

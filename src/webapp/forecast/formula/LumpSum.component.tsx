@@ -4,14 +4,14 @@ import { LumpSumFormula, LumpSumFormulaJSON } from '../../../timeline';
 import AmountComponent from '../../components/Amount.component';
 import NumberComponent from '../../components/Number.component';
 import FormElementComponent from '../../components/FormElement.component';
-import { FormulaProps } from './props';
+import { EventFormulaProps } from './props';
 
 export default function LumpSumComponent({
   compoundingFrequencyPerYear,
   nominalAnnualInterestRate,
   principalSum,
   setFormula,
-}: FormulaProps & LumpSumFormulaJSON) {
+}: EventFormulaProps & LumpSumFormulaJSON) {
   const isContinuous = compoundingFrequencyPerYear === null;
 
   let compoundingFrequencyTitle = 'Compounding frequency per year';

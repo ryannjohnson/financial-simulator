@@ -1,15 +1,15 @@
 import * as React from 'react';
 
-import * as timeline from '../../../timeline';
+import { EventFormulaType } from '../../../timeline';
 import LumpSumComponent from './LumpSum.component';
 import MonthlySumComponent from './MonthlySum.component';
 import RecurringSumComponent from './RecurringSum.component';
-import { SetFormulaFn } from './props';
+import { SetEventFormulaFn } from './props';
 
 type Props = {
   formula: any;
-  formulaType: timeline.FormulaType;
-  setFormula: SetFormulaFn;
+  formulaType: EventFormulaType;
+  setFormula: SetEventFormulaFn;
 };
 
 export default function FormulaComponent({
@@ -23,11 +23,11 @@ export default function FormulaComponent({
   };
 
   switch (formulaType) {
-    case timeline.FormulaType.LumpSum:
+    case EventFormulaType.LumpSum:
       return <LumpSumComponent {...props} />;
-    case timeline.FormulaType.MonthlySum:
+    case EventFormulaType.MonthlySum:
       return <MonthlySumComponent {...props} />;
-    case timeline.FormulaType.RecurringSum:
+    case EventFormulaType.RecurringSum:
       return <RecurringSumComponent {...props} />;
     default:
       return <div>Unmapped formulaType {formulaType}</div>;

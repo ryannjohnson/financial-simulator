@@ -1,6 +1,6 @@
 import { Amount, AmountJSON, Currency } from '../../amount';
 import { integerFromJSON } from '../../utils';
-import { Formula, FormulaType } from './formula';
+import { EventFormula, EventFormulaType } from './formula';
 
 export type RecurringSumFormulaJSON = {
   amount: AmountJSON;
@@ -10,7 +10,7 @@ export type RecurringSumFormulaJSON = {
 /**
  * Cash received in regular intervals.
  */
-export class RecurringSumFormula implements Formula {
+export class RecurringSumFormula implements EventFormula {
   public static fromJSON(value: RecurringSumFormulaJSON): RecurringSumFormula {
     const amount = Amount.fromJSON(value.amount);
     const everyXDays = integerFromJSON(value.everyXDays);
@@ -26,8 +26,8 @@ export class RecurringSumFormula implements Formula {
     return this.amount.currency;
   }
 
-  public getType(): FormulaType {
-    return FormulaType.RecurringSum;
+  public getType(): EventFormulaType {
+    return EventFormulaType.RecurringSum;
   }
 
   public toJSON(): RecurringSumFormulaJSON {

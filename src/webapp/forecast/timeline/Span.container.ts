@@ -21,10 +21,9 @@ const mapState = (state: State, props: Props) => {
   }
 
   return {
-    eventName: event.name,
     endsOn: event.endsOn,
-    formulaType: event.formulaType,
     isSelected: props.eventId === selectedEventId,
+    label: event.name || `[${event.formulaType}]`,
     startsOn: event.startsOn,
     timelineEndsOn: state.forecast.timeline.endsOn,
     timelineStartsOn: state.forecast.timeline.startsOn,
