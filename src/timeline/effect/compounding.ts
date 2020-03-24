@@ -71,7 +71,7 @@ export class CompoundingEffectFormula implements EffectFormula {
   public yieldsValueOnDay(
     balanceValue: number,
     day: number,
-    startsOn: CalendarDate,
+    _: CalendarDate,
   ): number {
     if (this.compoundingFrequencyPerYear === null) {
       return balanceValue * this.increment;

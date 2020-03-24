@@ -1,9 +1,9 @@
 import { CalendarDate, CalendarDateJSON } from '../calendar-date';
 import { stringFromJSON } from '../utils';
-import { EventFormula, EventFormulaType } from './formula/formula';
-import { LumpSumFormula } from './formula/lump-sum';
-import { MonthlySumFormula } from './formula/monthly-sum';
-import { RecurringSumFormula } from './formula/recurring-sum';
+import { EventFormula, EventFormulaType } from './event/formula';
+import { LumpSumFormula } from './event/lump-sum';
+import { MonthlySumFormula } from './event/monthly-sum';
+import { RecurringSumFormula } from './event/recurring-sum';
 
 export type EventJSON = {
   endsOn: CalendarDateJSON | null;
