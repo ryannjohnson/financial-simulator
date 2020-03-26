@@ -3,7 +3,8 @@ import * as React from 'react';
 import * as colors from '../colors';
 import EventsContainer from './Events.container';
 import ForecastChartContainer from './ForecastChart.container';
-import TimelineContainer from './timeline/Timeline.container';
+import RenderChartContainer from './RenderChart.container';
+import TimelineFrameContainer from './timeline/TimelineFrame.container';
 
 export default function ForecastComponent() {
   return (
@@ -14,10 +15,13 @@ export default function ForecastComponent() {
         </div>
         <div style={chartContainerStyle}>
           <ForecastChartContainer />
+          <div style={renderChartContainerStyle}>
+            <RenderChartContainer />
+          </div>
         </div>
       </div>
-      <div style={timelineContainerStyle}>
-        <TimelineContainer />
+      <div style={timelineFrameContainerStyle}>
+        <TimelineFrameContainer />
       </div>
     </div>
   );
@@ -50,7 +54,14 @@ const chartContainerStyle: React.CSSProperties = {
   zIndex: 4,
 };
 
-const timelineContainerStyle: React.CSSProperties = {
+const renderChartContainerStyle: React.CSSProperties = {
+  left: 0,
+  position: 'absolute',
+  top: 0,
+  zIndex: 12,
+};
+
+const timelineFrameContainerStyle: React.CSSProperties = {
   background: colors.DARK_GRAY,
   height: '30%',
   maxHeight: '500px',

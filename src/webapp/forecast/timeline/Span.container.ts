@@ -2,29 +2,39 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../redux/actions';
 import { State } from '../../redux/reducer';
+import { TrackItem } from '../../redux/reducer/forecast/props';
 import * as selectors from '../../redux/selectors';
 import SpanComponent from './Span.component';
 
-type Props = {
-  eventId: string;
-};
+type Props = TrackItem & {};
 
 const mapState = (state: State, props: Props) => {
-  const { event } = selectors.forecast.getEventWrapper(state, props.eventId);
-  const selectedEventId = selectors.forecast.getSelectedEventId(state);
-  // TODO: Make this more efficient if performance suffers.
-  const trackIndex = selectors.forecast
-    .getTracks(state)
-    .findIndex(track => track.eventIds.includes(props.eventId));
-  if (trackIndex === -1) {
-    throw new Error(`Event id "${props.eventId}" doesn't have a track`);
+  const accountWrapper = selectors.forecast.getSelectedAccountWrapper(state);
+
+  if (!accountWrapper) {
+    throw new Error('Span cannot exist without an account');
   }
 
+  const {
+    endsOn,
+    name,
+    startsOn,
+    trackIndex,
+  } = selectors.forecast.getTrackItemDetails(state, props);
+
+  const selectedTrackItem = selectors.forecast.getSelectedTrackItem(state);
+
+  const isSelected =
+    selectedTrackItem !== null &&
+    selectedTrackItem.type === props.type &&
+    selectedTrackItem.id === props.id;
+
   return {
-    endsOn: event.endsOn,
-    isSelected: props.eventId === selectedEventId,
-    label: event.name || `[${event.formulaType}]`,
-    startsOn: event.startsOn,
+    accountId: accountWrapper.account.id,
+    endsOn,
+    isSelected,
+    label: name || `[${props.type} ${props.id}]`,
+    startsOn,
     timelineEndsOn: state.forecast.timeline.endsOn,
     timelineStartsOn: state.forecast.timeline.startsOn,
     trackIndex,
@@ -32,10 +42,10 @@ const mapState = (state: State, props: Props) => {
 };
 
 const mapDispatch = {
-  selectEvent: actions.forecast.selectEvent,
-  setEventCalendarDates: actions.forecast.setEventCalendarDates,
-  setEventEndsOn: actions.forecast.setEventEndsOn,
-  setEventStartsOn: actions.forecast.setEventStartsOn,
+  selectTrackItem: actions.forecast.selectTrackItem,
+  setCalendarDates: actions.forecast.setTrackItemCalendarDates,
+  setEndsOn: actions.forecast.setTrackItemEndsOn,
+  setStartsOn: actions.forecast.setTrackItemStartsOn,
 };
 
 export default connect(mapState, mapDispatch)(SpanComponent);

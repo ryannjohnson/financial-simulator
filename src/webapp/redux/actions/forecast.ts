@@ -1,25 +1,29 @@
 import { CalendarDate } from '../../../calendar-date';
-import { Event } from '../../../timeline';
-import { ChartSampleSize, Track } from '../reducer/forecast/props';
+import { Account, Event } from '../../../timeline';
+import { ChartSampleSize, Track, TrackItem } from '../reducer/forecast/props';
 import * as types from '../types';
+
+export function addAccount(account: Account): types.forecast.AddAccount {
+  return { account: account.toJSON(), type: types.forecast.ADD_ACCOUNT };
+}
 
 export function addEvent(event: Event): types.forecast.AddEvent {
   return { event: event.toJSON(), type: types.forecast.ADD_EVENT };
 }
 
-export function addTrack(name: string): types.forecast.AddTrack {
-  return { name, type: types.forecast.ADD_TRACK };
+export function addTrack(
+  accountId: string,
+  track: Track,
+): types.forecast.AddTrack {
+  return { accountId, track, type: types.forecast.ADD_TRACK };
 }
 
-export function exportEvents(): types.forecast.ExportEvents {
-  return { type: types.forecast.EXPORT_EVENTS };
+export function exportTimeline(): types.forecast.ExportTimeline {
+  return { type: types.forecast.EXPORT_TIMELINE };
 }
 
-export function importEvents(events: Event[]): types.forecast.ImportEvents {
-  return {
-    events: events.map(a => a.toJSON()),
-    type: types.forecast.IMPORT_EVENTS,
-  };
+export function importTimeline(): types.forecast.ImportTimeline {
+  return { type: types.forecast.IMPORT_TIMELINE };
 }
 
 export function removeEvent(id: string): types.forecast.RemoveEvent {
@@ -27,58 +31,72 @@ export function removeEvent(id: string): types.forecast.RemoveEvent {
 }
 
 export function renderChart(
-  eventIds: string[],
+  accountId: string,
   sampleSize: ChartSampleSize,
 ): types.forecast.RenderChart {
   return {
-    eventIds,
+    accountId,
     sampleSize,
     type: types.forecast.RENDER_CHART,
   };
 }
 
-export function selectEvent(id: string | null): types.forecast.SelectEvent {
-  return { id, type: types.forecast.SELECT_EVENT };
+export function selectAccount(
+  accountId: string | null,
+): types.forecast.SelectAccount {
+  return { accountId, type: types.forecast.SELECT_ACCOUNT };
 }
 
-export function setEvent(id: string, event: Event): types.forecast.SetEvent {
-  return { event: event.toJSON(), id, type: types.forecast.SET_EVENT };
+export function selectTrackItem(
+  trackItem: TrackItem | null,
+): types.forecast.SelectTrackItem {
+  return { trackItem, type: types.forecast.SELECT_TRACK_ITEM };
 }
 
-export function setEventCalendarDates(
-  eventId: string,
+export function setEvent(event: Event): types.forecast.SetEvent {
+  return { event: event.toJSON(), type: types.forecast.SET_EVENT };
+}
+
+export function setTrackItemCalendarDates(
+  accountId: string,
+  trackItem: TrackItem,
   trackIndex: number,
-  startsOn: CalendarDate,
+  startsOn: CalendarDate | null,
   endsOn: CalendarDate | null,
-): types.forecast.SetEventCalendarDates {
+): types.forecast.SetTrackItemCalendarDates {
   return {
+    accountId,
     endsOn: endsOn ? endsOn.toJSON() : null,
-    eventId,
-    startsOn: startsOn.toJSON(),
+    startsOn: startsOn ? startsOn.toJSON() : null,
     trackIndex,
-    type: types.forecast.SET_EVENT_CALENDAR_DATES,
+    trackItem,
+    type: types.forecast.SET_TRACK_ITEM_CALENDAR_DATES,
   };
 }
 
-export function setEventEndsOn(
-  eventId: string,
+export function setTrackItemEndsOn(
+  accountId: string,
+  trackItem: TrackItem,
   endsOn: CalendarDate | null,
-): types.forecast.SetEventEndsOn {
+): types.forecast.SetTrackItemEndsOn {
   return {
+    accountId,
     endsOn: endsOn ? endsOn.toJSON() : null,
-    eventId,
-    type: types.forecast.SET_EVENT_ENDS_ON,
+    trackItem,
+    type: types.forecast.SET_TRACK_ITEM_ENDS_ON,
   };
 }
 
-export function setEventStartsOn(
-  eventId: string,
-  startsOn: CalendarDate,
-): types.forecast.SetEventStartsOn {
+export function setTrackItemStartsOn(
+  accountId: string,
+  trackItem: TrackItem,
+  startsOn: CalendarDate | null,
+): types.forecast.SetTrackItemStartsOn {
   return {
-    eventId,
-    startsOn: startsOn.toJSON(),
-    type: types.forecast.SET_EVENT_STARTS_ON,
+    accountId,
+    trackItem,
+    startsOn: startsOn ? startsOn.toJSON() : null,
+    type: types.forecast.SET_TRACK_ITEM_STARTS_ON,
   };
 }
 
@@ -93,6 +111,6 @@ export function setTimelineCalendarDates(
   };
 }
 
-export function setTrack(id: string, track: Track): types.forecast.SetTrack {
-  return { id, track, type: types.forecast.SET_TRACK };
+export function setTrack(track: Track): types.forecast.SetTrack {
+  return { track, type: types.forecast.SET_TRACK };
 }

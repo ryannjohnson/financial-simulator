@@ -6,8 +6,14 @@ import * as selectors from '../redux/selectors';
 import RenderChartComponent from './RenderChart.component';
 
 const mapState = (state: State) => {
+  const selectedAccountWrapper = selectors.forecast.getSelectedAccountWrapper(
+    state,
+  );
+
   return {
-    eventIds: selectors.forecast.getEventWrappers(state).map(a => a.id),
+    accountId: selectedAccountWrapper
+      ? selectedAccountWrapper.account.id
+      : null,
   };
 };
 

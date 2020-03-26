@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { CalendarDate } from '../../calendar-date';
 import * as timeline from '../../timeline';
+import * as actions from '../redux/actions';
 import CalendarDateComponent from '../components/CalendarDate.component';
 import StringComponent from '../components/String.component';
 import NullableCalendarDateComponent from '../components/NullableCalendarDate.component';
@@ -11,42 +12,32 @@ import RowItem from './components/RowItem.component';
 import FormulaComponent from './formula/Formula.component';
 
 type Props = timeline.EventJSON & {
-  eventId: string;
-  removeEvent: (id: string) => void;
-  setEvent: (id: string, event: timeline.Event) => void;
+  removeEvent: typeof actions.forecast.removeEvent;
+  setEvent: typeof actions.forecast.setEvent;
 };
 
-export default function EventComponent({
-  endsOn,
-  eventId,
-  formula,
-  formulaType,
-  name,
-  removeEvent,
-  setEvent,
-  startsOn,
-}: Props) {
+export default function EventComponent(props: Props) {
+  const {
+    endsOn,
+    id,
+    formula,
+    formulaType,
+    name,
+    removeEvent,
+    setEvent,
+    startsOn,
+  } = props;
   return (
     <div>
       <div>
-        <button onClick={() => removeEvent(eventId)}>Remove</button>{' '}
-        {formulaType}
+        <button onClick={() => removeEvent(id)}>Remove</button> {formulaType}
       </div>
       <Row>
         <RowItem>
           <FormElementComponent title="Name">
             <StringComponent
               setValue={value => {
-                setEvent(
-                  eventId,
-                  timeline.Event.fromJSON({
-                    endsOn,
-                    formula,
-                    formulaType,
-                    name: value,
-                    startsOn,
-                  }),
-                );
+                setEvent(timeline.Event.fromJSON({ ...props, name: value }));
               }}
               value={name}
             />
@@ -58,18 +49,16 @@ export default function EventComponent({
           <FormElementComponent title="Starts">
             <CalendarDateComponent
               setValue={value => {
-                if (endsOn) {
-                  if (CalendarDate.fromJSON(endsOn).daysBefore(value) > 0) {
-                    endsOn = value.toJSON();
+                let newEndsOn = endsOn;
+                if (newEndsOn) {
+                  if (CalendarDate.fromJSON(newEndsOn).daysBefore(value) > 0) {
+                    newEndsOn = value.toJSON();
                   }
                 }
                 setEvent(
-                  eventId,
                   timeline.Event.fromJSON({
-                    endsOn,
-                    formula,
-                    formulaType,
-                    name,
+                    ...props,
+                    endsOn: newEndsOn,
                     startsOn: value.toJSON(),
                   }),
                 );
@@ -82,19 +71,17 @@ export default function EventComponent({
           <FormElementComponent title="Ends">
             <NullableCalendarDateComponent
               setValue={value => {
+                let newStartsOn = startsOn;
                 if (value) {
                   if (CalendarDate.fromJSON(startsOn).daysAfter(value) > 0) {
-                    startsOn = value.toJSON();
+                    newStartsOn = value.toJSON();
                   }
                 }
                 setEvent(
-                  eventId,
                   timeline.Event.fromJSON({
+                    ...props,
                     endsOn: value ? value.toJSON() : null,
-                    formula,
-                    formulaType,
-                    name,
-                    startsOn,
+                    startsOn: newStartsOn,
                   }),
                 );
               }}
@@ -108,13 +95,9 @@ export default function EventComponent({
         formulaType={formulaType}
         setFormula={value => {
           setEvent(
-            eventId,
             timeline.Event.fromJSON({
-              endsOn,
+              ...props,
               formula: value.toJSON(),
-              formulaType,
-              name,
-              startsOn,
             }),
           );
         }}

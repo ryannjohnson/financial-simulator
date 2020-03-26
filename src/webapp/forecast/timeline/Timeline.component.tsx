@@ -1,21 +1,33 @@
 import * as React from 'react';
 
+import { generateLocalUUID } from '../../../utils';
 import * as colors from '../../colors';
 import * as actions from '../../redux/actions';
+import { TrackItem } from '../../redux/reducer/forecast/props';
 import { TRACK_PIXEL_HEIGHT } from './constants';
 import SpanContainer from './Span.container';
 
 type Props = {
+  accountId: string;
   addTrack: typeof actions.forecast.addTrack;
-  eventIds: string[];
   trackIds: string[];
+  trackItems: TrackItem[];
 };
 
 export default function TimelineComponent({
+  accountId,
   addTrack,
-  eventIds,
   trackIds,
+  trackItems,
 }: Props) {
+  const addTrackHandler = () => {
+    addTrack(accountId, {
+      id: generateLocalUUID(),
+      name: 'TODO: Add name',
+      items: [],
+    });
+  };
+
   return (
     <div style={containerStyle}>
       <div style={headersContainerStyle}>
@@ -25,9 +37,7 @@ export default function TimelineComponent({
           </div>
         ))}
         <div>
-          <button onClick={() => addTrack('Untitled track')}>
-            + Add track
-          </button>
+          <button onClick={addTrackHandler}>+ Add track</button>
         </div>
       </div>
       <div style={tracksContainerStyle}>
@@ -37,8 +47,8 @@ export default function TimelineComponent({
           </div>
         ))}
         <div style={spansContainerStyle}>
-          {eventIds.map(eventId => (
-            <SpanContainer eventId={eventId} key={eventId} />
+          {trackItems.map(({ id, type }) => (
+            <SpanContainer id={id} key={`${type}-${id}`} type={type} />
           ))}
         </div>
       </div>
@@ -52,6 +62,8 @@ const containerStyle: React.CSSProperties = {
   minHeight: '100%',
   overflowX: 'hidden',
   overflowY: 'auto',
+  position: 'absolute',
+  width: '100%',
 };
 
 const headersContainerStyle: React.CSSProperties = {

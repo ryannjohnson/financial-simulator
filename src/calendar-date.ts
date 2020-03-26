@@ -170,3 +170,71 @@ function stringToMonth(value: string): Month {
 export function isMonth(value: number): value is Month {
   return monthValues.has(value);
 }
+
+/**
+ * a0 and a1 are the startsOn and endsOn properties of the first range,
+ * respectively.
+ *
+ * b0 and b1 are the startsOn and endsOn properties of the second range,
+ * respectively.
+ */
+export function rangesOverlap(
+  a0: CalendarDate | null,
+  a1: CalendarDate | null,
+  b0: CalendarDate | null,
+  b1: CalendarDate | null,
+): boolean {
+  if (!a1) {
+    if (!a0 || !b1) {
+      return true;
+    }
+
+    if (b1.daysAfter(a0) > -1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (!b1) {
+    if (!b0) {
+      return true;
+    }
+
+    if (a1.daysAfter(b0) > -1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (!a0) {
+    if (!b0 || !a1) {
+      return true;
+    }
+
+    if (a1.daysAfter(b0) > -1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (!b0) {
+    if (!a0 || !b1) {
+      return true;
+    }
+
+    if (b1.daysAfter(a0) > -1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  if (a0.daysBefore(b1) > -1 && a1.daysAfter(b0) > -1) {
+    return true;
+  }
+
+  return false;
+}

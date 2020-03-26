@@ -1,4 +1,8 @@
-import { CalendarDate, CalendarDateJSON } from '../calendar-date';
+import {
+  CalendarDate,
+  CalendarDateJSON,
+  rangesOverlap,
+} from '../calendar-date';
 import { stringFromJSON } from '../utils';
 import { EventFormula, EventFormulaType } from './event/formula';
 import { LumpSumFormula } from './event/lump-sum';
@@ -9,27 +13,51 @@ export type EventJSON = {
   endsOn: CalendarDateJSON | null;
   formula: any;
   formulaType: EventFormulaType;
+  fromAccountId: string | null;
+  id: string;
   name: string;
   startsOn: CalendarDateJSON;
+  toAccountId: string | null;
 };
 
 export class Event {
   public static fromJSON(value: EventJSON): Event {
+    const id = stringFromJSON(value.id);
+    const fromAccountId = value.fromAccountId
+      ? stringFromJSON(value.fromAccountId)
+      : null;
+    const toAccountId = value.toAccountId
+      ? stringFromJSON(value.toAccountId)
+      : null;
     const formula = toFormula(value.formulaType, value.formula);
     const startsOn = CalendarDate.fromJSON(value.startsOn);
     const endsOn = value.endsOn ? CalendarDate.fromJSON(value.endsOn) : null;
     const name = stringFromJSON(value.name);
-    return new Event(formula, startsOn, endsOn, name);
+    return new Event(
+      id,
+      fromAccountId,
+      toAccountId,
+      formula,
+      startsOn,
+      endsOn,
+      name,
+    );
   }
 
   protected endsAfterDays = 0;
 
   constructor(
+    public readonly id: string,
+    public fromAccountId: string | null,
+    public toAccountId: string | null,
     public formula: EventFormula,
-    protected startsOn: CalendarDate,
-    protected endsOn: CalendarDate | null,
-    protected name: string,
+    public startsOn: CalendarDate,
+    public endsOn: CalendarDate | null,
+    public name: string,
   ) {
+    if (fromAccountId && fromAccountId === toAccountId) {
+      throw new Error(`Account ids cannot be the same`);
+    }
     this.setEndsAfterDays();
   }
 
@@ -71,6 +99,15 @@ export class Event {
     return this.startsOn;
   }
 
+  /**
+   * Returns true if both events share at least one day.
+   */
+  public overlapsWith(event: Event): boolean {
+    const [a0, a1] = this.getDateRange();
+    const [b0, b1] = event.getDateRange();
+    return rangesOverlap(a0, a1, b0, b1);
+  }
+
   public setDateRange(startsOn: CalendarDate, endsOn: CalendarDate | null) {
     this.startsOn = startsOn;
     this.endsOn = endsOn;
@@ -98,8 +135,11 @@ export class Event {
       endsOn: this.endsOn ? this.endsOn.toJSON() : null,
       formula: this.formula.toJSON(),
       formulaType: this.formula.getType(),
+      fromAccountId: this.fromAccountId,
+      id: this.id,
       name: this.name,
       startsOn: this.startsOn.toJSON(),
+      toAccountId: this.toAccountId,
     };
   }
 

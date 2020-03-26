@@ -2,13 +2,30 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../redux/actions';
 import { State } from '../../redux/reducer';
+import { TrackItem } from '../../redux/reducer/forecast/props';
 import * as selectors from '../../redux/selectors';
 import TimelineComponent from './Timeline.component';
 
-const mapState = (state: State) => {
+type Props = {
+  accountId: string;
+};
+
+const mapState = (state: State, props: Props) => {
+  const accountWrapper = selectors.forecast.getAccountWrapper(
+    state,
+    props.accountId,
+  );
+
+  let trackIds: string[] = [];
+  let trackItems: TrackItem[] = [];
+  for (const track of accountWrapper.tracks) {
+    trackIds = [...trackIds, track.id];
+    trackItems = [...trackItems, ...track.items];
+  }
+
   return {
-    eventIds: selectors.forecast.getEventWrappers(state).map(a => a.id),
-    trackIds: selectors.forecast.getTracks(state).map(a => a.id),
+    trackIds,
+    trackItems: [...trackItems].sort(lexographically),
   };
 };
 
@@ -17,3 +34,13 @@ const mapDispatch = {
 };
 
 export default connect(mapState, mapDispatch)(TimelineComponent);
+
+function lexographically(a: TrackItem, b: TrackItem): number {
+  const byId = a.id.localeCompare(b.id);
+
+  if (byId !== 0) {
+    return byId;
+  }
+
+  return a.type.localeCompare(b.type);
+}

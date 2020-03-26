@@ -1,7 +1,11 @@
 import { CalendarDate, DAYS_PER_YEAR } from '../../../../calendar-date';
-import { calculateDailyBalanceValues, Event } from '../../../../timeline';
+import {
+  calculateDailyBalanceValues,
+  Effect,
+  Event,
+} from '../../../../timeline';
 import * as types from '../../types';
-import { ChartSampleSize, ChartValue, State } from './props';
+import { ChartSampleSize, ChartValue, State, TrackItemType } from './props';
 
 export function renderChart(
   state: State,
@@ -10,17 +14,42 @@ export function renderChart(
   const startsOn = CalendarDate.fromJSON(state.timeline.startsOn);
   const endsOn = CalendarDate.fromJSON(state.timeline.endsOn);
 
-  // TODO: Find more performant way to do this?
-  const eventIds = new Set(action.eventIds);
-  const events = state.eventWrappers
-    .filter(a => eventIds.has(a.id))
-    .map(a => Event.fromJSON(a.event));
+  const accountWrapper = state.accountWrappers.find(
+    a => a.account.id === action.accountId,
+  );
+
+  if (!accountWrapper) {
+    throw new Error(`Account by id "${action.accountId}" does not exist`);
+  }
+
+  let effects: Effect[] = [];
+  let events: Event[] = [];
+
+  for (const track of accountWrapper.tracks) {
+    for (const trackItem of track.items) {
+      if (trackItem.type === TrackItemType.Event) {
+        const eventJSON = state.events[trackItem.id];
+        events = [...events, Event.fromJSON(eventJSON)];
+        continue;
+      }
+
+      if (trackItem.type === TrackItemType.Effect) {
+        const effectJSON = state.effects[trackItem.id];
+        effects = [...effects, Effect.fromJSON(effectJSON)];
+        continue;
+      }
+
+      throw new Error(`TrackItemType "${trackItem.type}" is not implemented`);
+    }
+  }
 
   const durationInDays = startsOn.daysBefore(endsOn) + 1;
 
   const valueGenerator = calculateDailyBalanceValues({
+    accountId: action.accountId,
     currency: state.chart.currency,
     durationInDays,
+    effects,
     events,
     startsOn,
   });

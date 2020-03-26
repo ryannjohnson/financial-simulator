@@ -4,13 +4,21 @@ import * as actions from '../redux/actions';
 import { ChartSampleSize } from '../redux/reducer/forecast/props';
 
 type Props = {
-  eventIds: string[];
+  accountId: string | null;
   renderChart: typeof actions.forecast.renderChart;
 };
 
-export default function RenderChartComponent({ eventIds, renderChart }: Props) {
+export default function RenderChartComponent({
+  accountId,
+  renderChart,
+}: Props) {
+  if (!accountId) {
+    return null;
+  }
+
   const onClickHandler = (sampleSize: ChartSampleSize) => () =>
-    renderChart(eventIds, sampleSize);
+    renderChart(accountId, sampleSize);
+
   return (
     <div>
       <button onClick={onClickHandler(ChartSampleSize.Day)}>Daily</button>

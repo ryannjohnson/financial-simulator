@@ -1,31 +1,47 @@
 import { Currency } from '../../../../amount';
 import { CalendarDateJSON } from '../../../../calendar-date';
-import * as timeline from '../../../../timeline';
+import { AccountJSON, EffectJSON, EventJSON } from '../../../../timeline';
 
 export type State = {
+  accountWrappers: AccountWrapper[];
   chart: {
     currency: Currency;
     values: ChartValue[];
   };
-  eventWrappers: EventWrapper[];
-  selectedEventId: string | null;
+  effects: {
+    [id: string]: EffectJSON;
+  };
+  events: {
+    [id: string]: EventJSON;
+  };
+  selectedTrackItem: TrackItem | null;
   timeline: {
+    accountId: string | null;
     endsOn: CalendarDateJSON;
     startsOn: CalendarDateJSON;
-    tracks: Track[];
   };
 };
 
-export type EventWrapper = {
-  event: timeline.EventJSON;
-  id: string;
+export type AccountWrapper = {
+  account: AccountJSON;
+  tracks: Track[];
 };
 
 export type Track = {
-  eventIds: string[];
   id: string;
+  items: TrackItem[];
   name: string;
 };
+
+export type TrackItem = {
+  id: string;
+  type: TrackItemType;
+};
+
+export enum TrackItemType {
+  Effect = 'EFFECT',
+  Event = 'EVENT',
+}
 
 export enum ChartSampleSize {
   Day,

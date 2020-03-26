@@ -5,8 +5,13 @@ import { State } from '../redux/reducer';
 import * as selectors from '../redux/selectors';
 import EventComponent from './Event.component';
 
-const mapState = (state: State, props: { eventId: string }) => {
-  const { event } = selectors.forecast.getEventWrapper(state, props.eventId);
+type Props = {
+  eventId: string;
+};
+
+const mapState = (state: State, props: Props) => {
+  const event = selectors.forecast.getEvent(state, props.eventId);
+
   return {
     ...event,
   };

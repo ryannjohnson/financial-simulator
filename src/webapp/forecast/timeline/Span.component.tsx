@@ -3,24 +3,27 @@ import * as React from 'react';
 import { CalendarDate, CalendarDateJSON } from '../../../calendar-date';
 import * as colors from '../../colors';
 import * as actions from '../../redux/actions';
+import { TrackItem, TrackItemType } from '../../redux/reducer/forecast/props';
 import { TRACK_PIXEL_HEIGHT } from './constants';
 
 // Number of pixels to try to stick handles to.
 const STICKY_PIXELS = 10;
 
 type Props = {
+  accountId: string;
   endsOn: CalendarDateJSON | null;
-  eventId: string;
   isSelected: boolean;
   label: string;
-  selectEvent: typeof actions.forecast.selectEvent;
-  setEventCalendarDates: typeof actions.forecast.setEventCalendarDates;
-  setEventEndsOn: typeof actions.forecast.setEventEndsOn;
-  setEventStartsOn: typeof actions.forecast.setEventStartsOn;
-  startsOn: CalendarDateJSON;
+  selectTrackItem: typeof actions.forecast.selectTrackItem;
+  setCalendarDates: typeof actions.forecast.setTrackItemCalendarDates;
+  setEndsOn: typeof actions.forecast.setTrackItemEndsOn;
+  setStartsOn: typeof actions.forecast.setTrackItemStartsOn;
+  startsOn: CalendarDateJSON | null;
   timelineEndsOn: CalendarDateJSON;
   timelineStartsOn: CalendarDateJSON;
   trackIndex: number;
+  id: string;
+  type: TrackItemType;
 };
 
 type State = {
@@ -29,7 +32,7 @@ type State = {
     containerOffsetLeft: number;
     endsOn: CalendarDateJSON | null;
     page: Point;
-    startsOn: CalendarDateJSON;
+    startsOn: CalendarDateJSON | null;
   } | null;
 };
 
@@ -107,7 +110,11 @@ export default class SpanComponent extends React.Component<Props, State> {
   }
 
   containerMouseDownHandler = (_: MouseEvent) => {
-    this.props.selectEvent(this.props.eventId);
+    const trackItem: TrackItem = {
+      id: this.props.id,
+      type: this.props.type,
+    };
+    this.props.selectTrackItem(trackItem);
   };
 
   grabMouseDownHandler = (event: MouseEvent) => {
@@ -149,7 +156,9 @@ export default class SpanComponent extends React.Component<Props, State> {
       page,
       startsOn: startsOnJSON,
     } = this.state.mouseDownDetails;
-    const startsOn = CalendarDate.fromJSON(startsOnJSON);
+    const startsOn = CalendarDate.fromJSON(
+      startsOnJSON || this.props.timelineStartsOn,
+    );
     const timelineElement = this.containerRef!.parentElement!;
     const timelineWidth = timelineElement.offsetWidth;
     const {
@@ -163,10 +172,16 @@ export default class SpanComponent extends React.Component<Props, State> {
     let days = Math.round(dx * daysPerPixel);
 
     const tryToStickToTimelineStartsOn = () => {
+      // Closure because of the amount of context required.
       const resultingX = containerOffsetLeft + dx;
       if (resultingX < STICKY_PIXELS / 2 && resultingX > -STICKY_PIXELS / 2) {
         days = timelineStartsOn.daysAfter(startsOn);
       }
+    };
+
+    const trackItem: TrackItem = {
+      id: this.props.id,
+      type: this.props.type,
     };
 
     if (clickTarget === ClickTarget.Grab) {
@@ -180,8 +195,9 @@ export default class SpanComponent extends React.Component<Props, State> {
       const newEndsOn = endsOn
         ? CalendarDate.fromJSON(endsOn).addDays(days)
         : null;
-      this.props.setEventCalendarDates(
-        this.props.eventId,
+      this.props.setCalendarDates(
+        this.props.accountId,
+        trackItem,
         trackIndex,
         newStartsOn,
         newEndsOn,
@@ -192,14 +208,14 @@ export default class SpanComponent extends React.Component<Props, State> {
       tryToStickToTimelineStartsOn();
 
       const newStartsOn = startsOn.addDays(days);
-      this.props.setEventStartsOn(this.props.eventId, newStartsOn);
+      this.props.setStartsOn(this.props.accountId, trackItem, newStartsOn);
     }
 
     if (clickTarget === ClickTarget.RightHandle) {
       const newEndsOn = endsOn
         ? CalendarDate.fromJSON(endsOn).addDays(days)
         : timelineEndsOn.addDays(days);
-      this.props.setEventEndsOn(this.props.eventId, newEndsOn);
+      this.props.setEndsOn(this.props.accountId, trackItem, newEndsOn);
     }
   };
 
@@ -210,11 +226,15 @@ export default class SpanComponent extends React.Component<Props, State> {
   };
 
   render() {
-    const { endsOn: endsOnJSON, startsOn: startsOnJSON } = this.props;
+    const {
+      endsOn: endsOnJSON,
+      startsOn: startsOnJSON,
+      timelineStartsOn,
+    } = this.props;
 
     const timeline = this.getTimelineStats();
 
-    const startsOn = CalendarDate.fromJSON(startsOnJSON);
+    const startsOn = CalendarDate.fromJSON(startsOnJSON || timelineStartsOn);
     const endsOn = endsOnJSON ? CalendarDate.fromJSON(endsOnJSON) : null;
     const spanDays = startsOn.daysBefore(endsOn || timeline.endsOn) + 1;
     const spanStartsOnDay = timeline.startsOn.daysBefore(startsOn);
@@ -286,6 +306,7 @@ const grabStyle: React.CSSProperties = {
   fontSize: '11px',
   height: '50%',
   paddingLeft: '5px',
+  whiteSpace: 'nowrap',
   zIndex: 10,
 };
 

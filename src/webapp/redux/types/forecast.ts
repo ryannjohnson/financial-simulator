@@ -1,21 +1,29 @@
 import { CalendarDateJSON } from '../../../calendar-date';
-import { EventJSON } from '../../../timeline';
-import { ChartSampleSize, Track } from '../reducer/forecast/props';
+import { AccountJSON, EventJSON } from '../../../timeline';
+import { ChartSampleSize, Track, TrackItem } from '../reducer/forecast/props';
 
+export const ADD_ACCOUNT = 'FORECAST_ADD_ACCOUNT';
 export const ADD_EVENT = 'FORECAST_ADD_EVENT';
 export const ADD_TRACK = 'FORECAST_ADD_TRACK';
-export const EXPORT_EVENTS = 'FORECAST_EXPORT_EVENTS';
-export const IMPORT_EVENTS = 'FORECAST_IMPORT_EVENTS';
+export const EXPORT_TIMELINE = 'FORECAST_EXPORT_TIMELINE';
+export const IMPORT_TIMELINE = 'FORECAST_IMPORT_TIMELINE';
 export const REMOVE_EVENT = 'FORECAST_REMOVE_EVENT';
 export const RENDER_CHART = 'FORECAST_RENDER_CHART';
-export const SELECT_EVENT = 'FORECAST_SELECT_EVENT';
+export const SELECT_ACCOUNT = 'FORECAST_SELECT_ACCOUNT';
+export const SELECT_TRACK_ITEM = 'FORECAST_SELECT_TRACK_ITEM';
 export const SET_EVENT = 'FORECAST_SET_EVENT';
-export const SET_EVENT_CALENDAR_DATES = 'FORECAST_SET_EVENT_CALENDAR_DATES';
-export const SET_EVENT_ENDS_ON = 'FORECAST_SET_EVENT_ENDS_ON';
-export const SET_EVENT_STARTS_ON = 'FORECAST_SET_EVENT_STARTS_ON';
 export const SET_TIMELINE_CALENDAR_DATES =
   'FORECAST_SET_TIMELINE_CALENDAR_DATES';
 export const SET_TRACK = 'FORECAST_SET_TRACK';
+export const SET_TRACK_ITEM_CALENDAR_DATES =
+  'FORECAST_SET_TRACK_ITEM_CALENDAR_DATES';
+export const SET_TRACK_ITEM_ENDS_ON = 'FORECAST_SET_TRACK_ITEM_ENDS_ON';
+export const SET_TRACK_ITEM_STARTS_ON = 'FORECAST_SET_TRACK_ITEM_STARTS_ON';
+
+export interface AddAccount {
+  account: AccountJSON;
+  type: typeof ADD_ACCOUNT;
+}
 
 export interface AddEvent {
   event: EventJSON;
@@ -23,17 +31,17 @@ export interface AddEvent {
 }
 
 export interface AddTrack {
-  name: string;
+  accountId: string;
+  track: Track;
   type: typeof ADD_TRACK;
 }
 
-export interface ExportEvents {
-  type: typeof EXPORT_EVENTS;
+export interface ExportTimeline {
+  type: typeof EXPORT_TIMELINE;
 }
 
-export interface ImportEvents {
-  events: EventJSON[];
-  type: typeof IMPORT_EVENTS;
+export interface ImportTimeline {
+  type: typeof IMPORT_TIMELINE;
 }
 
 export interface RemoveEvent {
@@ -42,40 +50,50 @@ export interface RemoveEvent {
 }
 
 export interface RenderChart {
-  eventIds: string[];
+  accountId: string;
   sampleSize: ChartSampleSize;
   type: typeof RENDER_CHART;
 }
 
-export interface SelectEvent {
-  id: string | null;
-  type: typeof SELECT_EVENT;
+export interface SelectAccount {
+  accountId: string | null;
+  type: typeof SELECT_ACCOUNT;
 }
 
+export interface SelectTrackItem {
+  trackItem: TrackItem | null;
+  type: typeof SELECT_TRACK_ITEM;
+}
+
+/**
+ * Used from the event pane, not from the timeline.
+ */
 export interface SetEvent {
   event: EventJSON;
-  id: string;
   type: typeof SET_EVENT;
 }
 
-export interface SetEventCalendarDates {
+export interface SetTrackItemCalendarDates {
+  accountId: string;
   endsOn: CalendarDateJSON | null;
-  eventId: string;
-  startsOn: CalendarDateJSON;
+  trackItem: TrackItem;
+  startsOn: CalendarDateJSON | null;
   trackIndex: number;
-  type: typeof SET_EVENT_CALENDAR_DATES;
+  type: typeof SET_TRACK_ITEM_CALENDAR_DATES;
 }
 
-export interface SetEventEndsOn {
+export interface SetTrackItemEndsOn {
+  accountId: string;
   endsOn: CalendarDateJSON | null;
-  eventId: string;
-  type: typeof SET_EVENT_ENDS_ON;
+  trackItem: TrackItem;
+  type: typeof SET_TRACK_ITEM_ENDS_ON;
 }
 
-export interface SetEventStartsOn {
-  eventId: string;
-  startsOn: CalendarDateJSON;
-  type: typeof SET_EVENT_STARTS_ON;
+export interface SetTrackItemStartsOn {
+  accountId: string;
+  trackItem: TrackItem;
+  startsOn: CalendarDateJSON | null;
+  type: typeof SET_TRACK_ITEM_STARTS_ON;
 }
 
 export interface SetTimelineCalendarDates {
@@ -86,21 +104,22 @@ export interface SetTimelineCalendarDates {
 
 export interface SetTrack {
   track: Track;
-  id: string;
   type: typeof SET_TRACK;
 }
 
 export type Action =
+  | AddAccount
   | AddEvent
   | AddTrack
-  | ExportEvents
-  | ImportEvents
+  | ExportTimeline
+  | ImportTimeline
   | RemoveEvent
   | RenderChart
-  | SelectEvent
+  | SelectAccount
+  | SelectTrackItem
   | SetEvent
-  | SetEventCalendarDates
-  | SetEventEndsOn
-  | SetEventStartsOn
+  | SetTrackItemCalendarDates
+  | SetTrackItemEndsOn
+  | SetTrackItemStartsOn
   | SetTimelineCalendarDates
   | SetTrack;
