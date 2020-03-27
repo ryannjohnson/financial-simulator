@@ -40,17 +40,19 @@ export class CompoundingEffectFormula implements EffectFormula {
   ) {
     if (compoundingFrequencyPerYear === null) {
       this.daysPerPeriod = 0;
-      this.increment = totalContinuousAccumulation(
-        nominalAnnualInterestRate,
-        DAYS_PER_YEAR_RECIPROCAL,
-      );
+      this.increment =
+        totalContinuousAccumulation(
+          nominalAnnualInterestRate,
+          DAYS_PER_YEAR_RECIPROCAL,
+        ) - 1;
     } else {
       this.daysPerPeriod = DAYS_PER_YEAR / compoundingFrequencyPerYear;
-      this.increment = totalPeriodicAccumulation(
-        nominalAnnualInterestRate,
-        compoundingFrequencyPerYear,
-        1 / compoundingFrequencyPerYear,
-      );
+      this.increment =
+        totalPeriodicAccumulation(
+          nominalAnnualInterestRate,
+          compoundingFrequencyPerYear,
+          1 / compoundingFrequencyPerYear,
+        ) - 1;
     }
   }
 

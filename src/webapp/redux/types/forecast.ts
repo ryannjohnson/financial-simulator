@@ -1,8 +1,9 @@
 import { CalendarDateJSON } from '../../../calendar-date';
-import { AccountJSON, EventJSON } from '../../../timeline';
+import { AccountJSON, EffectJSON, EventJSON } from '../../../timeline';
 import { ChartSampleSize, Track, TrackItem } from '../reducer/forecast/props';
 
 export const ADD_ACCOUNT = 'FORECAST_ADD_ACCOUNT';
+export const ADD_EFFECT = 'FORECAST_ADD_EFFECT';
 export const ADD_EVENT = 'FORECAST_ADD_EVENT';
 export const ADD_TRACK = 'FORECAST_ADD_TRACK';
 export const EXPORT_TIMELINE = 'FORECAST_EXPORT_TIMELINE';
@@ -24,6 +25,12 @@ export const SET_TRACK_ITEM_STARTS_ON = 'FORECAST_SET_TRACK_ITEM_STARTS_ON';
 export interface AddAccount {
   account: AccountJSON;
   type: typeof ADD_ACCOUNT;
+}
+
+export interface AddEffect {
+  accountId: string;
+  effect: EffectJSON;
+  type: typeof ADD_EFFECT;
 }
 
 export interface AddEvent {
@@ -116,6 +123,7 @@ export interface SetTrack {
 
 export type Action =
   | AddAccount
+  | AddEffect
   | AddEvent
   | AddTrack
   | ExportTimeline

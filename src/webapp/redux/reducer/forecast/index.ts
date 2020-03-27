@@ -1,5 +1,6 @@
 import { Currency } from '../../../../amount';
 import { CalendarDate } from '../../../../calendar-date';
+import { EffectFormulaType } from '../../../../timeline';
 import * as types from '../../types';
 import * as account from './account';
 import * as chart from './chart';
@@ -10,7 +11,7 @@ import * as timeline from './timeline';
 export * from './props';
 
 export function reducer(
-  state: State = initialState,
+  state: State = demoState,
   action: types.forecast.Action,
 ): State {
   switch (action.type) {
@@ -71,6 +72,81 @@ const initialState: State = {
     values: [],
   },
   effects: {},
+  events: {},
+  selectedTrackItem: null,
+  timeline: {
+    accountId: null,
+    endsOn: CalendarDate.today()
+      .addYears(5)
+      .toJSON(),
+    startsOn: CalendarDate.today().toJSON(),
+  },
+};
+
+const demoState: State = {
+  accountWrappers: [
+    {
+      account: {
+        effectIds: ['effect-inflation-1'],
+        id: 'account-checking-1',
+        name: 'Checking',
+      },
+      tracks: [
+        {
+          id: 'track-1',
+          items: [{ id: 'effect-inflation-1', type: TrackItemType.Effect }],
+          name: 'Untitled',
+        },
+      ],
+    },
+    {
+      account: {
+        effectIds: ['effect-inflation-1', 'effect-interest-1'],
+        id: 'account-investment-1',
+        name: 'Investment',
+      },
+      tracks: [
+        {
+          id: 'track-2',
+          items: [{ id: 'effect-inflation-1', type: TrackItemType.Effect }],
+          name: 'Untitled',
+        },
+        {
+          id: 'track-3',
+          items: [{ id: 'effect-interest-1', type: TrackItemType.Effect }],
+          name: 'Untitled',
+        },
+      ],
+    },
+  ],
+  chart: {
+    currency: Currency.USD,
+    values: [],
+  },
+  effects: {
+    'effect-inflation-1': {
+      endsOn: null,
+      id: 'effect-inflation-1',
+      formula: {
+        compoundingFrequencyPerYear: null,
+        nominalAnnualInterestRate: -0.03,
+      },
+      formulaType: EffectFormulaType.Compounding,
+      name: 'Inflation Effect',
+      startsOn: null,
+    },
+    'effect-interest-1': {
+      endsOn: null,
+      id: 'effect-interest-1',
+      formula: {
+        compoundingFrequencyPerYear: null,
+        nominalAnnualInterestRate: 0.1,
+      },
+      formulaType: EffectFormulaType.Compounding,
+      name: 'Investment Effect',
+      startsOn: null,
+    },
+  },
   events: {},
   selectedTrackItem: null,
   timeline: {
