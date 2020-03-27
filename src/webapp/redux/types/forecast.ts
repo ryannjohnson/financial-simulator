@@ -12,6 +12,7 @@ export const RENDER_CHART = 'FORECAST_RENDER_CHART';
 export const SELECT_ACCOUNT = 'FORECAST_SELECT_ACCOUNT';
 export const SELECT_TRACK_ITEM = 'FORECAST_SELECT_TRACK_ITEM';
 export const SET_EVENT = 'FORECAST_SET_EVENT';
+export const SET_EVENT_ACCOUNT_IDS = 'FORECAST_SET_EVENT_ACCOUNT_IDS';
 export const SET_TIMELINE_CALENDAR_DATES =
   'FORECAST_SET_TIMELINE_CALENDAR_DATES';
 export const SET_TRACK = 'FORECAST_SET_TRACK';
@@ -72,6 +73,12 @@ export interface SetEvent {
   event: EventJSON;
   type: typeof SET_EVENT;
 }
+export interface SetEventAccountIds {
+  eventId: string;
+  fromAccountId: string | null;
+  toAccountId: string | null;
+  type: typeof SET_EVENT_ACCOUNT_IDS;
+}
 
 export interface SetTrackItemCalendarDates {
   accountId: string;
@@ -118,6 +125,7 @@ export type Action =
   | SelectAccount
   | SelectTrackItem
   | SetEvent
+  | SetEventAccountIds
   | SetTrackItemCalendarDates
   | SetTrackItemEndsOn
   | SetTrackItemStartsOn

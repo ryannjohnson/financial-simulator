@@ -34,6 +34,8 @@ export function reducer(
       return account.selectTrackItem(state, action);
     case types.forecast.SET_EVENT:
       return event.setEvent(state, action);
+    case types.forecast.SET_EVENT_ACCOUNT_IDS:
+      return event.setEventAccountIds(state, action);
     case types.forecast.SET_TRACK_ITEM_CALENDAR_DATES:
       switch (action.trackItem.type) {
         case TrackItemType.Event:

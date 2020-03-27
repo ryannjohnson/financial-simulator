@@ -19,18 +19,11 @@ const TRACK_DEFAULT_NAME = 'Untitled';
 
 export function addTrackItemToEarliestTrack(
   state: State,
-  accountId: string,
   trackItem: TrackItem,
+  accountId: string,
   earliestIndex = 0,
 ): State {
-  const accountWrapperIndex = state.accountWrappers.findIndex(
-    a => a.account.id === accountId,
-  );
-  if (accountWrapperIndex === -1) {
-    throw new Error(`Account by id "${accountId}" does not exist`);
-  }
-
-  const accountWrapper = state.accountWrappers[accountWrapperIndex];
+  const accountWrapper = getAccountWrapper(state, accountId);
   const dateRange = trackItemToDateRange(state, trackItem);
 
   for (let i = earliestIndex; i < accountWrapper.tracks.length; i++) {
@@ -83,25 +76,21 @@ export function removeTrackItemFromTracks(
     }
 
     let tracks: Track[] = [];
-    for (const track of accountWrapper.tracks) {
-      const index = track.items.findIndex(
-        item => item.id === trackItem.id && item.type === trackItem.type,
-      );
 
-      if (index === -1) {
-        tracks = [...tracks, track];
-        continue;
+    for (let track of accountWrapper.tracks) {
+      const index = track.items.findIndex(a => trackItemEquals(a, trackItem));
+
+      if (index !== -1) {
+        track = {
+          ...track,
+          items: [
+            ...track.items.slice(0, index),
+            ...track.items.slice(index + 1),
+          ],
+        };
       }
 
-      const newTrack: Track = {
-        ...track,
-        items: [
-          ...track.items.slice(0, index),
-          ...track.items.slice(index + 1),
-        ],
-      };
-
-      tracks = [...tracks, newTrack];
+      tracks = [...tracks, track];
     }
 
     accountWrappers = [...accountWrappers, { ...accountWrapper, tracks }];
@@ -126,10 +115,10 @@ export function getAccountWrapper(state: State, accountId: string) {
 }
 
 export function trackHasItem(track: Track, item: TrackItem): boolean {
-  return track.items.find(i => trackItemsMatch(i, item)) !== undefined;
+  return track.items.find(i => trackItemEquals(i, item)) !== undefined;
 }
 
-export function trackItemsMatch(a: TrackItem, b: TrackItem): boolean {
+export function trackItemEquals(a: TrackItem, b: TrackItem): boolean {
   return a.id === b.id && a.type === b.type;
 }
 
@@ -165,8 +154,8 @@ export function toCalendarDateOrNull(
 
 export function moveTrackItemToTrackIndex(
   state: State,
-  accountId: string,
   trackItem: TrackItem,
+  accountId: string,
   trackIndex: number,
 ): State {
   state = removeTrackItemFromTracks(state, trackItem, accountId);
@@ -213,12 +202,12 @@ export function autoMoveItemToEarliestTrack(
 
   if (trackIndex === -1) {
     throw new Error(
-      `TrackItem "${trackItem.type} ${trackItem.id}" doesn't belong to any tracks`,
+      `TrackItem "${trackItem.type} ${trackItem.id}" doesn't belong to any tracks on account "${accountId}"`,
     );
   }
 
   for (const existingTrackItem of accountWrapper.tracks[trackIndex].items) {
-    if (trackItemsMatch(existingTrackItem, trackItem)) {
+    if (trackItemEquals(existingTrackItem, trackItem)) {
       continue;
     }
 
@@ -235,8 +224,8 @@ export function autoMoveItemToEarliestTrack(
       state = removeTrackItemFromTracks(state, trackItem, accountId);
       state = addTrackItemToEarliestTrack(
         state,
-        accountId,
         trackItem,
+        accountId,
         trackIndex + 1,
       );
       break;

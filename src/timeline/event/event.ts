@@ -55,32 +55,27 @@ export class Event {
     public endsOn: CalendarDate | null,
     public name: string,
   ) {
+    if (!fromAccountId && !toAccountId) {
+      throw new Error(`Event must belong to at least one account`);
+    }
     if (fromAccountId && fromAccountId === toAccountId) {
       throw new Error(`Account ids cannot be the same`);
     }
     this.setEndsAfterDays();
   }
 
-  public *yieldBalanceValues(
-    startsOn: CalendarDate,
-    days: number,
-  ): Generator<number> {
-    let balanceValue = 0;
+  public belongsToAccountIds(): string[] {
+    let accountIds: string[] = [];
 
-    const daysLate = this.startsOn.daysBefore(startsOn);
-    const daysToYield = Math.max(days, days + daysLate);
-
-    for (let i = 0; daysLate < i; i--) {
-      yield balanceValue;
+    if (this.fromAccountId) {
+      accountIds = [...accountIds, this.fromAccountId];
     }
 
-    for (let day = 0; day < daysToYield; day++) {
-      balanceValue += this.yieldsValueOnDay(day);
-
-      if (day >= daysLate) {
-        yield balanceValue;
-      }
+    if (this.toAccountId) {
+      accountIds = [...accountIds, this.toAccountId];
     }
+
+    return accountIds;
   }
 
   public getDateRange(): [CalendarDate, CalendarDate | null] {
@@ -141,6 +136,28 @@ export class Event {
       startsOn: this.startsOn.toJSON(),
       toAccountId: this.toAccountId,
     };
+  }
+
+  public *yieldBalanceValues(
+    startsOn: CalendarDate,
+    days: number,
+  ): Generator<number> {
+    let balanceValue = 0;
+
+    const daysLate = this.startsOn.daysBefore(startsOn);
+    const daysToYield = Math.max(days, days + daysLate);
+
+    for (let i = 0; daysLate < i; i--) {
+      yield balanceValue;
+    }
+
+    for (let day = 0; day < daysToYield; day++) {
+      balanceValue += this.yieldsValueOnDay(day);
+
+      if (day >= daysLate) {
+        yield balanceValue;
+      }
+    }
   }
 
   public yieldsValueOnDay(day: number): number {

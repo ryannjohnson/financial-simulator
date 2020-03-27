@@ -9,6 +9,7 @@ import NullableCalendarDateComponent from '../components/NullableCalendarDate.co
 import FormElementComponent from '../components/FormElement.component';
 import Row from './components/Row.component';
 import RowItem from './components/RowItem.component';
+import EventAccountIdsContainer from './EventAccountIds.container';
 import FormulaComponent from './formula/Formula.component';
 
 type Props = timeline.EventJSON & {
@@ -32,6 +33,7 @@ export default function EventComponent(props: Props) {
       <div>
         <button onClick={() => removeEvent(id)}>Remove</button> {formulaType}
       </div>
+      <EventAccountIdsContainer eventId={id} />
       <Row>
         <RowItem>
           <FormElementComponent title="Name">

@@ -16,20 +16,10 @@ export function addEvent(state: State, action: types.forecast.AddEvent): State {
     type: TrackItemType.Event,
   };
 
-  if (event.fromAccountId) {
-    state = utils.addTrackItemToEarliestTrack(
-      state,
-      event.fromAccountId,
-      trackItem,
-    );
-  }
-
-  if (event.toAccountId) {
-    state = utils.addTrackItemToEarliestTrack(
-      state,
-      event.toAccountId,
-      trackItem,
-    );
+  for (const accountId of [event.fromAccountId, event.toAccountId]) {
+    if (accountId) {
+      state = utils.addTrackItemToEarliestTrack(state, trackItem, accountId);
+    }
   }
 
   state = selectTrackItem(state, actions.forecast.selectTrackItem(trackItem));
@@ -38,33 +28,47 @@ export function addEvent(state: State, action: types.forecast.AddEvent): State {
 }
 
 export function setEvent(state: State, action: types.forecast.SetEvent): State {
+  const existingEvent = Event.fromJSON(state.events[action.event.id]);
   const event = Event.fromJSON(action.event);
+
+  state = { ...state, events: { ...state.events, [event.id]: event.toJSON() } };
+
   const trackItem: TrackItem = {
     id: action.event.id,
     type: TrackItemType.Event,
   };
 
-  let checkedAccountIds: string[] = [];
+  const existingAccountIds = existingEvent.belongsToAccountIds();
+  const newAccountIds = event.belongsToAccountIds();
 
-  for (const accountId of [event.fromAccountId, event.toAccountId]) {
-    if (!accountId) {
-      continue;
+  for (const accountId of newAccountIds) {
+    if (existingAccountIds.includes(accountId)) {
+      state = utils.autoMoveItemToEarliestTrack(state, trackItem, accountId);
+    } else {
+      state = utils.addTrackItemToEarliestTrack(state, trackItem, accountId);
     }
-
-    checkedAccountIds = [...checkedAccountIds, accountId];
-
-    state = utils.autoMoveItemToEarliestTrack(state, trackItem, accountId);
   }
 
-  const uncheckedAccountIds = state.accountWrappers
-    .map(a => a.account.id)
-    .filter(id => !checkedAccountIds.includes(id));
-
-  for (const accountId of uncheckedAccountIds) {
-    state = utils.removeTrackItemFromTracks(state, trackItem, accountId);
+  for (const accountId of existingAccountIds) {
+    if (!newAccountIds.includes(accountId)) {
+      state = utils.removeTrackItemFromTracks(state, trackItem, accountId);
+    }
   }
 
-  return { ...state, events: { ...state.events, [event.id]: event.toJSON() } };
+  return state;
+}
+
+export function setEventAccountIds(
+  state: State,
+  action: types.forecast.SetEventAccountIds,
+): State {
+  const event = Event.fromJSON({
+    ...state.events[action.eventId],
+    fromAccountId: action.fromAccountId,
+    toAccountId: action.toAccountId,
+  });
+
+  return setEvent(state, actions.forecast.setEvent(event));
 }
 
 /**
@@ -74,23 +78,21 @@ export function setEventCalendarDates(
   state: State,
   action: types.forecast.SetTrackItemCalendarDates,
 ): State {
-  const event = Event.fromJSON(state.events[action.trackItem.id]);
-  const startsOn = CalendarDate.fromJSON(
-    // Events always need a start date.
-    action.startsOn || state.timeline.startsOn,
-  );
-  const endsOn = utils.toCalendarDateOrNull(action.endsOn);
-  event.setDateRange(startsOn, endsOn);
+  const event = Event.fromJSON({
+    ...state.events[action.trackItem.id],
+    endsOn: action.endsOn,
+    startsOn: action.startsOn || state.timeline.startsOn,
+  });
 
   const accountWrapper = utils.getAccountWrapper(state, action.accountId);
-
   const maxTrackIndex = accountWrapper.tracks.length - 1;
   const trackIndex = Math.min(Math.max(action.trackIndex, 0), maxTrackIndex);
   const track = accountWrapper.tracks[trackIndex];
 
   let isAlreadyOnTrack = false;
+
   for (const trackItem of track.items) {
-    if (utils.trackItemsMatch(trackItem, action.trackItem)) {
+    if (utils.trackItemEquals(trackItem, action.trackItem)) {
       isAlreadyOnTrack = true;
       continue;
     }
@@ -98,8 +100,8 @@ export function setEventCalendarDates(
     const trackItemDetails = utils.trackItemToDateRange(state, trackItem);
 
     const areOverlapping = rangesOverlap(
-      startsOn,
-      endsOn,
+      event.startsOn,
+      event.endsOn,
       trackItemDetails.startsOn,
       trackItemDetails.endsOn,
     );
@@ -113,22 +115,20 @@ export function setEventCalendarDates(
   if (!isAlreadyOnTrack) {
     state = utils.moveTrackItemToTrackIndex(
       state,
-      action.accountId,
       action.trackItem,
+      action.accountId,
       trackIndex,
     );
   }
 
-  for (const accountId of [event.toAccountId, event.fromAccountId]) {
-    if (!accountId || accountId === action.accountId) {
-      continue;
+  for (const accountId of event.belongsToAccountIds()) {
+    if (accountId !== action.accountId) {
+      state = utils.autoMoveItemToEarliestTrack(
+        state,
+        action.trackItem,
+        accountId,
+      );
     }
-
-    state = utils.autoMoveItemToEarliestTrack(
-      state,
-      action.trackItem,
-      accountId,
-    );
   }
 
   return { ...state, events: { ...state.events, [event.id]: event.toJSON() } };

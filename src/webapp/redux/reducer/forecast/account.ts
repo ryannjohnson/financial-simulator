@@ -49,28 +49,23 @@ export function addTrack(state: State, action: types.forecast.AddTrack): State {
 export function setTrack(state: State, action: types.forecast.SetTrack): State {
   let accountWrappers: AccountWrapper[] = [];
 
-  for (const accountWrapper of state.accountWrappers) {
+  for (let accountWrapper of state.accountWrappers) {
     let trackIndex = accountWrapper.tracks.findIndex(
       a => a.id === action.track.id,
     );
-    if (trackIndex === -1) {
-      accountWrappers = [...accountWrappers, accountWrapper];
-      continue;
-    }
 
-    const { tracks } = accountWrapper;
-
-    accountWrappers = [
-      ...accountWrappers,
-      {
+    if (trackIndex !== -1) {
+      accountWrapper = {
         ...accountWrapper,
         tracks: [
-          ...tracks.slice(0, trackIndex),
+          ...accountWrapper.tracks.slice(0, trackIndex),
           action.track,
-          ...tracks.slice(trackIndex + 1),
+          ...accountWrapper.tracks.slice(trackIndex + 1),
         ],
-      },
-    ];
+      };
+    }
+
+    accountWrappers = [...accountWrappers, accountWrapper];
   }
 
   return {

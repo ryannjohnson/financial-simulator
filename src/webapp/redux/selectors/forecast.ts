@@ -28,8 +28,9 @@ export type TrackItemDetails = {
 export function getTrackItemDetails(
   state: State,
   trackItem: TrackItem,
+  accountId: string,
 ): TrackItemDetails {
-  const trackIndex = getTrackItemTrackIndex(state, trackItem);
+  const trackIndex = getTrackItemTrackIndex(state, trackItem, accountId);
 
   if (trackItem.type === TrackItemType.Effect) {
     const effect = state.forecast.effects[trackItem.id];
@@ -56,18 +57,23 @@ export function getTrackItemDetails(
   throw new Error(`TrackItemType "${trackItem.type}" is not implemented yet`);
 }
 
-export function getTrackItemTrackIndex(state: State, trackItem: TrackItem) {
-  for (const { tracks } of state.forecast.accountWrappers) {
-    let index = -1;
-    for (const track of tracks) {
-      index += 1;
-      for (const item of track.items) {
-        if (item.type === trackItem.type && item.id === trackItem.id) {
-          return index;
-        }
+export function getTrackItemTrackIndex(
+  state: State,
+  trackItem: TrackItem,
+  accountId: string,
+) {
+  const { tracks } = getAccountWrapper(state, accountId);
+
+  let index = -1;
+  for (const track of tracks) {
+    index += 1;
+    for (const item of track.items) {
+      if (item.type === trackItem.type && item.id === trackItem.id) {
+        return index;
       }
     }
   }
+
   throw new Error(
     `Cannot find trackItem by id "${trackItem.id}" and type ${trackItem.type}`,
   );

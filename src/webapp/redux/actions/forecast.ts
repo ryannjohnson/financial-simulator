@@ -57,6 +57,19 @@ export function setEvent(event: Event): types.forecast.SetEvent {
   return { event: event.toJSON(), type: types.forecast.SET_EVENT };
 }
 
+export function setEventAccountIds(
+  eventId: string,
+  fromAccountId: string | null,
+  toAccountId: string | null,
+): types.forecast.SetEventAccountIds {
+  return {
+    eventId,
+    fromAccountId,
+    toAccountId,
+    type: types.forecast.SET_EVENT_ACCOUNT_IDS,
+  };
+}
+
 export function setTrackItemCalendarDates(
   accountId: string,
   trackItem: TrackItem,

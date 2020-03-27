@@ -1,7 +1,9 @@
-import * as uuid from 'uuid';
+// import * as uuid from 'uuid';
+
+let localUuidCounter = 0;
 
 export function generateLocalUUID(): string {
-  return uuid.v1().toString();
+  return `${localUuidCounter++}`;
 }
 
 export function integerFromJSON(value: any): number {

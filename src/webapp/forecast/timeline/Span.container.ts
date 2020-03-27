@@ -20,7 +20,11 @@ const mapState = (state: State, props: Props) => {
     name,
     startsOn,
     trackIndex,
-  } = selectors.forecast.getTrackItemDetails(state, props);
+  } = selectors.forecast.getTrackItemDetails(
+    state,
+    props,
+    accountWrapper.account.id,
+  );
 
   const selectedTrackItem = selectors.forecast.getSelectedTrackItem(state);
 
