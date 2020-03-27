@@ -42,7 +42,7 @@ export function* calculateDailyBalanceValues({
       .map(({ generator, multiplier }) => generator.next().value * multiplier)
       .reduce(sum, 0);
 
-    if (newBalance > 0) {
+    if (newBalance + accruedEffects > 0) {
       accruedEffects += effects
         .map(e => e.yieldsValueOnDay(newBalance + accruedEffects, i, startsOn))
         .reduce(sum, 0);
