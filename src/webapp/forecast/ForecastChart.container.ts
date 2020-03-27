@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
+import ChartComponent from '../components/Chart.component';
 import { State } from '../redux/reducer';
 import * as selectors from '../redux/selectors';
-import ChartComponent from '../chart/Chart.component';
 
 const mapState = (state: State) => {
   const { startsOn } = state.forecast.timeline;

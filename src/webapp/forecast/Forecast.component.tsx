@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import * as colors from '../colors';
-import EventsContainer from './Events.container';
 import ForecastChartContainer from './ForecastChart.container';
+import InspectorContainer from './Inspector.container';
 import RenderChartContainer from './RenderChart.container';
 import TimelineFrameContainer from './timeline/TimelineFrame.container';
 
@@ -10,8 +10,8 @@ export default function ForecastComponent() {
   return (
     <div style={containerStyle}>
       <div style={topContainerStyle}>
-        <div style={eventsContainerStyle}>
-          <EventsContainer />
+        <div style={inspectorContainerStyle}>
+          <InspectorContainer />
         </div>
         <div style={chartContainerStyle}>
           <ForecastChartContainer />
@@ -41,7 +41,7 @@ const topContainerStyle: React.CSSProperties = {
   position: 'relative',
 };
 
-const eventsContainerStyle: React.CSSProperties = {
+const inspectorContainerStyle: React.CSSProperties = {
   paddingRight: '30px',
   position: 'relative',
   overflow: 'auto',

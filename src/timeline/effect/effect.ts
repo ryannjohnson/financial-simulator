@@ -1,7 +1,7 @@
-import { CalendarDate, CalendarDateJSON } from '../calendar-date';
-import { stringFromJSON } from '../utils';
-import { CompoundingEffectFormula } from './effect/compounding';
-import { EffectFormula, EffectFormulaType } from './effect/formula';
+import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
+import { stringFromJSON } from '../../utils';
+import { CompoundingEffectFormula } from './compounding';
+import { EffectFormula, EffectFormulaType } from './formula';
 
 export type EffectJSON = {
   endsOn: CalendarDateJSON | null;

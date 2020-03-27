@@ -2,12 +2,12 @@ import {
   CalendarDate,
   CalendarDateJSON,
   rangesOverlap,
-} from '../calendar-date';
-import { stringFromJSON } from '../utils';
-import { EventFormula, EventFormulaType } from './event/formula';
-import { LumpSumFormula } from './event/lump-sum';
-import { MonthlySumFormula } from './event/monthly-sum';
-import { RecurringSumFormula } from './event/recurring-sum';
+} from '../../calendar-date';
+import { stringFromJSON } from '../../utils';
+import { EventFormula, EventFormulaType } from './formula';
+import { LumpSumFormula } from './lump-sum';
+import { MonthlySumFormula } from './monthly-sum';
+import { RecurringSumFormula } from './recurring-sum';
 
 export type EventJSON = {
   endsOn: CalendarDateJSON | null;

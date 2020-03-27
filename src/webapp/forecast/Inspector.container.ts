@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as actions from '../redux/actions';
 import { State } from '../redux/reducer';
 import * as selectors from '../redux/selectors';
-import EventsComponent from './Events.component';
+import InspectorComponent from './Inspector.component';
 
 const mapState = (state: State) => {
   const selectedAccountWrapper = selectors.forecast.getSelectedAccountWrapper(
@@ -29,4 +29,4 @@ const mapDispatch = {
   setTimelineCalendarDates: actions.forecast.setTimelineCalendarDates,
 };
 
-export default connect(mapState, mapDispatch)(EventsComponent);
+export default connect(mapState, mapDispatch)(InspectorComponent);

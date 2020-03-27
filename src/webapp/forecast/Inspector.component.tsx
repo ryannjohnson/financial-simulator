@@ -32,7 +32,7 @@ type Props = {
   timelineStartsOn: CalendarDateJSON;
 };
 
-export default function EventsComponent({
+export default function InspectorComponent({
   addEvent,
   exportTimeline,
   importTimeline,
@@ -94,7 +94,12 @@ export default function EventsComponent({
 
       <hr />
 
-      {selectedTrackItem && <TrackItemComponent {...selectedTrackItem} />}
+      {selectedTrackItem && (
+        <>
+          <TrackItemComponent {...selectedTrackItem} />
+          <hr />
+        </>
+      )}
 
       {selectedAccountId && (
         <>
