@@ -1,6 +1,11 @@
 import { CalendarDate } from '../../../calendar-date';
 import { Account, Event } from '../../../timeline';
-import { ChartSampleSize, Track, TrackItem } from '../reducer/forecast/props';
+import {
+  ChartSampleSize,
+  State,
+  Track,
+  TrackItem,
+} from '../reducer/forecast/props';
 import * as types from '../types';
 
 export function addAccount(account: Account): types.forecast.AddAccount {
@@ -22,8 +27,8 @@ export function exportTimeline(): types.forecast.ExportTimeline {
   return { type: types.forecast.EXPORT_TIMELINE };
 }
 
-export function importTimeline(): types.forecast.ImportTimeline {
-  return { type: types.forecast.IMPORT_TIMELINE };
+export function importTimeline(state: State): types.forecast.ImportTimeline {
+  return { state, type: types.forecast.IMPORT_TIMELINE };
 }
 
 export function removeEvent(id: string): types.forecast.RemoveEvent {

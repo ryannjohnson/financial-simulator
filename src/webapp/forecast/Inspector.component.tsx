@@ -51,7 +51,7 @@ export default function InspectorComponent({
   ) => {
     const reader = new FileReader();
     reader.onload = () => {
-      importTimeline();
+      importTimeline(JSON.parse(reader.result as string));
     };
     reader.readAsText(event.target.files![0]);
   };

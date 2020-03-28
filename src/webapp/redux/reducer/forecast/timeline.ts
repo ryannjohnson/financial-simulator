@@ -1,15 +1,12 @@
-// import * as timeline from '../../../../timeline';
 import * as types from '../../types';
-// import * as actions from '../../actions';
 import { State } from './props';
 
 export function exportTimeline(
   state: State,
   _: types.forecast.ExportTimeline,
 ): State {
-  throw new Error(`TODO`);
-  const eventsJSON = Object.values(state.events);
-  const blob = new Blob([JSON.stringify(eventsJSON, null, 2)], {
+  // TODO: Collapse format into essentials.
+  const blob = new Blob([JSON.stringify(state)], {
     type: 'application/json',
   });
   const url = window.URL.createObjectURL(blob);
@@ -26,11 +23,11 @@ export function exportTimeline(
 }
 
 export function importTimeline(
-  state: State,
+  _: State,
   action: types.forecast.ImportTimeline,
 ): State {
-  console.log(state, action);
-  throw new Error(`TODO`);
+  // TODO: Validate and rebuild.
+  return { ...action.state };
 }
 
 export function setTimelineCalendarDates(

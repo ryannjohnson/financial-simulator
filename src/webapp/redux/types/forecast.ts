@@ -1,6 +1,11 @@
 import { CalendarDateJSON } from '../../../calendar-date';
 import { AccountJSON, EffectJSON, EventJSON } from '../../../timeline';
-import { ChartSampleSize, Track, TrackItem } from '../reducer/forecast/props';
+import {
+  ChartSampleSize,
+  State,
+  Track,
+  TrackItem,
+} from '../reducer/forecast/props';
 
 export const ADD_ACCOUNT = 'FORECAST_ADD_ACCOUNT';
 export const ADD_EFFECT = 'FORECAST_ADD_EFFECT';
@@ -49,6 +54,7 @@ export interface ExportTimeline {
 }
 
 export interface ImportTimeline {
+  state: State;
   type: typeof IMPORT_TIMELINE;
 }
 
