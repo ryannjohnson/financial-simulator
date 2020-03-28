@@ -43,6 +43,7 @@ const containerStyle: React.CSSProperties = {
 
 const timelineContainerStyle: React.CSSProperties = {
   flexGrow: 1,
+  overflowY: 'auto',
   position: 'relative',
 };
 
