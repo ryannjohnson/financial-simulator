@@ -35,17 +35,6 @@ export function removeEvent(id: string): types.forecast.RemoveEvent {
   return { id, type: types.forecast.REMOVE_EVENT };
 }
 
-export function renderChart(
-  accountId: string,
-  sampleSize: ChartSampleSize,
-): types.forecast.RenderChart {
-  return {
-    accountId,
-    sampleSize,
-    type: types.forecast.RENDER_CHART,
-  };
-}
-
 export function selectAccount(
   accountId: string | null,
 ): types.forecast.SelectAccount {
@@ -72,6 +61,26 @@ export function setEventAccountIds(
     fromAccountId,
     toAccountId,
     type: types.forecast.SET_EVENT_ACCOUNT_IDS,
+  };
+}
+
+export function setTimelineCalendarDates(
+  startsOn: CalendarDate,
+  endsOn: CalendarDate,
+): types.forecast.SetTimelineCalendarDates {
+  return {
+    endsOn: endsOn.toJSON(),
+    startsOn: startsOn.toJSON(),
+    type: types.forecast.SET_TIMELINE_CALENDAR_DATES,
+  };
+}
+
+export function setTimelineChartSampleSize(
+  chartSampleSize: ChartSampleSize,
+): types.forecast.SetTimelineChartSampleSize {
+  return {
+    chartSampleSize,
+    type: types.forecast.SET_TIMELINE_CHART_SAMPLE_SIZE,
   };
 }
 
@@ -115,17 +124,6 @@ export function setTrackItemStartsOn(
     trackItem,
     startsOn: startsOn ? startsOn.toJSON() : null,
     type: types.forecast.SET_TRACK_ITEM_STARTS_ON,
-  };
-}
-
-export function setTimelineCalendarDates(
-  startsOn: CalendarDate,
-  endsOn: CalendarDate,
-): types.forecast.SetTimelineCalendarDates {
-  return {
-    endsOn: endsOn.toJSON(),
-    startsOn: startsOn.toJSON(),
-    type: types.forecast.SET_TIMELINE_CALENDAR_DATES,
   };
 }
 

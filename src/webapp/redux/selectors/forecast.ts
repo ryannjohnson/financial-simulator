@@ -6,6 +6,16 @@ export function getChart(state: State) {
   return state.forecast.chart;
 }
 
+export function getEffect(state: State, effectId: string) {
+  const effectJSON = state.forecast.effects[effectId];
+
+  if (!effectJSON) {
+    throw new Error(`Event by id "${effectId}" does not exist`);
+  }
+
+  return effectJSON;
+}
+
 export function getEvent(state: State, eventId: string) {
   const eventJSON = state.forecast.events[eventId];
 
@@ -107,6 +117,10 @@ export function getAccountWrapper(state: State, accountId: string) {
 
 export function getSelectedTrackItem(state: State) {
   return state.forecast.selectedTrackItem;
+}
+
+export function getTimelineChartSampleSize(state: State) {
+  return state.forecast.timeline.chartSampleSize;
 }
 
 export function getTimelineEndsOn(state: State) {

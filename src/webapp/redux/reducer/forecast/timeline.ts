@@ -43,3 +43,16 @@ export function setTimelineCalendarDates(
     },
   };
 }
+
+export function setTimelineChartSampleSize(
+  state: State,
+  action: types.forecast.SetTimelineChartSampleSize,
+): State {
+  return {
+    ...state,
+    timeline: {
+      ...state.timeline,
+      chartSampleSize: action.chartSampleSize,
+    },
+  };
+}

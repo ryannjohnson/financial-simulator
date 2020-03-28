@@ -44,44 +44,15 @@ export default class ChartComponent extends React.Component<Props> {
 
   render() {
     return (
-      <div style={containerStyle}>
-        <div style={attributionStyle}>
-          Chart by{' '}
-          <a href="https://www.tradingview.com/" style={attributionLinkStyle}>
-            https://www.tradingview.com/
-          </a>
-          .
-        </div>
-        <div
-          ref={ref => (this.containerRef = ref)}
-          style={chartContainerStyle}
-        />
-      </div>
+      <div ref={ref => (this.containerRef = ref)} style={containerStyle} />
     );
   }
 }
 
 const containerStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'column',
   height: '100%',
   position: 'relative',
   width: '100%',
-};
-
-const chartContainerStyle: React.CSSProperties = {
-  flexGrow: 1,
-  zIndex: 1,
-};
-
-const attributionStyle: React.CSSProperties = {
-  fontSize: 11,
-  padding: '5px',
-  textAlign: 'right',
-};
-
-const attributionLinkStyle: React.CSSProperties = {
-  color: colors.WHITE,
 };
 
 const theme = {

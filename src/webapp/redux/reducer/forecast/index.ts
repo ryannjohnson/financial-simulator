@@ -3,9 +3,8 @@ import { CalendarDate } from '../../../../calendar-date';
 import { EffectFormulaType } from '../../../../timeline';
 import * as types from '../../types';
 import * as account from './account';
-import * as chart from './chart';
 import * as event from './event';
-import { State, TrackItemType } from './props';
+import { ChartSampleSize, State, TrackItemType } from './props';
 import * as timeline from './timeline';
 
 export * from './props';
@@ -27,8 +26,6 @@ export function reducer(
       return timeline.importTimeline(state, action);
     case types.forecast.REMOVE_EVENT:
       return event.removeEvent(state, action);
-    case types.forecast.RENDER_CHART:
-      return chart.renderChart(state, action);
     case types.forecast.SELECT_ACCOUNT:
       return account.selectAccount(state, action);
     case types.forecast.SELECT_TRACK_ITEM:
@@ -37,6 +34,10 @@ export function reducer(
       return event.setEvent(state, action);
     case types.forecast.SET_EVENT_ACCOUNT_IDS:
       return event.setEventAccountIds(state, action);
+    case types.forecast.SET_TIMELINE_CALENDAR_DATES:
+      return timeline.setTimelineCalendarDates(state, action);
+    case types.forecast.SET_TIMELINE_CHART_SAMPLE_SIZE:
+      return timeline.setTimelineChartSampleSize(state, action);
     case types.forecast.SET_TRACK_ITEM_CALENDAR_DATES:
       switch (action.trackItem.type) {
         case TrackItemType.Event:
@@ -58,8 +59,6 @@ export function reducer(
         default:
           return state;
       }
-    case types.forecast.SET_TIMELINE_CALENDAR_DATES:
-      return timeline.setTimelineCalendarDates(state, action);
     default:
       return state;
   }
@@ -76,6 +75,7 @@ const initialState: State = {
   selectedTrackItem: null,
   timeline: {
     accountId: null,
+    chartSampleSize: ChartSampleSize.Month,
     endsOn: CalendarDate.today()
       .addYears(5)
       .toJSON(),
@@ -151,6 +151,7 @@ const demoState: State = {
   selectedTrackItem: null,
   timeline: {
     accountId: null,
+    chartSampleSize: ChartSampleSize.Month,
     endsOn: CalendarDate.today()
       .addYears(5)
       .toJSON(),

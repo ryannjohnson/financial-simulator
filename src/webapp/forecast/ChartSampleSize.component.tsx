@@ -6,29 +6,27 @@ import { ChartSampleSize } from '../redux/reducer/forecast/props';
 
 type Props = {
   accountId: string | null;
-  renderChart: typeof actions.forecast.renderChart;
+  selected: ChartSampleSize;
+  setValue: typeof actions.forecast.setTimelineChartSampleSize;
 };
 
-export default function RenderChartComponent({
+export default function ChartSampleSizeComponent({
   accountId,
-  renderChart,
+  selected,
+  setValue,
 }: Props) {
   if (!accountId) {
     return null;
   }
 
-  const [frequency, setFrequency] = React.useState(ChartSampleSize.Month);
-
-  const onClickHandler = (sampleSize: ChartSampleSize) => () => {
-    setFrequency(sampleSize);
-    renderChart(accountId, sampleSize);
-  };
+  const onClickHandler = (sampleSize: ChartSampleSize) => () =>
+    setValue(sampleSize);
 
   return (
     <div style={containerStyle}>
       {frequencies.map(({ label, value }) => (
         <Toggle
-          isSelected={frequency === value}
+          isSelected={selected === value}
           key={value}
           onClick={onClickHandler(value)}
           style={{ cursor: 'pointer' }}
@@ -44,6 +42,7 @@ const containerStyle: React.CSSProperties = {
   alignItems: 'center',
   display: 'flex',
   flexDirection: 'row',
+  height: '100%',
 };
 
 type ToggleProps = React.DetailedHTMLProps<
@@ -66,11 +65,15 @@ function Toggle({ children, isSelected, style, ...props }: ToggleProps) {
 }
 
 const toggleButtonStyle: React.CSSProperties = {
+  alignItems: 'center',
   border: '2px solid transparent',
   borderTopColor: 'transparent',
+  boxSizing: 'border-box',
+  display: 'flex',
   fontWeight: 700,
   fontSize: '12px',
-  padding: '8px 16px',
+  height: '100%',
+  padding: '0 16px',
 };
 
 const toggleButtonSelectedStyle: React.CSSProperties = {

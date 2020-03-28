@@ -17,6 +17,7 @@ export type State = {
   selectedTrackItem: TrackItem | null;
   timeline: {
     accountId: string | null;
+    chartSampleSize: ChartSampleSize;
     endsOn: CalendarDateJSON;
     startsOn: CalendarDateJSON;
   };
@@ -44,10 +45,10 @@ export enum TrackItemType {
 }
 
 export enum ChartSampleSize {
-  Day,
-  Week,
-  Month,
-  Year,
+  Day = 'DAILY',
+  Week = 'WEEKLY',
+  Month = 'MONTHLY',
+  Year = 'YEARLY',
 }
 
 export type ChartValue = {

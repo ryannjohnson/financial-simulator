@@ -1,9 +1,8 @@
 import * as React from 'react';
 
 import * as colors from '../colors';
-import ForecastChartContainer from './ForecastChart.container';
+import ChartFrameContainer from './ChartFrame.container';
 import InspectorContainer from './Inspector.container';
-import RenderChartContainer from './RenderChart.container';
 import TimelineFrameContainer from './timeline/TimelineFrame.container';
 
 export default function ForecastComponent() {
@@ -14,10 +13,7 @@ export default function ForecastComponent() {
           <InspectorContainer />
         </div>
         <div style={chartContainerStyle}>
-          <ForecastChartContainer />
-          <div style={renderChartContainerStyle}>
-            <RenderChartContainer />
-          </div>
+          <ChartFrameContainer />
         </div>
       </div>
       <div style={timelineFrameContainerStyle}>
@@ -55,13 +51,6 @@ const chartContainerStyle: React.CSSProperties = {
   flexGrow: 1,
   position: 'relative',
   zIndex: 4,
-};
-
-const renderChartContainerStyle: React.CSSProperties = {
-  left: 0,
-  position: 'absolute',
-  top: 0,
-  zIndex: 12,
 };
 
 const timelineFrameContainerStyle: React.CSSProperties = {

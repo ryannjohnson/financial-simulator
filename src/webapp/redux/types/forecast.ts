@@ -14,13 +14,14 @@ export const ADD_TRACK = 'FORECAST_ADD_TRACK';
 export const EXPORT_TIMELINE = 'FORECAST_EXPORT_TIMELINE';
 export const IMPORT_TIMELINE = 'FORECAST_IMPORT_TIMELINE';
 export const REMOVE_EVENT = 'FORECAST_REMOVE_EVENT';
-export const RENDER_CHART = 'FORECAST_RENDER_CHART';
 export const SELECT_ACCOUNT = 'FORECAST_SELECT_ACCOUNT';
 export const SELECT_TRACK_ITEM = 'FORECAST_SELECT_TRACK_ITEM';
 export const SET_EVENT = 'FORECAST_SET_EVENT';
 export const SET_EVENT_ACCOUNT_IDS = 'FORECAST_SET_EVENT_ACCOUNT_IDS';
 export const SET_TIMELINE_CALENDAR_DATES =
   'FORECAST_SET_TIMELINE_CALENDAR_DATES';
+export const SET_TIMELINE_CHART_SAMPLE_SIZE =
+  'FORECAST_SET_TIMELINE_CHART_SAMPLE_SIZE';
 export const SET_TRACK = 'FORECAST_SET_TRACK';
 export const SET_TRACK_ITEM_CALENDAR_DATES =
   'FORECAST_SET_TRACK_ITEM_CALENDAR_DATES';
@@ -61,12 +62,6 @@ export interface ImportTimeline {
 export interface RemoveEvent {
   id: string;
   type: typeof REMOVE_EVENT;
-}
-
-export interface RenderChart {
-  accountId: string;
-  sampleSize: ChartSampleSize;
-  type: typeof RENDER_CHART;
 }
 
 export interface SelectAccount {
@@ -122,6 +117,11 @@ export interface SetTimelineCalendarDates {
   type: typeof SET_TIMELINE_CALENDAR_DATES;
 }
 
+export interface SetTimelineChartSampleSize {
+  chartSampleSize: ChartSampleSize;
+  type: typeof SET_TIMELINE_CHART_SAMPLE_SIZE;
+}
+
 export interface SetTrack {
   track: Track;
   type: typeof SET_TRACK;
@@ -135,13 +135,13 @@ export type Action =
   | ExportTimeline
   | ImportTimeline
   | RemoveEvent
-  | RenderChart
   | SelectAccount
   | SelectTrackItem
   | SetEvent
   | SetEventAccountIds
+  | SetTimelineCalendarDates
+  | SetTimelineChartSampleSize
   | SetTrackItemCalendarDates
   | SetTrackItemEndsOn
   | SetTrackItemStartsOn
-  | SetTimelineCalendarDates
   | SetTrack;
