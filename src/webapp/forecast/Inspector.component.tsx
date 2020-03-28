@@ -11,6 +11,7 @@ import {
   RecurringSumFormula,
 } from '../../timeline';
 import { generateLocalUUID } from '../../utils';
+import * as colors from '../colors';
 import * as actions from '../redux/actions';
 import { TrackItem, TrackItemType } from '../redux/reducer/forecast/props';
 import Row from './components/Row.component';
@@ -57,7 +58,7 @@ export default function InspectorComponent({
   };
 
   return (
-    <div>
+    <div style={containerStyle}>
       <button onClick={exportTimeline}>Export</button>
       <input onChange={importTimelineHandler} type="file" />
 
@@ -126,6 +127,10 @@ export default function InspectorComponent({
     </div>
   );
 }
+
+const containerStyle: React.CSSProperties = {
+  background: colors.DARKBLACK,
+};
 
 function TrackItemComponent(props: TrackItem) {
   switch (props.type) {

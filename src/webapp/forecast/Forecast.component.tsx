@@ -28,9 +28,12 @@ export default function ForecastComponent() {
 }
 
 const containerStyle: React.CSSProperties = {
+  background: colors.BLACK,
+  color: colors.WHITE,
   display: 'flex',
   flexDirection: 'column',
   height: '100%',
+  scrollbarColor: `${colors.hexToRgba(colors.WHITE, 0.3)} ${colors.BLACK}`,
 };
 
 const topContainerStyle: React.CSSProperties = {
@@ -42,9 +45,9 @@ const topContainerStyle: React.CSSProperties = {
 };
 
 const inspectorContainerStyle: React.CSSProperties = {
-  paddingRight: '30px',
   position: 'relative',
   overflow: 'auto',
+  width: '275px',
   zIndex: 5,
 };
 
@@ -62,7 +65,6 @@ const renderChartContainerStyle: React.CSSProperties = {
 };
 
 const timelineFrameContainerStyle: React.CSSProperties = {
-  background: colors.DARK_GRAY,
   height: '30%',
   maxHeight: '500px',
   minHeight: '300px',

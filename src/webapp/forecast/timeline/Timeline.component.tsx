@@ -32,7 +32,7 @@ export default function TimelineComponent({
     <div style={containerStyle}>
       <div style={headersContainerStyle}>
         {trackIds.map(trackId => (
-          <div key={trackId} style={trackContainerStyle}>
+          <div key={trackId} style={headerContainerStyle}>
             <div style={trackHeaderStyle}>TODO: Add name</div>
           </div>
         ))}
@@ -46,6 +46,7 @@ export default function TimelineComponent({
             <div style={trackBodyStyle} />
           </div>
         ))}
+        <div style={tracksBufferStyle} />
         <div style={spansContainerStyle}>
           {trackItems.map(({ id, type }) => (
             <SpanContainer id={id} key={`${type}-${id}`} type={type} />
@@ -59,33 +60,45 @@ export default function TimelineComponent({
 const containerStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'row',
-  minHeight: '100%',
+  height: '100%',
   overflowX: 'hidden',
-  overflowY: 'auto',
+  overflowY: 'scroll',
   position: 'absolute',
   width: '100%',
 };
 
+const rowStyle: React.CSSProperties = {
+  alignItems: 'center',
+  borderBottom: `solid ${colors.LIGHTBLACK2} 0.5px`,
+  boxSizing: 'border-box',
+  display: 'flex',
+  flexDirection: 'row',
+  height: `${TRACK_PIXEL_HEIGHT}px`,
+};
+
 const headersContainerStyle: React.CSSProperties = {
-  background: colors.whiteOverlay(5),
   color: colors.WHITE,
   width: '275px',
 };
 
+const headerContainerStyle: React.CSSProperties = {
+  ...rowStyle,
+};
+
 const tracksContainerStyle: React.CSSProperties = {
   flexGrow: 1,
-  overflow: 'hidden',
   position: 'relative',
   zIndex: 5,
 };
 
 const trackContainerStyle: React.CSSProperties = {
-  alignItems: 'center',
-  borderBottom: `solid ${colors.whiteOverlay(2)} 0.5px`,
-  boxSizing: 'border-box',
-  display: 'flex',
-  flexDirection: 'row',
-  height: `${TRACK_PIXEL_HEIGHT}px`,
+  ...rowStyle,
+  background: colors.DARKBLACK,
+};
+
+const tracksBufferStyle: React.CSSProperties = {
+  background: colors.DARKBLACK,
+  height: 'calc(100% - 50px)',
 };
 
 const trackHeaderStyle: React.CSSProperties = {
@@ -99,7 +112,6 @@ const trackBodyStyle: React.CSSProperties = {
 };
 
 const spansContainerStyle: React.CSSProperties = {
-  height: '100%',
   left: 0,
   position: 'absolute',
   top: 0,

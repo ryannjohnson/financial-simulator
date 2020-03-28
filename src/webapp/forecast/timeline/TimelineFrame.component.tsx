@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { Account } from '../../../timeline';
 import { generateLocalUUID } from '../../../utils';
+import * as colors from '../../colors';
 import * as actions from '../../redux/actions';
 import AccountTabContainer from './AccountTab.container';
 import TimelineContainer from './Timeline.container';
@@ -35,6 +36,7 @@ export default function TimelineFrameComponent({
 }
 
 const containerStyle: React.CSSProperties = {
+  background: colors.BLACK,
   display: 'flex',
   flexDirection: 'column',
   minHeight: '100%',
@@ -43,7 +45,6 @@ const containerStyle: React.CSSProperties = {
 
 const timelineContainerStyle: React.CSSProperties = {
   flexGrow: 1,
-  overflowY: 'auto',
   position: 'relative',
 };
 

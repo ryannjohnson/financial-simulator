@@ -17,17 +17,24 @@ export type Value = {
 export default class ChartComponent extends React.Component<Props> {
   private chart: lightweightCharts.IChartApi | null = null;
   private containerRef: HTMLDivElement | null = null;
-  private lineSeries: lightweightCharts.ISeriesApi<'Line'> | null = null;
+  private series: lightweightCharts.ISeriesApi<'Area'> | null = null;
 
   componentDidMount() {
     this.chart = lightweightCharts.createChart(this.containerRef!, {
       localization: { priceFormatter },
+      priceScale: {
+        borderVisible: false,
+      },
+      timeScale: {
+        borderVisible: false,
+      },
+      ...theme.chart,
     });
-    this.lineSeries = this.chart.addLineSeries();
+    this.series = this.chart.addAreaSeries(theme.series);
   }
 
   componentDidUpdate() {
-    this.lineSeries!.setData(this.props.values);
+    this.series!.setData(this.props.values);
     this.chart!.timeScale().fitContent();
   }
 
@@ -40,7 +47,7 @@ export default class ChartComponent extends React.Component<Props> {
       <div style={containerStyle}>
         <div style={attributionStyle}>
           Chart by{' '}
-          <a href="https://www.tradingview.com/">
+          <a href="https://www.tradingview.com/" style={attributionLinkStyle}>
             https://www.tradingview.com/
           </a>
           .
@@ -68,10 +75,44 @@ const chartContainerStyle: React.CSSProperties = {
 };
 
 const attributionStyle: React.CSSProperties = {
-  background: colors.WHITE,
   fontSize: 11,
   padding: '5px',
   textAlign: 'right',
+};
+
+const attributionLinkStyle: React.CSSProperties = {
+  color: colors.WHITE,
+};
+
+const theme = {
+  chart: {
+    layout: {
+      backgroundColor: colors.BLACK, // '#2B2B43',
+      fontFamily:
+        '-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sansSerif',
+      lineColor: colors.WHITE, // '#2B2B43',
+      textColor: colors.WHITE2, // '#D9D9D9',
+    },
+    watermark: {
+      color: colors.DARKBLACK, // 'rgba(0, 0, 0, 0)',
+    },
+    crosshairs: {
+      color: colors.GREY, // '#758696',
+    },
+    grid: {
+      vertLines: {
+        color: colors.LIGHTBLACK2, // '#2B2B43',
+      },
+      horzLines: {
+        color: colors.LIGHTBLACK3, // '#363C4E',
+      },
+    },
+  },
+  series: {
+    topColor: colors.hexToRgba(colors.BR_BLUE, 0.56), // 'rgba(32, 147, 266, 0.56)',
+    bottomColor: colors.hexToRgba(colors.BR_BLUE, 0.04), // 'rgba(32, 147, 266, 0.04)',
+    lineColor: colors.hexToRgba(colors.BR_BLUE, 1), // 'rgba(32, 147, 266, 1)',
+  },
 };
 
 const formatter = Intl.NumberFormat('en-US', {
