@@ -77,8 +77,11 @@ const rowStyle: React.CSSProperties = {
 };
 
 const headersContainerStyle: React.CSSProperties = {
+  background: colors.BLACK,
   color: colors.WHITE,
+  position: 'relative',
   width: '275px',
+  zIndex: 6,
 };
 
 const headerContainerStyle: React.CSSProperties = {

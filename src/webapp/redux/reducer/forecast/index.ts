@@ -150,7 +150,7 @@ const demoState: State = {
   events: {},
   selectedTrackItem: null,
   timeline: {
-    accountId: null,
+    accountId: 'account-checking-1',
     chartSampleSize: ChartSampleSize.Month,
     endsOn: CalendarDate.today()
       .addYears(5)

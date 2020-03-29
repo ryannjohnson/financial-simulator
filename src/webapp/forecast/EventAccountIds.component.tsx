@@ -3,9 +3,8 @@ import * as React from 'react';
 import { CalendarDateJSON } from '../../calendar-date';
 import { AccountJSON } from '../../timeline';
 import FormElementComponent from '../components/FormElement.component';
-import Row from '../components/Row.component';
-import RowItem from '../components/RowItem.component';
 import * as actions from '../redux/actions';
+import styles from './EventAccountIds.css';
 
 type Props = {
   accounts: AccountJSON[];
@@ -28,34 +27,32 @@ export default function EventAccountIds({
   ];
 
   return (
-    <Row>
-      <RowItem>
-        <FormElementComponent title="From account">
-          <Dropdown
-            accounts={dropdownAccounts.filter(anyExcept(toAccountId))}
-            accountId={fromAccountId}
-            onChange={accountId =>
-              setEventAccountIds(eventId, accountId, toAccountId)
-            }
-          />
-        </FormElementComponent>
-
-        <FormElementComponent title="To account">
-          <Dropdown
-            accounts={dropdownAccounts.filter(anyExcept(fromAccountId))}
-            accountId={toAccountId}
-            onChange={accountId =>
-              setEventAccountIds(eventId, fromAccountId, accountId)
-            }
-          />
-        </FormElementComponent>
-      </RowItem>
+    <>
+      <FormElementComponent title="From account">
+        <Dropdown
+          accounts={dropdownAccounts.filter(anyExcept(toAccountId))}
+          accountId={fromAccountId}
+          onChange={accountId =>
+            setEventAccountIds(eventId, accountId, toAccountId)
+          }
+        />
+      </FormElementComponent>
       <button
+        className={styles.swap}
         onClick={() => setEventAccountIds(eventId, toAccountId, fromAccountId)}
       >
-        Swap
+        ⇅
       </button>
-    </Row>
+      <FormElementComponent title="To account">
+        <Dropdown
+          accounts={dropdownAccounts.filter(anyExcept(fromAccountId))}
+          accountId={toAccountId}
+          onChange={accountId =>
+            setEventAccountIds(eventId, fromAccountId, accountId)
+          }
+        />
+      </FormElementComponent>
+    </>
   );
 }
 
@@ -82,7 +79,11 @@ function Dropdown({ accounts, accountId, onChange }: DropdownProps) {
   };
 
   return (
-    <select onChange={onChangeHandler} value={accountId || ''}>
+    <select
+      className={styles['dropdown-container']}
+      onChange={onChangeHandler}
+      value={accountId || ''}
+    >
       {[...accounts].map(account => {
         return (
           <option key={account.id || ''} value={account.id || ''}>

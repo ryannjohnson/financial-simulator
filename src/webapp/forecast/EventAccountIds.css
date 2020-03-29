@@ -1,0 +1,21 @@
+@value colors: "../colors.css";
+@value WHITE from colors;
+
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.swap {
+  background: transparent;
+  border: 0 solid transparent;
+  color: WHITE;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.dropdown-container {
+  composes: input from "../components/Input.css";
+  width: 100%;
+}

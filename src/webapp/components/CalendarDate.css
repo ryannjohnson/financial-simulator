@@ -1,3 +1,7 @@
 .input {
   composes: input from "./Input.css";
 }
+
+.wrapper {
+  display: block;
+}

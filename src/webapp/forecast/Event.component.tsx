@@ -7,8 +7,6 @@ import CalendarDateComponent from '../components/CalendarDate.component';
 import StringComponent from '../components/String.component';
 import NullableCalendarDateComponent from '../components/NullableCalendarDate.component';
 import FormElementComponent from '../components/FormElement.component';
-import Row from '../components/Row.component';
-import RowItem from '../components/RowItem.component';
 import EventAccountIdsContainer from './EventAccountIds.container';
 import FormulaComponent from './formula/Formula.component';
 
@@ -34,64 +32,54 @@ export default function EventComponent(props: Props) {
         <button onClick={() => removeEvent(id)}>Remove</button> {formulaType}
       </div>
       <EventAccountIdsContainer eventId={id} />
-      <Row>
-        <RowItem>
-          <FormElementComponent title="Name">
-            <StringComponent
-              setValue={value => {
-                setEvent(timeline.Event.fromJSON({ ...props, name: value }));
-              }}
-              value={name}
-            />
-          </FormElementComponent>
-        </RowItem>
-      </Row>
-      <Row>
-        <RowItem>
-          <FormElementComponent title="Starts">
-            <CalendarDateComponent
-              setValue={value => {
-                let newEndsOn = endsOn;
-                if (newEndsOn) {
-                  if (CalendarDate.fromJSON(newEndsOn).daysBefore(value) > 0) {
-                    newEndsOn = value.toJSON();
-                  }
-                }
-                setEvent(
-                  timeline.Event.fromJSON({
-                    ...props,
-                    endsOn: newEndsOn,
-                    startsOn: value.toJSON(),
-                  }),
-                );
-              }}
-              value={startsOn}
-            />
-          </FormElementComponent>
-        </RowItem>
-        <RowItem>
-          <FormElementComponent title="Ends">
-            <NullableCalendarDateComponent
-              setValue={value => {
-                let newStartsOn = startsOn;
-                if (value) {
-                  if (CalendarDate.fromJSON(startsOn).daysAfter(value) > 0) {
-                    newStartsOn = value.toJSON();
-                  }
-                }
-                setEvent(
-                  timeline.Event.fromJSON({
-                    ...props,
-                    endsOn: value ? value.toJSON() : null,
-                    startsOn: newStartsOn,
-                  }),
-                );
-              }}
-              value={endsOn}
-            />
-          </FormElementComponent>
-        </RowItem>
-      </Row>
+      <FormElementComponent title="Name">
+        <StringComponent
+          setValue={value => {
+            setEvent(timeline.Event.fromJSON({ ...props, name: value }));
+          }}
+          value={name}
+        />
+      </FormElementComponent>
+      <FormElementComponent title="Starts">
+        <CalendarDateComponent
+          setValue={value => {
+            let newEndsOn = endsOn;
+            if (newEndsOn) {
+              if (CalendarDate.fromJSON(newEndsOn).daysBefore(value) > 0) {
+                newEndsOn = value.toJSON();
+              }
+            }
+            setEvent(
+              timeline.Event.fromJSON({
+                ...props,
+                endsOn: newEndsOn,
+                startsOn: value.toJSON(),
+              }),
+            );
+          }}
+          value={startsOn}
+        />
+      </FormElementComponent>
+      <FormElementComponent title="Ends">
+        <NullableCalendarDateComponent
+          setValue={value => {
+            let newStartsOn = startsOn;
+            if (value) {
+              if (CalendarDate.fromJSON(startsOn).daysAfter(value) > 0) {
+                newStartsOn = value.toJSON();
+              }
+            }
+            setEvent(
+              timeline.Event.fromJSON({
+                ...props,
+                endsOn: value ? value.toJSON() : null,
+                startsOn: newStartsOn,
+              }),
+            );
+          }}
+          value={endsOn}
+        />
+      </FormElementComponent>
       <FormulaComponent
         formula={formula}
         formulaType={formulaType}
