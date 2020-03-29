@@ -18,6 +18,8 @@ import GenericChartComponent, {
 } from '../components/Chart.component';
 import { ChartSampleSize } from '../redux/reducer/forecast/props';
 
+export default React.memo(ChartComponent, areEqual);
+
 type Props = {
   accountId: string | null;
   chartSampleSize: ChartSampleSize;
@@ -28,7 +30,7 @@ type Props = {
   startsOn: CalendarDateJSON;
 };
 
-export default function ChartComponent({
+export function ChartComponent({
   accountId,
   chartSampleSize,
   currency,
@@ -127,3 +129,40 @@ function toTime(date: CalendarDate) {
     day: date.day,
   };
 }
+
+function areEqual(a: Props, b: Props): boolean {
+  for (const key of easyKeys) {
+    if (a[key] !== b[key]) {
+      return false;
+    }
+  }
+
+  if (
+    a.events.length !== b.events.length ||
+    a.effects.length !== b.effects.length
+  ) {
+    return false;
+  }
+
+  for (let i = 0; i < a.events.length; i++) {
+    if (a.events[i] !== b.events[i]) {
+      return false;
+    }
+  }
+
+  for (let i = 0; i < a.effects.length; i++) {
+    if (a.effects[i] !== b.effects[i]) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+const easyKeys: Array<keyof Props> = [
+  'accountId',
+  'chartSampleSize',
+  'currency',
+  'endsOn',
+  'startsOn',
+];
