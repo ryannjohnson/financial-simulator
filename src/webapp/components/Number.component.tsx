@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styles from './Input.css';
 
-type Props = {
+export type Props = {
   min?: number;
   setValue: (value: number) => void;
   step?: number;

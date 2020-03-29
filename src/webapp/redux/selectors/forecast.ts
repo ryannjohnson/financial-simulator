@@ -1,4 +1,12 @@
 import { CalendarDateJSON } from '../../../calendar-date';
+import {
+  CompoundingEffectFormula,
+  Effect,
+  Event,
+  LumpSumFormula,
+  MonthlySumFormula,
+  RecurringSumFormula,
+} from '../../../timeline';
 import { State } from '../reducer';
 import { TrackItem, TrackItemType } from '../reducer/forecast/props';
 
@@ -32,6 +40,7 @@ export type TrackItemDetails = {
   name: string;
   orientation: Orientation;
   type: TrackItemType;
+  shortDescription: string;
   startsOn: CalendarDateJSON | null;
   trackIndex: number;
 };
@@ -51,37 +60,88 @@ export function getTrackItemDetails(
   let orientation = Orientation.Neutral;
 
   if (trackItem.type === TrackItemType.Effect) {
-    const effect = state.forecast.effects[trackItem.id];
+    const effectJSON = state.forecast.effects[trackItem.id];
+    const effect = Effect.fromJSON(effectJSON);
     return {
       ...trackItem,
-      endsOn: effect.endsOn,
-      name: effect.name,
+      shortDescription: effectToShortDescription(effect),
+      endsOn: effectJSON.endsOn,
+      name: effectJSON.name,
       orientation,
-      startsOn: effect.startsOn,
+      startsOn: effectJSON.startsOn,
       trackIndex,
     };
   }
 
   if (trackItem.type === TrackItemType.Event) {
-    const event = state.forecast.events[trackItem.id];
+    const eventJSON = state.forecast.events[trackItem.id];
+    const event = Event.fromJSON(eventJSON);
 
-    if (event.fromAccountId === accountId) {
+    if (eventJSON.fromAccountId === accountId) {
       orientation = Orientation.Out;
-    } else if (event.toAccountId === accountId) {
+    } else if (eventJSON.toAccountId === accountId) {
       orientation = Orientation.In;
     }
 
     return {
       ...trackItem,
-      endsOn: event.endsOn,
-      name: event.name,
+      endsOn: eventJSON.endsOn,
+      name: eventJSON.name,
       orientation,
-      startsOn: event.startsOn,
+      shortDescription: eventToShortDescription(event, accountId),
+      startsOn: eventJSON.startsOn,
       trackIndex,
     };
   }
 
   throw new Error(`TrackItemType "${trackItem.type}" is not implemented yet`);
+}
+
+function effectToShortDescription(effect: Effect): string {
+  if (effect.formula instanceof CompoundingEffectFormula) {
+    const sign = effect.formula.nominalAnnualInterestRate >= 0 ? '+' : '';
+    let percent = (effect.formula.nominalAnnualInterestRate * 100).toFixed(1);
+    const frequency = effect.formula.compoundingFrequencyPerYear;
+
+    if (frequency === null) {
+      return `${sign}${percent}% compounded continuously`;
+    }
+
+    const s = frequency === 1 ? '' : 's';
+    return `${sign}${percent}% compounded ${frequency} time${s} annually`;
+  }
+
+  return '';
+}
+
+function eventToShortDescription(event: Event, accountId: string): string {
+  let sign: string;
+
+  if (event.fromAccountId === accountId) {
+    sign = '-';
+  } else if (event.toAccountId === accountId) {
+    sign = '+';
+  } else {
+    throw new Error(
+      `Event "${event.id}" doesn't belong to account "${accountId}"`,
+    );
+  }
+
+  if (event.formula instanceof LumpSumFormula) {
+    return `${sign}${event.formula.amount.toString()} one-time`;
+  }
+
+  if (event.formula instanceof MonthlySumFormula) {
+    return `${sign}${event.formula.amount.toString()} monthly`;
+  }
+
+  if (event.formula instanceof RecurringSumFormula) {
+    return `${sign}${event.formula.amount.toString()} every ${
+      event.formula.everyXDays
+    } days`;
+  }
+
+  return '';
 }
 
 export function getTrackItemTrackIndex(

@@ -14,6 +14,7 @@ export default function LumpSumComponent({
       <FormElementComponent title="Amount">
         <AmountComponent
           {...amount}
+          min={0}
           setAmount={amount => setFormula(new LumpSumFormula(amount))}
         />
       </FormElementComponent>

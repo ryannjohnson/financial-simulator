@@ -123,7 +123,7 @@ export default function InspectorComponent({
 
 const containerStyle: React.CSSProperties = {
   background: colors.DARKBLACK,
-  height: '100%',
+  minHeight: '100%',
 };
 
 function TrackItemComponent(props: TrackItem) {

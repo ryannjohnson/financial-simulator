@@ -145,7 +145,7 @@ const demoState: State = {
         nominalAnnualInterestRate: -0.03,
       },
       formulaType: EffectFormulaType.Compounding,
-      name: 'Inflation Effect',
+      name: 'Inflation',
       startsOn: null,
     },
     'effect-interest-1': {
@@ -156,7 +156,7 @@ const demoState: State = {
         nominalAnnualInterestRate: 0.1,
       },
       formulaType: EffectFormulaType.Compounding,
-      name: 'Investment Effect',
+      name: 'Investment',
       startsOn: null,
     },
   },

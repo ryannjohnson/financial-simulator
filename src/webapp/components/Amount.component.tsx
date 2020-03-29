@@ -1,27 +1,23 @@
 import * as React from 'react';
 
 import { Amount, AmountJSON } from '../../amount';
-import styles from './Input.css';
+import NumberComponent, { Props as NumberProps } from './Number.component';
 
-type Props = AmountJSON & {
-  setAmount: (amount: Amount) => void;
-};
+type Props = Omit<NumberProps, 'setValue' | 'step'> &
+  AmountJSON & {
+    setAmount: (amount: Amount) => void;
+  };
 
-export default function AmountComponent({ currency, setAmount, value }: Props) {
+export default function AmountComponent({
+  currency,
+  setAmount,
+  ...props
+}: Props) {
   return (
-    <input
-      className={styles.input}
-      onChange={event =>
-        setAmount(
-          Amount.fromJSON({
-            currency,
-            value: parseInt(event.target.value, 10),
-          }),
-        )
-      }
+    <NumberComponent
+      {...props}
+      setValue={value => setAmount(Amount.fromJSON({ currency, value }))}
       step={1}
-      type="number"
-      value={value}
     />
   );
 }

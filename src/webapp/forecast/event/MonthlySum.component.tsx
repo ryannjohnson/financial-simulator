@@ -14,6 +14,7 @@ export default function MonthlySumComponent({
       <FormElementComponent title="Amount">
         <AmountComponent
           {...amount}
+          min={0}
           setAmount={newAmount => {
             setFormula(new timeline.MonthlySumFormula(newAmount));
           }}

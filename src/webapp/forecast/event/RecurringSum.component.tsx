@@ -16,6 +16,7 @@ export default function RecurringSumComponent({
       <FormElementComponent title="Amount">
         <AmountComponent
           {...amount}
+          min={0}
           setAmount={newAmount => {
             setFormula(new timeline.RecurringSumFormula(newAmount, everyXDays));
           }}
@@ -31,6 +32,7 @@ export default function RecurringSumComponent({
               }),
             );
           }}
+          min={0}
           step={1}
           value={everyXDays}
         />

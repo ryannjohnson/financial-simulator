@@ -19,6 +19,7 @@ const mapState = (state: State, props: Props) => {
     endsOn,
     name,
     orientation,
+    shortDescription,
     startsOn,
     trackIndex,
   } = selectors.forecast.getTrackItemDetails(
@@ -38,8 +39,9 @@ const mapState = (state: State, props: Props) => {
     accountId: accountWrapper.account.id,
     endsOn,
     isSelected,
-    label: name || `[${props.type} ${props.id}]`,
+    name,
     orientation,
+    shortDescription,
     startsOn,
     timelineEndsOn: state.forecast.timeline.endsOn,
     timelineStartsOn: state.forecast.timeline.startsOn,

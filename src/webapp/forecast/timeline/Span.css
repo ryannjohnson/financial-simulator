@@ -54,6 +54,11 @@
   z-index: 10;
 }
 
+.name {
+  font-weight: 700;
+  margin-right: 10px;
+}
+
 .bottom {
   flex-grow: 1;
   position: relative;

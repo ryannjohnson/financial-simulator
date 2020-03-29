@@ -15,12 +15,13 @@ type Props = {
   accountId: string;
   endsOn: CalendarDateJSON | null;
   isSelected: boolean;
-  label: string;
+  name: string;
   orientation: Orientation;
   selectTrackItem: typeof actions.forecast.selectTrackItem;
   setCalendarDates: typeof actions.forecast.setTrackItemCalendarDates;
   setEndsOn: typeof actions.forecast.setTrackItemEndsOn;
   setStartsOn: typeof actions.forecast.setTrackItemStartsOn;
+  shortDescription: string;
   startsOn: CalendarDateJSON | null;
   timelineEndsOn: CalendarDateJSON;
   timelineStartsOn: CalendarDateJSON;
@@ -275,7 +276,12 @@ export default class SpanComponent extends React.Component<Props, State> {
           className={classnames(styles['move-handle'], selected)}
           ref={ref => (this.grabRef = ref)}
         >
-          {this.props.label}
+          {this.props.name !== '' ? (
+            <span className={styles.name}>{this.props.name}</span>
+          ) : (
+            ''
+          )}
+          <em>{this.props.shortDescription}</em>
         </div>
         <div className={styles.bottom}>
           <div
