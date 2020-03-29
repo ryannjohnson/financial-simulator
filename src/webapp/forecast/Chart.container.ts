@@ -1,3 +1,4 @@
+import debounceRender from 'react-debounce-render';
 import { connect } from 'react-redux';
 
 import { EffectJSON, EventJSON } from '../../timeline';
@@ -42,4 +43,6 @@ const mapState = (state: State) => {
   };
 };
 
-export default connect(mapState)(ChartComponent);
+const debounced = debounceRender(ChartComponent, 100, { leading: false });
+
+export default connect(mapState)(debounced);

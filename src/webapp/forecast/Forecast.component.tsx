@@ -42,7 +42,8 @@ const topContainerStyle: React.CSSProperties = {
 
 const inspectorContainerStyle: React.CSSProperties = {
   position: 'relative',
-  overflow: 'auto',
+  overflowX: 'hidden',
+  overflowY: 'scroll',
   width: '275px',
   zIndex: 5,
 };
