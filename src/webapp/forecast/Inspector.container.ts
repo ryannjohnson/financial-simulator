@@ -19,6 +19,7 @@ const mapState = (state: State) => {
 };
 
 const mapDispatch = {
+  addEffect: actions.forecast.addEffect,
   addEvent: actions.forecast.addEvent,
   exportTimeline: actions.forecast.exportTimeline,
   importTimeline: actions.forecast.importTimeline,

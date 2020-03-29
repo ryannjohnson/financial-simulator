@@ -13,9 +13,12 @@ export const ADD_EVENT = 'FORECAST_ADD_EVENT';
 export const ADD_TRACK = 'FORECAST_ADD_TRACK';
 export const EXPORT_TIMELINE = 'FORECAST_EXPORT_TIMELINE';
 export const IMPORT_TIMELINE = 'FORECAST_IMPORT_TIMELINE';
+export const REMOVE_EFFECT = 'FORECAST_REMOVE_EFFECT';
+export const REMOVE_EFFECT_FROM_ACCOUNT = 'FORECAST_REMOVE_EFFECT_FROM_ACCOUNT';
 export const REMOVE_EVENT = 'FORECAST_REMOVE_EVENT';
 export const SELECT_ACCOUNT = 'FORECAST_SELECT_ACCOUNT';
 export const SELECT_TRACK_ITEM = 'FORECAST_SELECT_TRACK_ITEM';
+export const SET_EFFECT = 'FORECAST_SET_EFFECT';
 export const SET_EVENT = 'FORECAST_SET_EVENT';
 export const SET_EVENT_ACCOUNT_IDS = 'FORECAST_SET_EVENT_ACCOUNT_IDS';
 export const SET_TIMELINE_CALENDAR_DATES =
@@ -59,6 +62,17 @@ export interface ImportTimeline {
   type: typeof IMPORT_TIMELINE;
 }
 
+export interface RemoveEffect {
+  effectId: string;
+  type: typeof REMOVE_EFFECT;
+}
+
+export interface RemoveEffectFromAccount {
+  accountId: string;
+  effectId: string;
+  type: typeof REMOVE_EFFECT_FROM_ACCOUNT;
+}
+
 export interface RemoveEvent {
   id: string;
   type: typeof REMOVE_EVENT;
@@ -74,6 +88,11 @@ export interface SelectTrackItem {
   type: typeof SELECT_TRACK_ITEM;
 }
 
+export interface SetEffect {
+  effect: EffectJSON;
+  type: typeof SET_EFFECT;
+}
+
 /**
  * Used from the event pane, not from the timeline.
  */
@@ -81,6 +100,7 @@ export interface SetEvent {
   event: EventJSON;
   type: typeof SET_EVENT;
 }
+
 export interface SetEventAccountIds {
   eventId: string;
   fromAccountId: string | null;
@@ -134,9 +154,12 @@ export type Action =
   | AddTrack
   | ExportTimeline
   | ImportTimeline
+  | RemoveEffect
+  | RemoveEffectFromAccount
   | RemoveEvent
   | SelectAccount
   | SelectTrackItem
+  | SetEffect
   | SetEvent
   | SetEventAccountIds
   | SetTimelineCalendarDates

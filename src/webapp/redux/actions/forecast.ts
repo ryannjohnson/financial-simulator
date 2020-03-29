@@ -1,5 +1,5 @@
 import { CalendarDate } from '../../../calendar-date';
-import { Account, Event } from '../../../timeline';
+import { Account, Effect, Event } from '../../../timeline';
 import {
   ChartSampleSize,
   State,
@@ -10,6 +10,17 @@ import * as types from '../types';
 
 export function addAccount(account: Account): types.forecast.AddAccount {
   return { account: account.toJSON(), type: types.forecast.ADD_ACCOUNT };
+}
+
+export function addEffect(
+  accountId: string,
+  effect: Effect,
+): types.forecast.AddEffect {
+  return {
+    accountId,
+    effect: effect.toJSON(),
+    type: types.forecast.ADD_EFFECT,
+  };
 }
 
 export function addEvent(event: Event): types.forecast.AddEvent {
@@ -31,6 +42,21 @@ export function importTimeline(state: State): types.forecast.ImportTimeline {
   return { state, type: types.forecast.IMPORT_TIMELINE };
 }
 
+export function removeEffect(effectId: string): types.forecast.RemoveEffect {
+  return { effectId, type: types.forecast.REMOVE_EFFECT };
+}
+
+export function removeEffectFromAccount(
+  effectId: string,
+  accountId: string,
+): types.forecast.RemoveEffectFromAccount {
+  return {
+    accountId,
+    effectId,
+    type: types.forecast.REMOVE_EFFECT_FROM_ACCOUNT,
+  };
+}
+
 export function removeEvent(id: string): types.forecast.RemoveEvent {
   return { id, type: types.forecast.REMOVE_EVENT };
 }
@@ -45,6 +71,10 @@ export function selectTrackItem(
   trackItem: TrackItem | null,
 ): types.forecast.SelectTrackItem {
   return { trackItem, type: types.forecast.SELECT_TRACK_ITEM };
+}
+
+export function setEffect(effect: Effect): types.forecast.SetEffect {
+  return { effect: effect.toJSON(), type: types.forecast.SET_EFFECT };
 }
 
 export function setEvent(event: Event): types.forecast.SetEvent {

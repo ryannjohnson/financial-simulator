@@ -3,6 +3,7 @@ import { CalendarDate } from '../../../../calendar-date';
 import { EffectFormulaType } from '../../../../timeline';
 import * as types from '../../types';
 import * as account from './account';
+import * as effect from './effect';
 import * as event from './event';
 import { ChartSampleSize, State, TrackItemType } from './props';
 import * as timeline from './timeline';
@@ -15,47 +16,59 @@ export function reducer(
 ): State {
   switch (action.type) {
     case types.forecast.ADD_ACCOUNT:
-      return account.addAccount(state, action);
+      return account.add(state, action);
+    case types.forecast.ADD_EFFECT:
+      return effect.add(state, action);
     case types.forecast.ADD_EVENT:
-      return event.addEvent(state, action);
+      return event.add(state, action);
     case types.forecast.ADD_TRACK:
       return account.addTrack(state, action);
     case types.forecast.EXPORT_TIMELINE:
       return timeline.exportTimeline(state, action);
     case types.forecast.IMPORT_TIMELINE:
       return timeline.importTimeline(state, action);
+    case types.forecast.REMOVE_EFFECT:
+      return effect.remove(state, action);
     case types.forecast.REMOVE_EVENT:
-      return event.removeEvent(state, action);
+      return event.remove(state, action);
     case types.forecast.SELECT_ACCOUNT:
-      return account.selectAccount(state, action);
+      return account.select(state, action);
     case types.forecast.SELECT_TRACK_ITEM:
       return account.selectTrackItem(state, action);
+    case types.forecast.SET_EFFECT:
+      return effect.set(state, action);
     case types.forecast.SET_EVENT:
-      return event.setEvent(state, action);
+      return event.set(state, action);
     case types.forecast.SET_EVENT_ACCOUNT_IDS:
-      return event.setEventAccountIds(state, action);
+      return event.setAccountIds(state, action);
     case types.forecast.SET_TIMELINE_CALENDAR_DATES:
       return timeline.setTimelineCalendarDates(state, action);
     case types.forecast.SET_TIMELINE_CHART_SAMPLE_SIZE:
       return timeline.setTimelineChartSampleSize(state, action);
     case types.forecast.SET_TRACK_ITEM_CALENDAR_DATES:
       switch (action.trackItem.type) {
+        case TrackItemType.Effect:
+          return effect.setCalendarDates(state, action);
         case TrackItemType.Event:
-          return event.setEventCalendarDates(state, action);
+          return event.setCalendarDates(state, action);
         default:
           return state;
       }
     case types.forecast.SET_TRACK_ITEM_ENDS_ON:
       switch (action.trackItem.type) {
+        case TrackItemType.Effect:
+          return effect.setEndsOn(state, action);
         case TrackItemType.Event:
-          return event.setEventEndsOn(state, action);
+          return event.setEndsOn(state, action);
         default:
           return state;
       }
     case types.forecast.SET_TRACK_ITEM_STARTS_ON:
       switch (action.trackItem.type) {
+        case TrackItemType.Effect:
+          return effect.setStartsOn(state, action);
         case TrackItemType.Event:
-          return event.setEventStartsOn(state, action);
+          return event.setStartsOn(state, action);
         default:
           return state;
       }

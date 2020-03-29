@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import * as actions from '../redux/actions';
-import { State } from '../redux/reducer';
-import * as selectors from '../redux/selectors';
+import * as actions from '../../redux/actions';
+import { State } from '../../redux/reducer';
+import * as selectors from '../../redux/selectors';
 import EventAccountIdsComponent from './EventAccountIds.component';
 
 type Props = {

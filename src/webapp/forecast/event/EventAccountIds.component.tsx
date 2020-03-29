@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { CalendarDateJSON } from '../../calendar-date';
-import { AccountJSON } from '../../timeline';
-import FormElementComponent from '../components/FormElement.component';
-import * as actions from '../redux/actions';
+import { CalendarDateJSON } from '../../../calendar-date';
+import { AccountJSON } from '../../../timeline';
+import FormElementComponent from '../../components/FormElement.component';
+import * as actions from '../../redux/actions';
 import styles from './EventAccountIds.css';
 
 type Props = {

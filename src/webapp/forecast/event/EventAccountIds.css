@@ -1,4 +1,4 @@
-:import("../colors.css") {
+:import("../../colors.css") {
   WHITE: WHITE;
 }
 
@@ -17,6 +17,6 @@
 }
 
 .dropdown-container {
-  composes: input from "../components/Input.css";
+  composes: input from "../../components/Input.css";
   width: 100%;
 }

@@ -1,5 +1,6 @@
 :import("../colors.css") {
   BLACK: BLACK;
+  DARKGREY: DARKGREY;
   LIGHTBLACK2: LIGHTBLACK2;
   WHITE2: WHITE2;
 }
@@ -19,6 +20,14 @@
   text-align: center;
   text-transform: uppercase;
   width: 80px;
+}
+
+.calendar-input:hover {
+  border-color: LIGHTBLACK2;
+}
+
+.calendar-input:hover:focus {
+  border-color: DARKGREY;
 }
 
 .buffer {

@@ -1,10 +1,7 @@
 import * as types from '../../types';
 import { AccountWrapper, State } from './props';
 
-export function addAccount(
-  state: State,
-  action: types.forecast.AddAccount,
-): State {
+export function add(state: State, action: types.forecast.AddAccount): State {
   const accountWrapper: AccountWrapper = {
     account: action.account,
     tracks: [],
@@ -74,7 +71,7 @@ export function setTrack(state: State, action: types.forecast.SetTrack): State {
   };
 }
 
-export function selectAccount(
+export function select(
   state: State,
   action: types.forecast.SelectAccount,
 ): State {

@@ -1,6 +1,10 @@
 export { Account, AccountJSON } from './account';
 export { calculateDailyBalanceValues } from './daily-balance';
 export { Effect, EffectJSON } from './effect/effect';
+export {
+  CompoundingEffectFormula,
+  CompoundingEffectFormulaJSON,
+} from './effect/compounding';
 export { EffectFormula, EffectFormulaType } from './effect/formula';
 export { Event, EventJSON } from './event/event';
 export { EventFormula, EventFormulaType } from './event/formula';

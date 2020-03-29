@@ -152,13 +152,11 @@ export default class SpanComponent extends React.Component<Props, State> {
     const {
       clickTarget,
       containerOffsetLeft,
-      endsOn,
+      endsOn: endsOnJSON,
       page,
       startsOn: startsOnJSON,
     } = this.state.mouseDownDetails;
-    const startsOn = CalendarDate.fromJSON(
-      startsOnJSON || this.props.timelineStartsOn,
-    );
+    const startsOn = startsOnJSON ? CalendarDate.fromJSON(startsOnJSON) : null;
     const timelineElement = this.containerRef!.parentElement!;
     const timelineWidth = timelineElement.offsetWidth;
     const {
@@ -173,9 +171,11 @@ export default class SpanComponent extends React.Component<Props, State> {
 
     const tryToStickToTimelineStartsOn = () => {
       // Closure because of the amount of context required.
-      const resultingX = containerOffsetLeft + dx;
-      if (resultingX < STICKY_PIXELS / 2 && resultingX > -STICKY_PIXELS / 2) {
-        days = timelineStartsOn.daysAfter(startsOn);
+      if (startsOn) {
+        const resultingX = containerOffsetLeft + dx;
+        if (resultingX < STICKY_PIXELS / 2 && resultingX > -STICKY_PIXELS / 2) {
+          days = timelineStartsOn.daysAfter(startsOn);
+        }
       }
     };
 
@@ -191,10 +191,15 @@ export default class SpanComponent extends React.Component<Props, State> {
       const offsetY = event.pageY - timelineBox.y;
       const trackIndex = Math.floor(offsetY / TRACK_PIXEL_HEIGHT);
 
-      const newStartsOn = startsOn.addDays(days);
-      const newEndsOn = endsOn
-        ? CalendarDate.fromJSON(endsOn).addDays(days)
+      let newStartsOn = startsOn ? startsOn.addDays(days) : null;
+      if (newStartsOn === null && this.props.type === TrackItemType.Event) {
+        newStartsOn = timelineStartsOn.addDays(days);
+      }
+
+      const newEndsOn = endsOnJSON
+        ? CalendarDate.fromJSON(endsOnJSON).addDays(days)
         : null;
+
       this.props.setCalendarDates(
         this.props.accountId,
         trackItem,
@@ -207,13 +212,15 @@ export default class SpanComponent extends React.Component<Props, State> {
     if (clickTarget === ClickTarget.LeftHandle) {
       tryToStickToTimelineStartsOn();
 
-      const newStartsOn = startsOn.addDays(days);
+      const newStartsOn = startsOn
+        ? startsOn.addDays(days)
+        : timelineStartsOn.addDays(days);
       this.props.setStartsOn(this.props.accountId, trackItem, newStartsOn);
     }
 
     if (clickTarget === ClickTarget.RightHandle) {
-      const newEndsOn = endsOn
-        ? CalendarDate.fromJSON(endsOn).addDays(days)
+      const newEndsOn = endsOnJSON
+        ? CalendarDate.fromJSON(endsOnJSON).addDays(days)
         : timelineEndsOn.addDays(days);
       this.props.setEndsOn(this.props.accountId, trackItem, newEndsOn);
     }
