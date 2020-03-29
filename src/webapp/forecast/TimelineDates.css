@@ -1,5 +1,8 @@
-@value colors: "../colors.css";
-@value BLACK, LIGHTBLACK2, WHITE2 from colors;
+:import("../colors.css") {
+  BLACK: BLACK;
+  LIGHTBLACK2: LIGHTBLACK2;
+  WHITE2: WHITE2;
+}
 
 .container {
   align-items: center;

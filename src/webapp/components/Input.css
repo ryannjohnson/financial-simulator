@@ -1,5 +1,8 @@
-@value colors: "../colors.css";
-@value DARKGREY, LIGHTBLACK2, WHITE2 from colors;
+:import("../colors.css") {
+  DARKGREY: DARKGREY;
+  LIGHTBLACK2: LIGHTBLACK2;
+  WHITE2: WHITE2;
+}
 
 .input {
   background: LIGHTBLACK2;
