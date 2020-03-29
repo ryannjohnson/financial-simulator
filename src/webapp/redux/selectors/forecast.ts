@@ -30,10 +30,17 @@ export type TrackItemDetails = {
   endsOn: CalendarDateJSON | null;
   id: string;
   name: string;
+  orientation: Orientation;
   type: TrackItemType;
   startsOn: CalendarDateJSON | null;
   trackIndex: number;
 };
+
+export enum Orientation {
+  In = 'IN',
+  Neutral = 'NEUTRAL',
+  Out = 'OUT',
+}
 
 export function getTrackItemDetails(
   state: State,
@@ -41,6 +48,7 @@ export function getTrackItemDetails(
   accountId: string,
 ): TrackItemDetails {
   const trackIndex = getTrackItemTrackIndex(state, trackItem, accountId);
+  let orientation = Orientation.Neutral;
 
   if (trackItem.type === TrackItemType.Effect) {
     const effect = state.forecast.effects[trackItem.id];
@@ -48,6 +56,7 @@ export function getTrackItemDetails(
       ...trackItem,
       endsOn: effect.endsOn,
       name: effect.name,
+      orientation,
       startsOn: effect.startsOn,
       trackIndex,
     };
@@ -55,10 +64,18 @@ export function getTrackItemDetails(
 
   if (trackItem.type === TrackItemType.Event) {
     const event = state.forecast.events[trackItem.id];
+
+    if (event.fromAccountId === accountId) {
+      orientation = Orientation.Out;
+    } else if (event.toAccountId === accountId) {
+      orientation = Orientation.In;
+    }
+
     return {
       ...trackItem,
       endsOn: event.endsOn,
       name: event.name,
+      orientation,
       startsOn: event.startsOn,
       trackIndex,
     };

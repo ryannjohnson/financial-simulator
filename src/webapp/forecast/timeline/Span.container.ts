@@ -18,6 +18,7 @@ const mapState = (state: State, props: Props) => {
   const {
     endsOn,
     name,
+    orientation,
     startsOn,
     trackIndex,
   } = selectors.forecast.getTrackItemDetails(
@@ -38,6 +39,7 @@ const mapState = (state: State, props: Props) => {
     endsOn,
     isSelected,
     label: name || `[${props.type} ${props.id}]`,
+    orientation,
     startsOn,
     timelineEndsOn: state.forecast.timeline.endsOn,
     timelineStartsOn: state.forecast.timeline.startsOn,

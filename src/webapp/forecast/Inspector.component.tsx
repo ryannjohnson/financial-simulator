@@ -75,8 +75,8 @@ export default function InspectorComponent({
       {selectedAccountId && (
         <>
           <select
-            onChange={event =>
-              selectEffectFormulaType(event.target.value as any)
+            onChange={effect =>
+              selectEffectFormulaType(effect.target.value as any)
             }
             value={selectedEffectFormulaType}
           >
@@ -92,7 +92,7 @@ export default function InspectorComponent({
               addEffect(selectedAccountId, newEffect(selectedEffectFormulaType))
             }
           >
-            + Add Event
+            + Add Effect
           </button>
           <hr />
           <select

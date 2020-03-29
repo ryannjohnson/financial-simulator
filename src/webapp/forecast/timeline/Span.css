@@ -1,0 +1,83 @@
+:import("../../colors.css") {
+  ADDBG: ADDBG;
+  DELBG: DELBG;
+  CHANGEBG: CHANGEBG;
+  WARMGREY: WARMGREY;
+  WHITE: WHITE;
+}
+
+.container {
+  background: WARMGREY;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  height: 50px;
+  min-width: 1px;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  user-select: none;
+}
+
+.type-EFFECT {
+  background: CHANGEBG;
+}
+
+.type-EVENT-IN {
+  background: ADDBG;
+}
+
+.type-EVENT-OUT {
+  background: DELBG;
+}
+
+.handle {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.selected {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.move-handle {
+  composes: handle;
+  align-items: center;
+  box-sizing: border-box;
+  color: WHITE;
+  cursor: grab;
+  display: flex;
+  flex-direction: row;
+  font-size: 11px;
+  height: 50%;
+  padding-left: 5px;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+.bottom {
+  flex-grow: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.date-handle {
+  composes: handle;
+  bottom: 0;
+  height: 100%;
+  position: absolute;
+  width: 5px;
+}
+
+.left-date-handle {
+  composes: date-handle;
+  cursor: w-resize;
+  left: 0;
+  z-index: 4;
+}
+
+.right-date-handle {
+  composes: date-handle;
+  cursor: w-resize;
+  right: 0;
+  z-index: 5;
+}

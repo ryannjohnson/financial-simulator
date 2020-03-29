@@ -1,10 +1,12 @@
+import classnames from 'classnames';
 import * as React from 'react';
 
 import { CalendarDate, CalendarDateJSON } from '../../../calendar-date';
-import * as colors from '../../colors';
 import * as actions from '../../redux/actions';
 import { TrackItem, TrackItemType } from '../../redux/reducer/forecast/props';
+import { Orientation } from '../../redux/selectors/forecast';
 import { TRACK_PIXEL_HEIGHT } from './constants';
+import styles from './Span.css';
 
 // Number of pixels to try to stick handles to.
 const STICKY_PIXELS = 10;
@@ -14,6 +16,7 @@ type Props = {
   endsOn: CalendarDateJSON | null;
   isSelected: boolean;
   label: string;
+  orientation: Orientation;
   selectTrackItem: typeof actions.forecast.selectTrackItem;
   setCalendarDates: typeof actions.forecast.setTrackItemCalendarDates;
   setEndsOn: typeof actions.forecast.setTrackItemEndsOn;
@@ -255,96 +258,36 @@ export default class SpanComponent extends React.Component<Props, State> {
       width: `${spanWidth * 100}%`,
     };
 
-    const dynamicSelectedStyle: React.CSSProperties = this.props.isSelected
-      ? selectedStyle
-      : {};
+    const selected = this.props.isSelected ? styles.selected : null;
+
+    let trackItemTypeClassNames = [
+      styles[`type-${this.props.type}`],
+      styles[`type-${this.props.type}-${this.props.orientation}`],
+    ];
 
     return (
       <div
+        className={classnames(styles.container, ...trackItemTypeClassNames)}
         ref={ref => (this.containerRef = ref)}
-        style={{ ...containerStyle, ...dynamicContainerStyle }}
+        style={{ ...dynamicContainerStyle }}
       >
         <div
+          className={classnames(styles['move-handle'], selected)}
           ref={ref => (this.grabRef = ref)}
-          style={{ ...grabStyle, ...dynamicSelectedStyle }}
         >
           {this.props.label}
         </div>
-        <div style={bottomStyle}>
+        <div className={styles.bottom}>
           <div
+            className={classnames(styles['left-date-handle'], selected)}
             ref={ref => (this.leftHandleRef = ref)}
-            style={{ ...leftHandleStyle, ...dynamicSelectedStyle }}
           />
           <div
+            className={classnames(styles['right-date-handle'], selected)}
             ref={ref => (this.rightHandleRef = ref)}
-            style={{ ...rightHandleStyle, ...dynamicSelectedStyle }}
           />
         </div>
       </div>
     );
   }
 }
-
-const unselectedStyle: React.CSSProperties = {
-  background: 'rgba(0, 0, 0, 0.1)',
-};
-
-const containerStyle: React.CSSProperties = {
-  background: 'rgb(127, 127, 255)',
-  borderRadius: '5px',
-  display: 'flex',
-  flexDirection: 'column',
-  height: `${TRACK_PIXEL_HEIGHT}px`,
-  minWidth: '1px',
-  overflow: 'hidden',
-  position: 'absolute',
-  top: 0,
-  userSelect: 'none',
-};
-
-const grabStyle: React.CSSProperties = {
-  ...unselectedStyle,
-  alignItems: 'center',
-  boxSizing: 'border-box',
-  color: colors.WHITE,
-  cursor: 'grab',
-  display: 'flex',
-  flexDirection: 'row',
-  fontSize: '11px',
-  height: '50%',
-  paddingLeft: '5px',
-  whiteSpace: 'nowrap',
-  zIndex: 10,
-};
-
-const bottomStyle: React.CSSProperties = {
-  flexGrow: 1,
-  position: 'relative',
-  zIndex: 1,
-};
-
-const handleStyle: React.CSSProperties = {
-  ...unselectedStyle,
-  bottom: 0,
-  height: '100%',
-  position: 'absolute',
-  width: '5px',
-};
-
-const leftHandleStyle: React.CSSProperties = {
-  ...handleStyle,
-  cursor: 'w-resize',
-  left: 0,
-  zIndex: 4,
-};
-
-const rightHandleStyle: React.CSSProperties = {
-  ...handleStyle,
-  cursor: 'e-resize',
-  right: 0,
-  zIndex: 5,
-};
-
-const selectedStyle: React.CSSProperties = {
-  background: 'rgba(0, 0, 0, 0.25)',
-};
