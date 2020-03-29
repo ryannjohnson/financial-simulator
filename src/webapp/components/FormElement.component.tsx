@@ -19,6 +19,8 @@ const containerStyle: React.CSSProperties = {
 };
 
 const titleStyle: React.CSSProperties = {
-  fontStyle: 'bold',
+  fontSize: '11px',
+  fontWeight: 700,
   paddingBottom: '.25em',
+  textTransform: 'uppercase',
 };

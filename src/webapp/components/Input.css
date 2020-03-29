@@ -1,0 +1,14 @@
+@value colors: "../colors.css";
+@value DARKGREY, LIGHTBLACK2, WHITE2 from colors;
+
+.input {
+  background: LIGHTBLACK2;
+  border: 1px solid LIGHTBLACK2;
+  color: WHITE2;
+  font-size: 14px;
+  padding: 3px;
+}
+
+.input:focus {
+  border-color: DARKGREY;
+}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { Amount, AmountJSON } from '../../amount';
+import styles from './Input.css';
 
 type Props = AmountJSON & {
   setAmount: (amount: Amount) => void;
@@ -9,6 +10,7 @@ type Props = AmountJSON & {
 export default function AmountComponent({ currency, setAmount, value }: Props) {
   return (
     <input
+      className={styles.input}
       onChange={event =>
         setAmount(
           Amount.fromJSON({

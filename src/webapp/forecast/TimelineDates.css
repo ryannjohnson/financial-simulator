@@ -1,0 +1,23 @@
+@value colors: "../colors.css";
+@value BLACK, LIGHTBLACK2, WHITE2 from colors;
+
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.calendar-input {
+  composes: input from "../components/Input.css";
+  background: transparent;
+  border-color: transparent;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  width: 80px;
+}
+
+.buffer {
+  padding: 0 .25em;
+}

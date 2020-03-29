@@ -73,12 +73,14 @@ const toggleButtonStyle: React.CSSProperties = {
   fontWeight: 700,
   fontSize: '12px',
   height: '100%',
+  opacity: 0.5,
   padding: '0 16px',
 };
 
 const toggleButtonSelectedStyle: React.CSSProperties = {
   ...toggleButtonStyle,
   borderTopColor: colors.WHITE,
+  opacity: 1,
 };
 
 const frequencies = [

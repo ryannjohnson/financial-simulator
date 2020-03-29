@@ -3,14 +3,14 @@ import * as React from 'react';
 import * as colors from '../colors';
 import ChartContainer from './Chart.container';
 import ChartSampleSizeContainer from './ChartSampleSize.container';
+import TimelineDatesContainer from './TimelineDates.container';
 
 export default function ChartFrameComponent() {
   return (
     <div style={containerStyle}>
       <div style={headerStyle}>
-        <div style={optionsStyle}>
-          <ChartSampleSizeContainer />
-        </div>
+        <ChartSampleSizeContainer />
+        <TimelineDatesContainer />
         <div style={attributionStyle}>
           Chart by{' '}
           <a
@@ -41,13 +41,9 @@ const headerStyle: React.CSSProperties = {
   display: 'flex',
   flexDirection: 'row',
   height: '35px',
-};
-
-const optionsStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'row',
-  flexGrow: 1,
-  height: '100%',
+  justifyContent: 'space-between',
+  position: 'relative',
+  zIndex: 1,
 };
 
 const attributionStyle: React.CSSProperties = {
@@ -62,4 +58,6 @@ const attributionLinkStyle: React.CSSProperties = {
 
 const chartContainerStyle: React.CSSProperties = {
   flexGrow: 1,
+  position: 'relative',
+  zIndex: 0,
 };

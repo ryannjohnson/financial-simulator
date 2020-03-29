@@ -1,10 +1,11 @@
 import * as React from 'react';
-import DatePicker from 'react-datepicker';
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
+import styles from './CalendarDate.css';
 
-type Props = {
+type Props = Partial<Omit<ReactDatePickerProps, 'value'>> & {
   setValue: (value: CalendarDate | null) => void;
   value: CalendarDateJSON | null;
 };
@@ -12,9 +13,11 @@ type Props = {
 export default function NullableCalendarDateComponent({
   setValue,
   value,
+  ...props
 }: Props) {
   return (
     <DatePicker
+      className={styles.input}
       isClearable={true}
       dateFormat="yyyy-MM-dd"
       selected={value ? new Date(value) : null}
@@ -25,6 +28,7 @@ export default function NullableCalendarDateComponent({
           setValue(null);
         }
       }}
+      {...props}
     />
   );
 }

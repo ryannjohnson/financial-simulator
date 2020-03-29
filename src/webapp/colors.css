@@ -1,0 +1,35 @@
+@value WHITE: #E8E8E3;
+@value WHITE2: #d8d8d3;
+@value BLACK: #272822;
+@value LIGHTBLACK: #2D2E27;
+@value LIGHTBLACK2: #383a3e;
+@value LIGHTBLACK3: #3f4145;
+@value DARKBLACK: #211F1C;
+@value GREY: #8F908A;
+@value LIGHTGREY: #575b61;
+@value DARKGREY: #64645e;
+@value WARMGREY: #75715E;
+
+@value PINK: #F92772;
+@value GREEN: #A6E22D;
+@value AQUA: #66d9ef;
+@value YELLOW: #E6DB74;
+@value ORANGE: #FD9720;
+@value PURPLE: #ae81ff;
+@value RED: #e73c50;
+@value PURERED: #ff0000;
+@value DARKRED: #5f0000;
+
+@value ADDFG: #d7ffaf;
+@value ADDBG: #5f875f;
+@value DELBG: #f75f5f;
+@value CHANGEFG: #d7d7ff;
+@value CHANGEBG: #5f5f87;
+
+@value CYAN: #A1EFE4;
+@value BR_GREEN: #9EC400;
+@value BR_YELLOW: #E7C547;
+@value BR_BLUE: #7AA6DA;
+@value BR_PURPLE: #B77EE0;
+@value BR_CYAN: #54CED6;
+@value BR_WHITE: #FFFFFF;

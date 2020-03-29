@@ -7,8 +7,8 @@ import CalendarDateComponent from '../components/CalendarDate.component';
 import StringComponent from '../components/String.component';
 import NullableCalendarDateComponent from '../components/NullableCalendarDate.component';
 import FormElementComponent from '../components/FormElement.component';
-import Row from './components/Row.component';
-import RowItem from './components/RowItem.component';
+import Row from '../components/Row.component';
+import RowItem from '../components/RowItem.component';
 import EventAccountIdsContainer from './EventAccountIds.container';
 import FormulaComponent from './formula/Formula.component';
 

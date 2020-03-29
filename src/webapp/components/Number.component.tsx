@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import styles from './Input.css';
+
 type Props = {
   min?: number;
   setValue: (value: number) => void;
@@ -10,6 +12,7 @@ type Props = {
 export default function NumberComponent({ min, setValue, step, value }: Props) {
   return (
     <input
+      className={styles.input}
       min={min}
       onChange={event => {
         let newValue: number;
