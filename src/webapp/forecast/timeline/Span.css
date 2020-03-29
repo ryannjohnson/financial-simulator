@@ -82,7 +82,7 @@
 
 .right-date-handle {
   composes: date-handle;
-  cursor: w-resize;
+  cursor: e-resize;
   right: 0;
   z-index: 5;
 }
