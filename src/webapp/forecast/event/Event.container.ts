@@ -18,7 +18,6 @@ const mapState = (state: State, props: Props) => {
 };
 
 const mapDispatch = {
-  removeEvent: actions.forecast.removeEvent,
   setEvent: actions.forecast.setEvent,
 };
 

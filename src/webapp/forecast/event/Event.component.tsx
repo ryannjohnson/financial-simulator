@@ -11,26 +11,13 @@ import EventAccountIdsContainer from './EventAccountIds.container';
 import FormulaComponent from './Formula.component';
 
 type Props = EventJSON & {
-  removeEvent: typeof actions.forecast.removeEvent;
   setEvent: typeof actions.forecast.setEvent;
 };
 
 export default function EventComponent(props: Props) {
-  const {
-    endsOn,
-    id,
-    formula,
-    formulaType,
-    name,
-    removeEvent,
-    setEvent,
-    startsOn,
-  } = props;
+  const { endsOn, id, formula, formulaType, name, setEvent, startsOn } = props;
   return (
     <div>
-      <div>
-        <button onClick={() => removeEvent(id)}>Remove</button> {formulaType}
-      </div>
       <EventAccountIdsContainer eventId={id} />
       <FormElementComponent title="Name">
         <StringComponent

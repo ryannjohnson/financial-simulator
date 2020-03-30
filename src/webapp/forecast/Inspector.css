@@ -1,19 +1,77 @@
 :import("../colors.css") {
   BLACK: BLACK;
+  BR_BLUE: BR_BLUE;
+  BR_GREEN: BR_GREEN;
   DARKBLACK: DARKBLACK;
+  DELBG: DELBG;
+  WHITE: WHITE;
 }
 
 .container {
   background: DARKBLACK;
   box-sizing: border-box;
-  padding: 35px 0 25px 0;
+  padding: 0 0 25px 0;
   height: 100%;
 }
 
 .header {
   composes: label from "../text.css";
   background: BLACK;
+  display: flex;
+  flex-direction: row;
+  justify-content: 'space-between';
+}
+
+.header-title {
   box-sizing: border-box;
+  display: block;
+  flex-grow: 1;
   padding: 5px;
   white-space: nowrap;
+}
+
+.header-children {
+  display: flex;
+  flex-direction: row;
+}
+
+.header-button {
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  opacity: 0.5;
+  padding: 5px;
+}
+
+.header-button:hover {
+  opacity: 1;
+}
+
+.wide-button {
+  background: transparent;
+  border: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  font-size: 12px;
+  padding: 5px 5px;
+  text-align: left;
+  width: 100%;
+}
+
+.wide-button-EFFECT {
+  color: BR_BLUE;
+}
+
+.wide-button-EVENT-IN {
+  color: BR_GREEN;
+}
+
+.wide-button-EVENT-OUT {
+  color: DELBG;
+}
+
+.wide-button:hover {
+  color: WHITE;
 }

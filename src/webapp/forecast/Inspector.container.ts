@@ -23,6 +23,8 @@ const mapDispatch = {
   addEvent: actions.forecast.addEvent,
   exportTimeline: actions.forecast.exportTimeline,
   importTimeline: actions.forecast.importTimeline,
+  removeEffect: actions.forecast.removeEffect,
+  removeEvent: actions.forecast.removeEvent,
   setEvent: actions.forecast.setEvent,
 };
 

@@ -21,8 +21,6 @@ const mapState = (state: State, props: Props) => {
 };
 
 const mapDispatch = {
-  removeEffect: actions.forecast.removeEffect,
-  removeEffectFromAccount: actions.forecast.removeEffectFromAccount,
   setEffect: actions.forecast.setEffect,
 };
 

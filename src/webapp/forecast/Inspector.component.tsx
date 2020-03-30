@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import * as React from 'react';
 
 import { Amount, Currency } from '../../amount';
@@ -15,21 +16,19 @@ import {
   RecurringSumFormula,
 } from '../../timeline';
 import { generateLocalUUID } from '../../utils';
-import * as colors from '../colors';
 import * as actions from '../redux/actions';
 import { TrackItem, TrackItemType } from '../redux/reducer/forecast/props';
 import EffectContainer from './effect/Effect.container';
 import EventContainer from './event/Event.container';
 import styles from './Inspector.css';
 
-const DEFAULT_EFFECT_FORMULA_TYPE = EffectFormulaType.Compounding;
-const DEFAULT_EVENT_FORMULA_TYPE = EventFormulaType.LumpSum;
-
 type Props = {
   addEffect: typeof actions.forecast.addEffect;
   addEvent: typeof actions.forecast.addEvent;
   exportTimeline: typeof actions.forecast.exportTimeline;
   importTimeline: typeof actions.forecast.importTimeline;
+  removeEffect: typeof actions.forecast.removeEffect;
+  removeEvent: typeof actions.forecast.removeEvent;
   selectedAccountId: string | null;
   selectedTrackItem: TrackItem | null;
 };
@@ -39,16 +38,11 @@ export default function InspectorComponent({
   addEvent,
   exportTimeline,
   importTimeline,
+  removeEffect,
+  removeEvent,
   selectedAccountId,
   selectedTrackItem,
 }: Props) {
-  const [selectedEffectFormulaType, selectEffectFormulaType] = React.useState(
-    DEFAULT_EFFECT_FORMULA_TYPE,
-  );
-  const [selectedEventFormulaType, selectEventFormulaType] = React.useState(
-    DEFAULT_EVENT_FORMULA_TYPE,
-  );
-
   const importTimelineHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -61,86 +55,131 @@ export default function InspectorComponent({
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>Inspector</div>
       <button onClick={exportTimeline}>Export</button>
       <input onChange={importTimelineHandler} type="file" />
 
-      <hr />
-
-      {selectedTrackItem && (
+      {selectedAccountId && (
         <>
-          <TrackItemComponent {...selectedTrackItem} />
-          <hr />
+          <Header title="Account" />
+          <button
+            className={classnames(
+              styles['wide-button'],
+              styles['wide-button-EFFECT'],
+            )}
+            onClick={() =>
+              addEffect(
+                selectedAccountId,
+                newEffect(EffectFormulaType.Compounding),
+              )
+            }
+          >
+            + Add Compounding Interest
+          </button>
+          <button
+            className={classnames(
+              styles['wide-button'],
+              styles['wide-button-EVENT-IN'],
+            )}
+            onClick={() =>
+              addEvent(
+                newEvent(selectedAccountId, EventFormulaType.MonthlySum, true),
+              )
+            }
+          >
+            + Add Income
+          </button>
+          <button
+            className={classnames(
+              styles['wide-button'],
+              styles['wide-button-EVENT-OUT'],
+            )}
+            onClick={() =>
+              addEvent(
+                newEvent(selectedAccountId, EventFormulaType.MonthlySum, false),
+              )
+            }
+          >
+            + Add Expense
+          </button>
         </>
       )}
 
-      {selectedAccountId && (
-        <div>
-          <select
-            onChange={effect =>
-              selectEffectFormulaType(effect.target.value as any)
-            }
-            value={selectedEffectFormulaType}
-          >
-            {effectFormulaTypes.map(formulaType => (
-              <option key={formulaType} value={formulaType}>
-                {formulaType}
-              </option>
-            ))}
-          </select>
-
-          <button
-            onClick={() =>
-              addEffect(selectedAccountId, newEffect(selectedEffectFormulaType))
-            }
-          >
-            + Add Effect
-          </button>
-          <hr />
-          <select
-            onChange={event =>
-              selectEventFormulaType(event.target.value as any)
-            }
-            value={selectedEventFormulaType}
-          >
-            {eventFormulaTypes.map(formulaType => (
-              <option key={formulaType} value={formulaType}>
-                {formulaType}
-              </option>
-            ))}
-          </select>
-
-          <button
-            onClick={() =>
-              addEvent(newEvent(selectedAccountId, selectedEventFormulaType))
-            }
-          >
-            + Add Event
-          </button>
-        </div>
+      {selectedTrackItem && (
+        <TrackItemComponent
+          removeEffect={removeEffect}
+          removeEvent={removeEvent}
+          trackItem={selectedTrackItem}
+        />
       )}
     </div>
   );
 }
 
-const containerStyle: React.CSSProperties = {
-  background: colors.DARKBLACK,
-  minHeight: '100%',
+type TrackItemComponentProps = {
+  removeEffect: typeof actions.forecast.removeEffect;
+  removeEvent: typeof actions.forecast.removeEvent;
+  trackItem: TrackItem;
 };
 
-function TrackItemComponent(props: TrackItem) {
-  switch (props.type) {
+function TrackItemComponent({
+  removeEffect,
+  removeEvent,
+  trackItem,
+}: TrackItemComponentProps) {
+  switch (trackItem.type) {
     case TrackItemType.Effect:
-      return <EffectContainer effectId={props.id} />;
+      return (
+        <>
+          <Header title="Effect">
+            <HeaderButton onClick={() => removeEffect(trackItem.id)}>
+              🗑
+            </HeaderButton>
+          </Header>
+          <EffectContainer effectId={trackItem.id} />
+        </>
+      );
     case TrackItemType.Event:
-      return <EventContainer eventId={props.id} />;
+      return (
+        <>
+          <Header title="Event">
+            <HeaderButton onClick={() => removeEvent(trackItem.id)}>
+              🗑
+            </HeaderButton>
+          </Header>
+          <EventContainer eventId={trackItem.id} />
+        </>
+      );
     default:
-      return <div>Not implemented</div>;
+      return <div className={styles.header}>(not implemented)</div>;
   }
 }
 
-const effectFormulaTypes = Object.values(EffectFormulaType).sort();
-const eventFormulaTypes = Object.values(EventFormulaType).sort();
+type HeaderProps = {
+  children?: React.ReactNode;
+  title: string;
+};
+
+function Header({ children, title }: HeaderProps) {
+  return (
+    <div className={styles.header}>
+      <span className={styles['header-title']}>{title}</span>
+      <div className={styles['header-children']}>{children}</div>
+    </div>
+  );
+}
+
+type HeaderButtonProps = React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
+>;
+
+function HeaderButton({ children, ...props }: HeaderButtonProps) {
+  return (
+    <button className={styles['header-button']} {...props}>
+      {children}
+    </button>
+  );
+}
 
 function newEffect(formulaType: EffectFormulaType) {
   let formula: EffectFormula;
@@ -159,7 +198,11 @@ function newEffect(formulaType: EffectFormulaType) {
   return new Effect(id, formula, startsOn, endsOn, name);
 }
 
-function newEvent(toAccountId: string, formulaType: EventFormulaType) {
+function newEvent(
+  accountId: string,
+  formulaType: EventFormulaType,
+  isIncome: boolean,
+) {
   const amount = Amount.zero(Currency.USD);
   const startsOn = CalendarDate.today();
   const endsOn = startsOn.addMonths(1);
@@ -176,7 +219,12 @@ function newEvent(toAccountId: string, formulaType: EventFormulaType) {
   }
 
   const id = generateLocalUUID();
-  const fromAccountId = null;
+  let fromAccountId: string | null = null;
+  let toAccountId: string | null = accountId;
+  if (!isIncome) {
+    fromAccountId = accountId;
+    toAccountId = null;
+  }
   const name = '';
 
   return new Event(

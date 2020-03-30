@@ -10,26 +10,13 @@ import FormulaComponent from './Formula.component';
 
 type Props = EffectJSON & {
   accountId: string | null;
-  removeEffect: typeof actions.forecast.removeEffect;
   setEffect: typeof actions.forecast.setEffect;
 };
 
 export default function EffectComponent(props: Props) {
-  const {
-    endsOn,
-    id,
-    formula,
-    formulaType,
-    name,
-    removeEffect,
-    setEffect,
-    startsOn,
-  } = props;
+  const { endsOn, formula, formulaType, name, setEffect, startsOn } = props;
   return (
     <div>
-      <div>
-        <button onClick={() => removeEffect(id)}>Remove</button> {formulaType}
-      </div>
       <FormElementComponent title="Name">
         <StringComponent
           setValue={value => {
