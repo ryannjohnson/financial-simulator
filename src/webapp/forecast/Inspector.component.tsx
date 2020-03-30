@@ -43,8 +43,27 @@ export default function InspectorComponent({
 
   return (
     <div className={styles.container}>
-      <button onClick={exportTimeline}>Export</button>
-      <input onChange={importTimelineHandler} type="file" />
+      <div className={styles.content} style={{ flexGrow: 0 }}>
+        <label
+          className={styles['wide-button']}
+          style={{ display: 'block', overflow: 'hidden' }}
+        >
+          Import (experimental)
+          <input
+            onChange={importTimelineHandler}
+            style={{
+              left: -10000,
+              position: 'absolute',
+              opacity: 0,
+              zIndex: -100,
+            }}
+            type="file"
+          />
+        </label>
+        <button className={styles['wide-button']} onClick={exportTimeline}>
+          Export (experimental)
+        </button>
+      </div>
 
       {selectedAccountId && (
         <>

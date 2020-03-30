@@ -4,6 +4,7 @@
   BR_GREEN: BR_GREEN;
   DARKBLACK: DARKBLACK;
   DELBG: DELBG;
+  GREY: GREY;
   WHITE: WHITE;
 }
 
@@ -65,6 +66,7 @@
   background: transparent;
   border: 0;
   box-sizing: border-box;
+  color: GREY;
   cursor: pointer;
   display: block;
   font-size: 12px;
