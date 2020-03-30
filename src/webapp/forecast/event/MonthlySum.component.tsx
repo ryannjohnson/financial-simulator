@@ -10,7 +10,7 @@ export default function MonthlySumComponent({
   setFormula,
 }: EventFormulaProps & timeline.MonthlySumFormulaJSON) {
   return (
-    <div>
+    <>
       <FormElementComponent title="Amount">
         <AmountComponent
           {...amount}
@@ -20,6 +20,6 @@ export default function MonthlySumComponent({
           }}
         />
       </FormElementComponent>
-    </div>
+    </>
   );
 }

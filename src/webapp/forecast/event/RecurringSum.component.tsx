@@ -12,7 +12,7 @@ export default function RecurringSumComponent({
   setFormula,
 }: EventFormulaProps & timeline.RecurringSumFormulaJSON) {
   return (
-    <div>
+    <>
       <FormElementComponent title="Amount">
         <AmountComponent
           {...amount}
@@ -37,6 +37,6 @@ export default function RecurringSumComponent({
           value={everyXDays}
         />
       </FormElementComponent>
-    </div>
+    </>
   );
 }

@@ -19,21 +19,20 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  overflow: hidden;
 }
 
 .top-container {
   display: flex;
   flex-direction: row;
   flex-grow: 1;
-  overflow: hidden;
   position: relative;
 }
 
 .inspector-container {
   position: relative;
-  overflow: hidden;
   width: 275px;
-  z-index: 5;
+  z-index: 10;
 }
 
 .chart-container {
@@ -43,8 +42,6 @@
 }
 
 .timeline-frame-container {
-  height: 30%;
-  max-height: 500px;
-  min-height: 300px;
-  overflow: auto;
+  height: 40%;
+  overflow: hidden;
 }

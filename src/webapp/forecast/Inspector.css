@@ -56,6 +56,11 @@
   overflow-y: scroll;
 }
 
+.greedy-content {
+  composes: content;
+  flex-grow: 10;
+}
+
 .wide-button {
   background: transparent;
   border: 0;

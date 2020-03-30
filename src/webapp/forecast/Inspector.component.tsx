@@ -1,25 +1,13 @@
 import classnames from 'classnames';
 import * as React from 'react';
 
-import { Amount, Currency } from '../../amount';
-import { CalendarDate } from '../../calendar-date';
-import {
-  CompoundingEffectFormula,
-  Effect,
-  EffectFormula,
-  EffectFormulaType,
-  Event,
-  EventFormula,
-  EventFormulaType,
-  LumpSumFormula,
-  MonthlySumFormula,
-  RecurringSumFormula,
-} from '../../timeline';
-import { generateLocalUUID } from '../../utils';
+import { EffectFormulaType, EventFormulaType } from '../../timeline';
 import * as actions from '../redux/actions';
 import { TrackItem, TrackItemType } from '../redux/reducer/forecast/props';
 import EffectContainer from './effect/Effect.container';
 import EventContainer from './event/Event.container';
+import { newEffect } from './effect/utils';
+import { newEvent } from './event/utils';
 import styles from './Inspector.css';
 
 type Props = {
@@ -145,7 +133,7 @@ function TrackItemComponent({
               🗑
             </HeaderButton>
           </Header>
-          <div className={styles.content}>
+          <div className={styles['greedy-content']}>
             <EffectContainer effectId={trackItem.id} />
           </div>
         </>
@@ -158,7 +146,7 @@ function TrackItemComponent({
               🗑
             </HeaderButton>
           </Header>
-          <div className={styles.content}>
+          <div className={styles['greedy-content']}>
             <EventContainer eventId={trackItem.id} />
           </div>
         </>
@@ -192,62 +180,5 @@ function HeaderButton({ children, ...props }: HeaderButtonProps) {
     <button className={styles['header-button']} {...props}>
       {children}
     </button>
-  );
-}
-
-function newEffect(formulaType: EffectFormulaType) {
-  let formula: EffectFormula;
-
-  if (formulaType === EffectFormulaType.Compounding) {
-    formula = new CompoundingEffectFormula(0, 0);
-  } else {
-    throw new Error(`FormulaType "${formulaType}" has not been implemented`);
-  }
-
-  const id = generateLocalUUID();
-  const name = '';
-  const startsOn = null;
-  const endsOn = null;
-
-  return new Effect(id, formula, startsOn, endsOn, name);
-}
-
-function newEvent(
-  accountId: string,
-  formulaType: EventFormulaType,
-  isIncome: boolean,
-) {
-  const amount = Amount.zero(Currency.USD);
-  const startsOn = CalendarDate.today();
-  const endsOn = startsOn.addMonths(1);
-  let formula: EventFormula;
-
-  if (formulaType === EventFormulaType.LumpSum) {
-    formula = new LumpSumFormula(amount);
-  } else if (formulaType === EventFormulaType.MonthlySum) {
-    formula = new MonthlySumFormula(amount);
-  } else if (formulaType === EventFormulaType.RecurringSum) {
-    formula = new RecurringSumFormula(amount, 7);
-  } else {
-    throw new Error(`FormulaType "${formulaType}" has not been implemented`);
-  }
-
-  const id = generateLocalUUID();
-  let fromAccountId: string | null = null;
-  let toAccountId: string | null = accountId;
-  if (!isIncome) {
-    fromAccountId = accountId;
-    toAccountId = null;
-  }
-  const name = '';
-
-  return new Event(
-    id,
-    fromAccountId,
-    toAccountId,
-    formula,
-    startsOn,
-    endsOn,
-    name,
   );
 }

@@ -19,7 +19,7 @@ export default function CompoundingComponent({
   };
 
   return (
-    <div>
+    <>
       <FormElementComponent title="Frequency per year">
         <NumberComponent
           min={0}
@@ -49,6 +49,6 @@ export default function CompoundingComponent({
           value={nominalAnnualInterestRate}
         />
       </FormElementComponent>
-    </div>
+    </>
   );
 }

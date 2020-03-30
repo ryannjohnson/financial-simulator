@@ -37,12 +37,19 @@ export default function EventAccountIds({
           }
         />
       </FormElementComponent>
-      <button
-        className={styles.swap}
-        onClick={() => setEventAccountIds(eventId, toAccountId, fromAccountId)}
-      >
-        ⇅
-      </button>
+      <tr>
+        <td></td>
+        <td>
+          <button
+            className={styles.swap}
+            onClick={() =>
+              setEventAccountIds(eventId, toAccountId, fromAccountId)
+            }
+          >
+            ⇅
+          </button>
+        </td>
+      </tr>
       <FormElementComponent title="To account">
         <Dropdown
           accounts={dropdownAccounts.filter(anyExcept(fromAccountId))}

@@ -10,7 +10,7 @@ export default function LumpSumComponent({
   setFormula,
 }: EventFormulaProps & LumpSumFormulaJSON) {
   return (
-    <div>
+    <>
       <FormElementComponent title="Amount">
         <AmountComponent
           {...amount}
@@ -18,6 +18,6 @@ export default function LumpSumComponent({
           setAmount={amount => setFormula(new LumpSumFormula(amount))}
         />
       </FormElementComponent>
-    </div>
+    </>
   );
 }

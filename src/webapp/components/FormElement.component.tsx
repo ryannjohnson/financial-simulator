@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import styles from './FormElement.css';
+
 type Props = {
   children: React.ReactNode;
   title: string;
@@ -7,20 +9,9 @@ type Props = {
 
 export default function FormElementComponent({ children, title }: Props) {
   return (
-    <div style={containerStyle}>
-      <div style={titleStyle}>{title}</div>
-      <div>{children}</div>
-    </div>
+    <tr>
+      <td className={styles.title}>{title}</td>
+      <td>{children}</td>
+    </tr>
   );
 }
-
-const containerStyle: React.CSSProperties = {
-  padding: '.5em 0',
-};
-
-const titleStyle: React.CSSProperties = {
-  fontSize: '11px',
-  fontWeight: 700,
-  paddingBottom: '.25em',
-  textTransform: 'uppercase',
-};
