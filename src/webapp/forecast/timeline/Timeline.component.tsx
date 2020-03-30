@@ -3,6 +3,7 @@ import * as React from 'react';
 import { generateLocalUUID } from '../../../utils';
 import * as actions from '../../redux/actions';
 import { TrackItem } from '../../redux/reducer/forecast/props';
+import { TRACK_PIXEL_HEIGHT } from './constants';
 import styles from './Timeline.css';
 import SpanContainer from './Span.container';
 
@@ -70,7 +71,7 @@ export default class TimelineComponent extends React.Component<Props> {
           {trackIds.map((_, i) => (
             <div key={i} className={styles.track} />
           ))}
-          <div className={styles['tracks-buffer']}>
+          <div className={styles['tracks-buffer']} style={tracksBufferStyle}>
             <button
               className={styles['add-button']}
               onClick={this.addTrackHandler}
@@ -88,3 +89,8 @@ export default class TimelineComponent extends React.Component<Props> {
     );
   }
 }
+
+// Hack to fix the CSS variable error happening in production.
+const tracksBufferStyle: React.CSSProperties = {
+  height: `calc(100% - ${TRACK_PIXEL_HEIGHT}px)`,
+};

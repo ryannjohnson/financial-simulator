@@ -40,7 +40,7 @@
 
 .tracks-buffer {
   background: DARKBLACK;
-  height: calc(100% - TRACK_PIXEL_HEIGHT);
+  /* height: calc(100% - TRACK_PIXEL_HEIGHT); */
   text-align: center;
 }
 
