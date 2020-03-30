@@ -61,46 +61,56 @@ export default function InspectorComponent({
       {selectedAccountId && (
         <>
           <Header title="Account" />
-          <button
-            className={classnames(
-              styles['wide-button'],
-              styles['wide-button-EFFECT'],
-            )}
-            onClick={() =>
-              addEffect(
-                selectedAccountId,
-                newEffect(EffectFormulaType.Compounding),
-              )
-            }
-          >
-            + Add Compounding Interest
-          </button>
-          <button
-            className={classnames(
-              styles['wide-button'],
-              styles['wide-button-EVENT-IN'],
-            )}
-            onClick={() =>
-              addEvent(
-                newEvent(selectedAccountId, EventFormulaType.MonthlySum, true),
-              )
-            }
-          >
-            + Add Income
-          </button>
-          <button
-            className={classnames(
-              styles['wide-button'],
-              styles['wide-button-EVENT-OUT'],
-            )}
-            onClick={() =>
-              addEvent(
-                newEvent(selectedAccountId, EventFormulaType.MonthlySum, false),
-              )
-            }
-          >
-            + Add Expense
-          </button>
+          <div className={styles.content}>
+            <button
+              className={classnames(
+                styles['wide-button'],
+                styles['wide-button-EFFECT'],
+              )}
+              onClick={() =>
+                addEffect(
+                  selectedAccountId,
+                  newEffect(EffectFormulaType.Compounding),
+                )
+              }
+            >
+              + Add Compounding Interest
+            </button>
+            <button
+              className={classnames(
+                styles['wide-button'],
+                styles['wide-button-EVENT-IN'],
+              )}
+              onClick={() =>
+                addEvent(
+                  newEvent(
+                    selectedAccountId,
+                    EventFormulaType.MonthlySum,
+                    true,
+                  ),
+                )
+              }
+            >
+              + Add Income
+            </button>
+            <button
+              className={classnames(
+                styles['wide-button'],
+                styles['wide-button-EVENT-OUT'],
+              )}
+              onClick={() =>
+                addEvent(
+                  newEvent(
+                    selectedAccountId,
+                    EventFormulaType.MonthlySum,
+                    false,
+                  ),
+                )
+              }
+            >
+              + Add Expense
+            </button>
+          </div>
         </>
       )}
 
@@ -135,7 +145,9 @@ function TrackItemComponent({
               🗑
             </HeaderButton>
           </Header>
-          <EffectContainer effectId={trackItem.id} />
+          <div className={styles.content}>
+            <EffectContainer effectId={trackItem.id} />
+          </div>
         </>
       );
     case TrackItemType.Event:
@@ -146,7 +158,9 @@ function TrackItemComponent({
               🗑
             </HeaderButton>
           </Header>
-          <EventContainer eventId={trackItem.id} />
+          <div className={styles.content}>
+            <EventContainer eventId={trackItem.id} />
+          </div>
         </>
       );
     default:

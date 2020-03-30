@@ -16,7 +16,7 @@ type Props = EffectJSON & {
 export default function EffectComponent(props: Props) {
   const { endsOn, formula, formulaType, name, setEffect, startsOn } = props;
   return (
-    <div>
+    <>
       <FormElementComponent title="Name">
         <StringComponent
           setValue={value => {
@@ -77,6 +77,6 @@ export default function EffectComponent(props: Props) {
           );
         }}
       />
-    </div>
+    </>
   );
 }

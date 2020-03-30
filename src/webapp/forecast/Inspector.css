@@ -10,7 +10,8 @@
 .container {
   background: DARKBLACK;
   box-sizing: border-box;
-  padding: 0 0 25px 0;
+  display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
@@ -20,6 +21,7 @@
   display: flex;
   flex-direction: row;
   justify-content: 'space-between';
+  padding-right: 10px;
 }
 
 .header-title {
@@ -46,6 +48,12 @@
 
 .header-button:hover {
   opacity: 1;
+}
+
+.content {
+  composes: scrollbar from "../scrollbar.css";
+  flex-grow: 1;
+  overflow-y: scroll;
 }
 
 .wide-button {

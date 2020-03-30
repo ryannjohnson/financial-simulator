@@ -17,7 +17,7 @@ type Props = EventJSON & {
 export default function EventComponent(props: Props) {
   const { endsOn, id, formula, formulaType, name, setEvent, startsOn } = props;
   return (
-    <div>
+    <>
       <EventAccountIdsContainer eventId={id} />
       <FormElementComponent title="Name">
         <StringComponent
@@ -79,6 +79,6 @@ export default function EventComponent(props: Props) {
           );
         }}
       />
-    </div>
+    </>
   );
 }
