@@ -110,6 +110,8 @@ const demoState: State = {
           items: [{ id: 'effect-inflation-1', type: TrackItemType.Effect }],
           name: 'Untitled',
         },
+        { id: 'track-2', items: [], name: '' },
+        { id: 'track-3', items: [], name: '' },
       ],
     },
     {
@@ -120,15 +122,16 @@ const demoState: State = {
       },
       tracks: [
         {
-          id: 'track-2',
+          id: 'track-4',
           items: [{ id: 'effect-inflation-1', type: TrackItemType.Effect }],
           name: 'Untitled',
         },
         {
-          id: 'track-3',
+          id: 'track-5',
           items: [{ id: 'effect-interest-1', type: TrackItemType.Effect }],
           name: 'Untitled',
         },
+        { id: 'track-6', items: [], name: '' },
       ],
     },
   ],

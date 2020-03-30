@@ -7,8 +7,18 @@
   background: BLACK;
   color: WHITE;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
+}
+
+.left-sidebar-container {
+  width: 50px;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .top-container {
@@ -20,10 +30,8 @@
 }
 
 .inspector-container {
-  composes: scrollbar from "../scrollbar.css";
   position: relative;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
   width: 275px;
   z-index: 5;
 }

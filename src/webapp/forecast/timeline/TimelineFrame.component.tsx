@@ -2,10 +2,10 @@ import * as React from 'react';
 
 import { Account } from '../../../timeline';
 import { generateLocalUUID } from '../../../utils';
-import * as colors from '../../colors';
 import * as actions from '../../redux/actions';
 import AccountTabContainer from './AccountTab.container';
 import TimelineContainer from './Timeline.container';
+import styles from './TimelineFrame.css';
 
 type Props = {
   accountIds: string[];
@@ -19,8 +19,9 @@ export default function TimelineFrameComponent({
   selectedAccountId,
 }: Props) {
   return (
-    <div style={containerStyle}>
-      <div style={timelineContainerStyle}>
+    <div className={styles.container}>
+      <div className={styles.header}>&nbsp;</div>
+      <div className={styles['timeline-container']}>
         {selectedAccountId && (
           <TimelineContainer accountId={selectedAccountId} />
         )}
@@ -34,19 +35,6 @@ export default function TimelineFrameComponent({
     </div>
   );
 }
-
-const containerStyle: React.CSSProperties = {
-  background: colors.BLACK,
-  display: 'flex',
-  flexDirection: 'column',
-  minHeight: '100%',
-  overflow: 'hidden',
-};
-
-const timelineContainerStyle: React.CSSProperties = {
-  flexGrow: 1,
-  position: 'relative',
-};
 
 function newAccount() {
   return new Account(generateLocalUUID(), [], 'Untitled');

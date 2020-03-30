@@ -31,6 +31,7 @@ export default class ChartComponent extends React.Component<Props> {
       ...theme.chart,
     });
     this.series = this.chart.addAreaSeries(theme.series);
+    this.componentDidUpdate();
   }
 
   componentDidUpdate() {

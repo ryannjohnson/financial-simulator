@@ -31,6 +31,7 @@ const mapState = (state: State, props: Props) => {
 
 const mapDispatch = {
   addTrack: actions.forecast.addTrack,
+  selectTrackItem: actions.forecast.selectTrackItem,
 };
 
 export default connect(mapState, mapDispatch)(TimelineComponent);

@@ -62,6 +62,7 @@ export default class SpanComponent extends React.Component<Props, State> {
   };
 
   componentDidMount() {
+    this.containerRef!.addEventListener('click', this.containerClickHandler);
     this.containerRef!.addEventListener(
       'mousedown',
       this.containerMouseDownHandler,
@@ -80,6 +81,7 @@ export default class SpanComponent extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
+    this.containerRef!.removeEventListener('click', this.containerClickHandler);
     this.containerRef!.removeEventListener(
       'mousedown',
       this.containerMouseDownHandler,
@@ -113,7 +115,12 @@ export default class SpanComponent extends React.Component<Props, State> {
     return { days, endsOn, startsOn };
   }
 
-  containerMouseDownHandler = (_: MouseEvent) => {
+  containerClickHandler = (event: MouseEvent) => {
+    // Prevents "deselecting" when clicking in the timeline.
+    event.stopPropagation();
+  };
+
+  containerMouseDownHandler = (event: MouseEvent) => {
     const trackItem: TrackItem = {
       id: this.props.id,
       type: this.props.type,

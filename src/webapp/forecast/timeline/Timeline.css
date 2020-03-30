@@ -41,6 +41,7 @@
 .tracks-buffer {
   background: DARKBLACK;
   height: calc(100% - TRACK_PIXEL_HEIGHT);
+  text-align: center;
 }
 
 .headers-container {
@@ -66,11 +67,8 @@
   background: transparent;
   border: 0;
   color: GREY;
-  display: block;
-  height: 50px;
-  padding: 0;
+  padding: 15px;
   text-align: center;
-  width: 50px;
 }
 
 .add-button:hover {

@@ -1,0 +1,19 @@
+:import("../colors.css") {
+  BLACK: BLACK;
+  DARKBLACK: DARKBLACK;
+}
+
+.container {
+  background: DARKBLACK;
+  box-sizing: border-box;
+  padding: 35px 0 25px 0;
+  height: 100%;
+}
+
+.header {
+  composes: label from "../text.css";
+  background: BLACK;
+  box-sizing: border-box;
+  padding: 5px;
+  white-space: nowrap;
+}

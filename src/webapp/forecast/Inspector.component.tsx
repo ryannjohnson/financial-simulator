@@ -20,6 +20,7 @@ import * as actions from '../redux/actions';
 import { TrackItem, TrackItemType } from '../redux/reducer/forecast/props';
 import EffectContainer from './effect/Effect.container';
 import EventContainer from './event/Event.container';
+import styles from './Inspector.css';
 
 const DEFAULT_EFFECT_FORMULA_TYPE = EffectFormulaType.Compounding;
 const DEFAULT_EVENT_FORMULA_TYPE = EventFormulaType.LumpSum;
@@ -59,7 +60,8 @@ export default function InspectorComponent({
   };
 
   return (
-    <div style={containerStyle}>
+    <div className={styles.container}>
+      <div className={styles.header}>Inspector</div>
       <button onClick={exportTimeline}>Export</button>
       <input onChange={importTimelineHandler} type="file" />
 
@@ -73,7 +75,7 @@ export default function InspectorComponent({
       )}
 
       {selectedAccountId && (
-        <>
+        <div>
           <select
             onChange={effect =>
               selectEffectFormulaType(effect.target.value as any)
@@ -115,7 +117,7 @@ export default function InspectorComponent({
           >
             + Add Event
           </button>
-        </>
+        </div>
       )}
     </div>
   );
