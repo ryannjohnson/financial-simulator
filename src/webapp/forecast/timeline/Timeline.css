@@ -1,0 +1,86 @@
+:import("../../colors.css") {
+  BLACK: BLACK;
+  DARKBLACK: DARKBLACK;
+  GREY: GREY;
+  LIGHTBLACK2: LIGHTBLACK2;
+  WARMGREY: WARMGREY;
+  WHITE: WHITE;
+}
+
+:import("../constants.css") {
+  TRACK_PIXEL_HEIGHT: TRACK_PIXEL_HEIGHT;
+}
+
+.container {
+  composes: scrollbar from "../../scrollbar.css";
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: absolute;
+  width: 100%;
+}
+
+.tracks-container {
+  flex-grow: 1;
+  position: relative;
+  z-index: 5;
+}
+
+.track {
+  align-items: center;
+  background: DARKBLACK;
+  border-bottom: solid LIGHTBLACK2 0.5px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  height: TRACK_PIXEL_HEIGHT;
+}
+
+.tracks-buffer {
+  background: DARKBLACK;
+  height: calc(100% - TRACK_PIXEL_HEIGHT);
+}
+
+.headers-container {
+  background: BLACK;
+  color: WHITE;
+  position: relative;
+  user-select: none;
+  width: 50px;
+  z-index: 6;
+}
+
+.header-track {
+  composes: track;
+  align-items: center;
+  background: BLACK;
+  border-color:  transparent;
+  color: WARMGREY;
+  display: flex;
+  justify-content: center;
+}
+
+.add-button {
+  background: transparent;
+  border: 0;
+  color: GREY;
+  display: block;
+  height: 50px;
+  padding: 0;
+  text-align: center;
+  width: 50px;
+}
+
+.add-button:hover {
+  color: WHITE;
+  cursor: pointer;
+}
+
+.spans-container {
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}

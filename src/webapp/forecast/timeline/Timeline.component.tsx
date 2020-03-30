@@ -5,6 +5,7 @@ import * as colors from '../../colors';
 import * as actions from '../../redux/actions';
 import { TrackItem } from '../../redux/reducer/forecast/props';
 import { TRACK_PIXEL_HEIGHT } from './constants';
+import styles from './Timeline.css';
 import SpanContainer from './Span.container';
 
 type Props = {
@@ -29,25 +30,25 @@ export default function TimelineComponent({
   };
 
   return (
-    <div style={containerStyle}>
-      <div style={headersContainerStyle}>
-        {trackIds.map(trackId => (
-          <div key={trackId} style={headerContainerStyle}>
-            <div style={trackHeaderStyle}>TODO: Add name</div>
+    <div className={styles.container}>
+      <div className={styles['headers-container']}>
+        {trackIds.map((_, i) => (
+          <div key={i} className={styles['header-track']}>
+            {i + 1}
           </div>
         ))}
-        <div>
-          <button onClick={addTrackHandler}>+ Add track</button>
+        <div className={styles['header-track']}>
+          <button className={styles['add-button']} onClick={addTrackHandler}>
+            +
+          </button>
         </div>
       </div>
-      <div style={tracksContainerStyle}>
+      <div className={styles['tracks-container']}>
         {trackIds.map((_, i) => (
-          <div key={i} style={trackContainerStyle}>
-            <div style={trackBodyStyle} />
-          </div>
+          <div key={i} className={styles.track} />
         ))}
-        <div style={tracksBufferStyle} />
-        <div style={spansContainerStyle}>
+        <div className={styles['tracks-buffer']}></div>
+        <div className={styles['spans-container']}>
           {trackItems.map(({ id, type }) => (
             <SpanContainer id={id} key={`${type}-${id}`} type={type} />
           ))}
@@ -56,67 +57,3 @@ export default function TimelineComponent({
     </div>
   );
 }
-
-const containerStyle: React.CSSProperties = {
-  display: 'flex',
-  flexDirection: 'row',
-  height: '100%',
-  overflowX: 'hidden',
-  overflowY: 'scroll',
-  position: 'absolute',
-  width: '100%',
-};
-
-const rowStyle: React.CSSProperties = {
-  alignItems: 'center',
-  borderBottom: `solid ${colors.LIGHTBLACK2} 0.5px`,
-  boxSizing: 'border-box',
-  display: 'flex',
-  flexDirection: 'row',
-  height: `${TRACK_PIXEL_HEIGHT}px`,
-};
-
-const headersContainerStyle: React.CSSProperties = {
-  background: colors.BLACK,
-  color: colors.WHITE,
-  position: 'relative',
-  width: '275px',
-  zIndex: 6,
-};
-
-const headerContainerStyle: React.CSSProperties = {
-  ...rowStyle,
-};
-
-const tracksContainerStyle: React.CSSProperties = {
-  flexGrow: 1,
-  position: 'relative',
-  zIndex: 5,
-};
-
-const trackContainerStyle: React.CSSProperties = {
-  ...rowStyle,
-  background: colors.DARKBLACK,
-};
-
-const tracksBufferStyle: React.CSSProperties = {
-  background: colors.DARKBLACK,
-  height: 'calc(100% - 50px)',
-};
-
-const trackHeaderStyle: React.CSSProperties = {
-  width: '200px',
-};
-
-const trackBodyStyle: React.CSSProperties = {
-  height: '100%',
-  position: 'relative',
-  width: '100%',
-};
-
-const spansContainerStyle: React.CSSProperties = {
-  left: 0,
-  position: 'absolute',
-  top: 0,
-  width: '100%',
-};

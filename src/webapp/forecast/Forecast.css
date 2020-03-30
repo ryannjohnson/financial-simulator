@@ -1,0 +1,42 @@
+:import("../colors.css") {
+  BLACK: BLACK;
+  WHITE: WHITE;
+}
+
+.container {
+  background: BLACK;
+  color: WHITE;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.top-container {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.inspector-container {
+  composes: scrollbar from "../scrollbar.css";
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 275px;
+  z-index: 5;
+}
+
+.chart-container {
+  flex-grow: 1;
+  position: relative;
+  z-index: 4;
+}
+
+.timeline-frame-container {
+  height: 30%;
+  max-height: 500px;
+  min-height: 300px;
+  overflow: auto;
+}

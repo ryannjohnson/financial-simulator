@@ -1,0 +1,20 @@
+:import("./colors.css") {
+  BLACK: BLACK;
+  DARKGREY: DARKGREY;
+}
+
+.scrollbar {
+  scrollbar-color: DARKGREY BLACK;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 0.75em;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background-color: BLACK;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: DARKGREY;
+}
