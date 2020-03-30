@@ -1,6 +1,8 @@
+import classnames from 'classnames';
 import * as React from 'react';
 
 import * as actions from '../../redux/actions';
+import styles from './AccountTab.css';
 
 type Props = {
   accountId: string;
@@ -16,9 +18,11 @@ export default function AccountTabComponent({
   selectAccount,
 }: Props) {
   return (
-    <button onClick={() => selectAccount(accountId)}>
+    <button
+      className={classnames(styles.button, isSelected && styles.selected)}
+      onClick={() => selectAccount(accountId)}
+    >
       {name}
-      {isSelected ? '*' : ''}
     </button>
   );
 }

@@ -26,11 +26,16 @@ export default function TimelineFrameComponent({
           <TimelineContainer accountId={selectedAccountId} />
         )}
       </div>
-      <div>
+      <div className={styles['account-tabs-container']}>
         {accountIds.map(accountId => (
           <AccountTabContainer accountId={accountId} key={accountId} />
         ))}
-        <button onClick={() => addAccount(newAccount())}>+ Add</button>
+        <button
+          className={styles['add-button']}
+          onClick={() => addAccount(newAccount())}
+        >
+          +
+        </button>
       </div>
     </div>
   );

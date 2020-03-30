@@ -1,10 +1,15 @@
+import { generateLocalUUID } from '../../../../utils';
 import * as types from '../../types';
 import { AccountWrapper, State } from './props';
 
 export function add(state: State, action: types.forecast.AddAccount): State {
   const accountWrapper: AccountWrapper = {
     account: action.account,
-    tracks: [],
+    tracks: [
+      { id: generateLocalUUID(), items: [], name: '' },
+      { id: generateLocalUUID(), items: [], name: '' },
+      { id: generateLocalUUID(), items: [], name: '' },
+    ],
   };
 
   return {

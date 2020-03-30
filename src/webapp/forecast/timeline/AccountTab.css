@@ -1,0 +1,26 @@
+:import("../../colors.css") {
+  BLACK: BLACK;
+  DARKBLACK: DARKBLACK;
+  LIGHTBLACK: LIGHTBLACK;
+  WHITE: WHITE;
+}
+
+.button {
+  background: LIGHTBLACK;
+  border: 0;
+  color: WHITE;
+  cursor: pointer;
+  padding: 10px 16px;
+}
+
+.button:hover {
+  background: BLACK;
+}
+
+.selected {
+  background: DARKBLACK;
+}
+
+.selected:hover {
+  background: DARKBLACK;
+}

@@ -1,5 +1,7 @@
 :import("../../colors.css") {
   BLACK: BLACK;
+  GREY: GREY;
+  WHITE: WHITE;
 }
 
 .container {
@@ -17,4 +19,21 @@
 .timeline-container {
   flex-grow: 1;
   position: relative;
+}
+
+.account-tabs-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.add-button {
+  background: transparent;
+  border: 0;
+  color: GREY;
+  cursor: pointer;
+  padding: 0 16px;
+}
+
+.add-button:hover {
+  color: WHITE;
 }
