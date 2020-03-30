@@ -1,10 +1,10 @@
 :import("../../colors.css") {
-  BLACK: BLACK;
+  BLACK_1: BLACK_1;
   DARKBLACK: DARKBLACK;
-  GREY: GREY;
+  GREY_1: GREY_1;
   LIGHTBLACK2: LIGHTBLACK2;
   WARMGREY: WARMGREY;
-  WHITE: WHITE;
+  WHITE_1: WHITE_1;
 }
 
 :import("./constants.css") {
@@ -45,8 +45,8 @@
 }
 
 .headers-container {
-  background: BLACK;
-  color: WHITE;
+  background: BLACK_1;
+  color: WHITE_1;
   position: relative;
   user-select: none;
   width: 50px;
@@ -56,7 +56,7 @@
 .header-track {
   composes: track;
   align-items: center;
-  background: BLACK;
+  background: BLACK_1;
   border-color:  transparent;
   color: WARMGREY;
   display: flex;
@@ -66,13 +66,13 @@
 .add-button {
   background: transparent;
   border: 0;
-  color: GREY;
+  color: GREY_1;
   padding: 15px;
   text-align: center;
 }
 
 .add-button:hover {
-  color: WHITE;
+  color: WHITE_1;
   cursor: pointer;
 }
 

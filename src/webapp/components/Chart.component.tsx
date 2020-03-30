@@ -63,7 +63,7 @@ const theme = {
       fontFamily:
         '-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sansSerif',
       lineColor: colors.WHITE, // '#2B2B43',
-      textColor: colors.WHITE2, // '#D9D9D9',
+      textColor: colors.WHITE_2, // '#D9D9D9',
     },
     watermark: {
       color: colors.DARKBLACK, // 'rgba(0, 0, 0, 0)',

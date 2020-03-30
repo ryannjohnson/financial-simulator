@@ -3,7 +3,7 @@
   DELBG: DELBG;
   CHANGEBG: CHANGEBG;
   WARMGREY: WARMGREY;
-  WHITE: WHITE;
+  WHITE_1: WHITE_1;
 }
 
 :import("./constants.css") {
@@ -47,7 +47,7 @@
   composes: handle;
   align-items: center;
   box-sizing: border-box;
-  color: WHITE;
+  color: WHITE_1;
   cursor: grab;
   display: flex;
   flex-direction: row;

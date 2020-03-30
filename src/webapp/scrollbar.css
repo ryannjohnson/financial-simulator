@@ -1,10 +1,10 @@
 :import("./colors.css") {
-  BLACK: BLACK;
-  DARKGREY: DARKGREY;
+  BLACK_1: BLACK_1;
+  DARKGREY_1: DARKGREY_1;
 }
 
 .scrollbar {
-  scrollbar-color: DARKGREY BLACK;
+  scrollbar-color: DARKGREY_1 BLACK_1;
 }
 
 .scrollbar::-webkit-scrollbar {
@@ -12,9 +12,9 @@
 }
 
 .scrollbar::-webkit-scrollbar-track {
-  background-color: BLACK;
+  background-color: BLACK_1;
 }
 
 .scrollbar::-webkit-scrollbar-thumb {
-  background-color: DARKGREY;
+  background-color: DARKGREY_1;
 }

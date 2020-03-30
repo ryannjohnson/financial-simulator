@@ -1,5 +1,5 @@
 :import("../../colors.css") {
-  WHITE: WHITE;
+  WHITE_1: WHITE_1;
 }
 
 .container {
@@ -11,7 +11,7 @@
 .swap {
   background: transparent;
   border: 0 solid transparent;
-  color: WHITE;
+  color: WHITE_1;
   cursor: pointer;
   font-size: 18px;
 }

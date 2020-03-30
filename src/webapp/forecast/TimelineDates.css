@@ -1,8 +1,7 @@
 :import("../colors.css") {
-  BLACK: BLACK;
-  DARKGREY: DARKGREY;
+  DARKGREY_1: DARKGREY_1;
   LIGHTBLACK2: LIGHTBLACK2;
-  WHITE2: WHITE2;
+  WHITE_2: WHITE_2;
 }
 
 .container {
@@ -27,7 +26,7 @@
 }
 
 .calendar-input:hover:focus {
-  border-color: DARKGREY;
+  border-color: DARKGREY_1;
 }
 
 .buffer {

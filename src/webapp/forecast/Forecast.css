@@ -1,11 +1,11 @@
 :import("../colors.css") {
-  BLACK: BLACK;
-  WHITE: WHITE;
+  BLACK_1: BLACK_1;
+  WHITE_1: WHITE_1;
 }
 
 .container {
-  background: BLACK;
-  color: WHITE;
+  background: BLACK_1;
+  color: WHITE_1;
   display: flex;
   flex-direction: row;
   height: 100%;

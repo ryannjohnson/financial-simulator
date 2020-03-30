@@ -1,20 +1,20 @@
 :import("../../colors.css") {
-  BLACK: BLACK;
+  BLACK_1: BLACK_1;
   DARKBLACK: DARKBLACK;
   LIGHTBLACK: LIGHTBLACK;
-  WHITE: WHITE;
+  WHITE_1: WHITE_1;
 }
 
 .button {
   background: LIGHTBLACK;
   border: 0;
-  color: WHITE;
+  color: WHITE_1;
   cursor: pointer;
   padding: 10px 16px;
 }
 
 .button:hover {
-  background: BLACK;
+  background: BLACK_1;
 }
 
 .selected {

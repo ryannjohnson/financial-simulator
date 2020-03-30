@@ -1,7 +1,7 @@
 // https://github.com/crusoexia/vim-monokai/blob/master/colors/monokai.vim
 
 export const WHITE = '#E8E8E3';
-export const WHITE2 = '#d8d8d3';
+export const WHITE_2 = '#d8d8d3';
 export const BLACK = '#272822';
 export const LIGHTBLACK = '#2D2E27';
 export const LIGHTBLACK2 = '#383a3e';

@@ -1,19 +1,19 @@
 :import("../colors.css") {
-  DARKGREY: DARKGREY;
+  DARKGREY_1: DARKGREY_1;
   LIGHTBLACK2: LIGHTBLACK2;
-  WHITE2: WHITE2;
+  WHITE_2: WHITE_2;
 }
 
 .input {
   background: LIGHTBLACK2;
   border: 1px solid LIGHTBLACK2;
   box-sizing: border-box;
-  color: WHITE2;
+  color: WHITE_2;
   font-size: 14px;
   padding: 3px;
   width: 100%;
 }
 
 .input:focus {
-  border-color: DARKGREY;
+  border-color: DARKGREY_1;
 }
