@@ -6,12 +6,16 @@
   WHITE: WHITE;
 }
 
+:import("./constants.css") {
+  TRACK_PIXEL_HEIGHT: TRACK_PIXEL_HEIGHT;
+}
+
 .container {
   background: WARMGREY;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
-  height: 50px;
+  height: TRACK_PIXEL_HEIGHT;
   min-width: 1px;
   overflow: hidden;
   position: absolute;

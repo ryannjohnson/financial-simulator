@@ -7,7 +7,7 @@
   WHITE: WHITE;
 }
 
-:import("../constants.css") {
+:import("./constants.css") {
   TRACK_PIXEL_HEIGHT: TRACK_PIXEL_HEIGHT;
 }
 
