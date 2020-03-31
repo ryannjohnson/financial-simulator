@@ -38,6 +38,15 @@ export class CompoundingEffectFormula implements EffectFormula {
     public readonly nominalAnnualInterestRate: number, // 1.0 = 100% annual interest.
     public readonly compoundingFrequencyPerYear: number | null, // Null means continuous.
   ) {
+    if (
+      compoundingFrequencyPerYear !== null &&
+      (!Number.isInteger(compoundingFrequencyPerYear) ||
+        compoundingFrequencyPerYear < 1)
+    ) {
+      throw new Error(
+        `compoundingFrequencyPerYear must be null or a positive integer`,
+      );
+    }
     if (compoundingFrequencyPerYear === null) {
       this.daysPerPeriod = 0;
       this.increment =

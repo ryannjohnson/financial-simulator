@@ -10,7 +10,7 @@ export function newEffect(formulaType: EffectFormulaType) {
   let formula: EffectFormula;
 
   if (formulaType === EffectFormulaType.Compounding) {
-    formula = new CompoundingEffectFormula(0, 0);
+    formula = new CompoundingEffectFormula(0, null);
   } else {
     throw new Error(`FormulaType "${formulaType}" has not been implemented`);
   }
