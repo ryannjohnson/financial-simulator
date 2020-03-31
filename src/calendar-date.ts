@@ -79,10 +79,20 @@ export class CalendarDate {
       new Date(this.year, this.month - 1 + months, this.day),
     );
 
+    const initialMonth = date.month;
+
     while (this.day !== date.day) {
       // Could turn to the next month if the destination month doens't
       // have enough days in it.
-      date = date.addDays(-1);
+      date = date.addDays(months > 0 ? -1 : 1);
+
+      if (date.month !== initialMonth) {
+        if (months < 0) {
+          // Go back to the last day of the previous month.
+          return date.addDays(-1);
+        }
+        return date;
+      }
     }
 
     return date;
