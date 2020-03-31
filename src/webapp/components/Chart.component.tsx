@@ -20,6 +20,7 @@ export default class ChartComponent extends React.Component<Props> {
   private series: lightweightCharts.ISeriesApi<'Area'> | null = null;
 
   componentDidMount() {
+    window.addEventListener('resize', this.autoResize);
     this.chart = lightweightCharts.createChart(this.containerRef!, {
       localization: { priceFormatter },
       priceScale: {
@@ -31,16 +32,30 @@ export default class ChartComponent extends React.Component<Props> {
       ...theme.chart,
     });
     this.series = this.chart.addAreaSeries(theme.series);
-    this.componentDidUpdate();
+    this.updateValues();
+    this.autoResize();
   }
 
   componentDidUpdate() {
-    this.series!.setData(this.props.values);
-    this.chart!.timeScale().fitContent();
+    this.updateValues();
   }
 
   componentWillUnmount() {
+    window.removeEventListener('resize', this.autoResize);
     this.chart!.remove();
+  }
+
+  autoResize = () => {
+    this.chart!.resize(
+      this.containerRef!.offsetWidth,
+      this.containerRef!.offsetHeight,
+    );
+    this.updateValues();
+  };
+
+  updateValues() {
+    this.series!.setData(this.props.values);
+    this.chart!.timeScale().fitContent();
   }
 
   render() {
@@ -52,7 +67,9 @@ export default class ChartComponent extends React.Component<Props> {
 
 const containerStyle: React.CSSProperties = {
   height: '100%',
-  position: 'relative',
+  left: 0,
+  position: 'absolute',
+  top: 0,
   width: '100%',
 };
 
