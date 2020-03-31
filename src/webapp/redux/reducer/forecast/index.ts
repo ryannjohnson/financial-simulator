@@ -77,25 +77,6 @@ export function reducer(
   }
 }
 
-const initialState: State = {
-  accountWrappers: [],
-  chart: {
-    currency: Currency.USD,
-    values: [],
-  },
-  effects: {},
-  events: {},
-  selectedTrackItem: null,
-  timeline: {
-    accountId: null,
-    chartSampleSize: ChartSampleSize.Month,
-    endsOn: CalendarDate.today()
-      .addYears(5)
-      .toJSON(),
-    startsOn: CalendarDate.today().toJSON(),
-  },
-};
-
 const demoState: State = {
   accountWrappers: [
     {
@@ -137,7 +118,6 @@ const demoState: State = {
   ],
   chart: {
     currency: Currency.USD,
-    values: [],
   },
   effects: {
     'effect-inflation-1': {

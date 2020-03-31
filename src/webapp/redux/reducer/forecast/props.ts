@@ -6,7 +6,6 @@ export type State = {
   accountWrappers: AccountWrapper[];
   chart: {
     currency: Currency;
-    values: ChartValue[];
   };
   effects: {
     [id: string]: EffectJSON;

@@ -44,25 +44,32 @@ export default function InspectorComponent({
   return (
     <div className={styles.container}>
       <div className={styles.content} style={{ flexGrow: 0 }}>
-        <label
-          className={styles['wide-button']}
-          style={{ display: 'block', overflow: 'hidden' }}
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+          }}
         >
-          Import (experimental)
-          <input
-            onChange={importTimelineHandler}
-            style={{
-              left: -10000,
-              position: 'absolute',
-              opacity: 0,
-              zIndex: -100,
-            }}
-            type="file"
-          />
-        </label>
-        <button className={styles['wide-button']} onClick={exportTimeline}>
-          Export (experimental)
-        </button>
+          <button className={styles['wide-button']} onClick={exportTimeline}>
+            ⇱ Export
+          </button>
+          <label
+            className={styles['wide-button']}
+            style={{ display: 'block', overflow: 'hidden', textAlign: 'right' }}
+          >
+            Import ⇲
+            <input
+              onChange={importTimelineHandler}
+              style={{
+                left: -10000,
+                position: 'absolute',
+                opacity: 0,
+                zIndex: -100,
+              }}
+              type="file"
+            />
+          </label>
+        </div>
       </div>
 
       {selectedAccountId && (
