@@ -1,18 +1,13 @@
-import classnames from 'classnames';
 import * as React from 'react';
 
-import { EffectFormulaType, EventFormulaType } from '../../timeline';
 import * as actions from '../redux/actions';
 import { TrackItem, TrackItemType } from '../redux/reducer/forecast/props';
 import EffectContainer from './effect/Effect.container';
 import EventContainer from './event/Event.container';
-import { newEffect } from './effect/utils';
-import { newEvent } from './event/utils';
+import AccountContainer from './Account.container';
 import styles from './Inspector.css';
 
 type Props = {
-  addEffect: typeof actions.forecast.addEffect;
-  addEvent: typeof actions.forecast.addEvent;
   exportTimeline: typeof actions.forecast.exportTimeline;
   importTimeline: typeof actions.forecast.importTimeline;
   removeEffect: typeof actions.forecast.removeEffect;
@@ -22,8 +17,6 @@ type Props = {
 };
 
 export default function InspectorComponent({
-  addEffect,
-  addEvent,
   exportTimeline,
   importTimeline,
   removeEffect,
@@ -75,56 +68,7 @@ export default function InspectorComponent({
       {selectedAccountId && (
         <>
           <Header title="Account" />
-          <div className={styles.content}>
-            <button
-              className={classnames(
-                styles['wide-button'],
-                styles['wide-button-EFFECT'],
-              )}
-              onClick={() =>
-                addEffect(
-                  selectedAccountId,
-                  newEffect(EffectFormulaType.Compounding),
-                )
-              }
-            >
-              + Add Compounding Interest
-            </button>
-            <button
-              className={classnames(
-                styles['wide-button'],
-                styles['wide-button-EVENT-IN'],
-              )}
-              onClick={() =>
-                addEvent(
-                  newEvent(
-                    selectedAccountId,
-                    EventFormulaType.MonthlySum,
-                    true,
-                  ),
-                )
-              }
-            >
-              + Add Income
-            </button>
-            <button
-              className={classnames(
-                styles['wide-button'],
-                styles['wide-button-EVENT-OUT'],
-              )}
-              onClick={() =>
-                addEvent(
-                  newEvent(
-                    selectedAccountId,
-                    EventFormulaType.MonthlySum,
-                    false,
-                  ),
-                )
-              }
-            >
-              + Add Expense
-            </button>
-          </div>
+          <AccountContainer accountId={selectedAccountId} />
         </>
       )}
 

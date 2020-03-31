@@ -70,6 +70,13 @@ export function selectTrackItem(
   return { trackItem, type: types.forecast.SELECT_TRACK_ITEM };
 }
 
+export function setAccountName(
+  accountId: string,
+  name: string,
+): types.forecast.SetAccountName {
+  return { accountId, name, type: types.forecast.SET_ACCOUNT_NAME };
+}
+
 export function setEffect(effect: Effect): types.forecast.SetEffect {
   return { effect: effect.toJSON(), type: types.forecast.SET_EFFECT };
 }

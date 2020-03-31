@@ -13,6 +13,7 @@ export const REMOVE_EFFECT_FROM_ACCOUNT = 'FORECAST_REMOVE_EFFECT_FROM_ACCOUNT';
 export const REMOVE_EVENT = 'FORECAST_REMOVE_EVENT';
 export const SELECT_ACCOUNT = 'FORECAST_SELECT_ACCOUNT';
 export const SELECT_TRACK_ITEM = 'FORECAST_SELECT_TRACK_ITEM';
+export const SET_ACCOUNT_NAME = 'FORECAST_SET_ACCOUNT_NAME';
 export const SET_EFFECT = 'FORECAST_SET_EFFECT';
 export const SET_EVENT = 'FORECAST_SET_EVENT';
 export const SET_EVENT_ACCOUNT_IDS = 'FORECAST_SET_EVENT_ACCOUNT_IDS';
@@ -89,6 +90,12 @@ export interface SelectTrackItem {
   type: typeof SELECT_TRACK_ITEM;
 }
 
+export interface SetAccountName {
+  accountId: string;
+  name: string;
+  type: typeof SET_ACCOUNT_NAME;
+}
+
 export interface SetEffect {
   effect: EffectJSON;
   type: typeof SET_EFFECT;
@@ -160,6 +167,7 @@ export type Action =
   | RemoveEvent
   | SelectAccount
   | SelectTrackItem
+  | SetAccountName
   | SetEffect
   | SetEvent
   | SetEventAccountIds

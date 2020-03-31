@@ -48,6 +48,32 @@ export function addTrack(state: State, action: types.forecast.AddTrack): State {
   };
 }
 
+export function setName(
+  state: State,
+  action: types.forecast.SetAccountName,
+): State {
+  let accountWrappers: AccountWrapper[] = [];
+
+  for (let accountWrapper of state.accountWrappers) {
+    if (accountWrapper.account.id === action.accountId) {
+      accountWrapper = {
+        ...accountWrapper,
+        account: {
+          ...accountWrapper.account,
+          name: action.name,
+        },
+      };
+    }
+
+    accountWrappers = [...accountWrappers, accountWrapper];
+  }
+
+  return {
+    ...state,
+    accountWrappers,
+  };
+}
+
 export function setTrack(state: State, action: types.forecast.SetTrack): State {
   let accountWrappers: AccountWrapper[] = [];
 

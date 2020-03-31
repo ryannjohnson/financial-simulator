@@ -35,6 +35,8 @@ export function reducer(
       return account.select(state, action);
     case types.forecast.SELECT_TRACK_ITEM:
       return account.selectTrackItem(state, action);
+    case types.forecast.SET_ACCOUNT_NAME:
+      return account.setName(state, action);
     case types.forecast.SET_EFFECT:
       return effect.set(state, action);
     case types.forecast.SET_EVENT:
