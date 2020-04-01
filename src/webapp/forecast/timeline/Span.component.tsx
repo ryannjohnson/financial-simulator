@@ -120,7 +120,7 @@ export default class SpanComponent extends React.Component<Props, State> {
     event.stopPropagation();
   };
 
-  containerMouseDownHandler = (event: MouseEvent) => {
+  containerMouseDownHandler = (_: MouseEvent) => {
     const trackItem: TrackItem = {
       id: this.props.id,
       type: this.props.type,

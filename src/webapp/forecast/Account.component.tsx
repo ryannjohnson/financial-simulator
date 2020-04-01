@@ -4,9 +4,8 @@ import * as React from 'react';
 import { EffectFormulaType, EventFormulaType } from '../../timeline';
 import FormElementComponent from '../components/FormElement.component';
 import StringComponent from '../components/String.component';
+import { newEffect, newEvent } from '../defaults';
 import * as actions from '../redux/actions';
-import { newEffect } from './effect/utils';
-import { newEvent } from './event/utils';
 import styles from './Inspector.css';
 
 type Props = {

@@ -8,6 +8,7 @@ export const ADD_EVENT = 'FORECAST_ADD_EVENT';
 export const ADD_TRACK = 'FORECAST_ADD_TRACK';
 export const EXPORT_TIMELINE = 'FORECAST_EXPORT_TIMELINE';
 export const IMPORT_TIMELINE = 'FORECAST_IMPORT_TIMELINE';
+export const REMOVE_ACCOUNT = 'FORECAST_REMOVE_ACCOUNT';
 export const REMOVE_EFFECT = 'FORECAST_REMOVE_EFFECT';
 export const REMOVE_EFFECT_FROM_ACCOUNT = 'FORECAST_REMOVE_EFFECT_FROM_ACCOUNT';
 export const REMOVE_EVENT = 'FORECAST_REMOVE_EVENT';
@@ -63,6 +64,11 @@ export type ImportTimelineData = {
   effects: EffectJSON[];
   events: EventJSON[];
 };
+
+export interface RemoveAccount {
+  accountId: string;
+  type: typeof REMOVE_ACCOUNT;
+}
 
 export interface RemoveEffect {
   effectId: string;
@@ -162,6 +168,7 @@ export type Action =
   | AddTrack
   | ExportTimeline
   | ImportTimeline
+  | RemoveAccount
   | RemoveEffect
   | RemoveEffectFromAccount
   | RemoveEvent

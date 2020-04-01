@@ -21,6 +21,7 @@ const mapState = (state: State) => {
 const mapDispatch = {
   exportTimeline: actions.forecast.exportTimeline,
   importTimeline: actions.forecast.importTimeline,
+  removeAccount: actions.forecast.removeAccount,
   removeEffect: actions.forecast.removeEffect,
   removeEvent: actions.forecast.removeEvent,
   setEvent: actions.forecast.setEvent,

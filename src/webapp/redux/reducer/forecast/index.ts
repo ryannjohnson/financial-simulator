@@ -27,6 +27,8 @@ export function reducer(
       return timeline.exportTimeline(state, action);
     case types.forecast.IMPORT_TIMELINE:
       return timeline.importTimeline(state, action);
+    case types.forecast.REMOVE_ACCOUNT:
+      return account.remove(state, action);
     case types.forecast.REMOVE_EFFECT:
       return effect.remove(state, action);
     case types.forecast.REMOVE_EVENT:

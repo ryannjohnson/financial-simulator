@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styles from './Input.css';
 
-type Props<T extends string> = {
+type Props<T> = {
   options: SelectOption<T>[];
   setValue: (value: T) => void;
   value: T;
@@ -13,7 +13,7 @@ type SelectOption<T> = {
   value: T;
 };
 
-export default function SelectComponent<T>({
+export default function SelectComponent<T extends string>({
   options,
   setValue,
   value,

@@ -1,14 +1,42 @@
-import { Amount, Currency } from '../../../amount';
-import { CalendarDate } from '../../../calendar-date';
+import { Amount, Currency } from '../amount';
+import { CalendarDate } from '../calendar-date';
 import {
+  Account,
+  CompoundingEffectFormula,
+  Effect,
+  EffectFormula,
+  EffectFormulaType,
   Event,
   EventFormula,
   EventFormulaType,
   LumpSumFormula,
   MonthlySumFormula,
   RecurringSumFormula,
-} from '../../../timeline';
-import { generateLocalUUID } from '../../../utils';
+} from '../timeline';
+import { generateLocalUUID } from '../utils';
+
+export function newAccount() {
+  const id = generateLocalUUID();
+  const name = 'Untitled';
+  return new Account(id, [], name);
+}
+
+export function newEffect(formulaType: EffectFormulaType) {
+  let formula: EffectFormula;
+
+  if (formulaType === EffectFormulaType.Compounding) {
+    formula = new CompoundingEffectFormula(0, null);
+  } else {
+    throw new Error(`FormulaType "${formulaType}" has not been implemented`);
+  }
+
+  const id = generateLocalUUID();
+  const name = '';
+  const startsOn = null;
+  const endsOn = null;
+
+  return new Effect(id, formula, startsOn, endsOn, name);
+}
 
 export function newEvent(
   accountId: string,

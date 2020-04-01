@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import { Account } from '../../../timeline';
-import { generateLocalUUID } from '../../../utils';
+import { newAccount } from '../../defaults';
 import * as actions from '../../redux/actions';
 import AccountTabContainer from './AccountTab.container';
 import TimelineContainer from './Timeline.container';
@@ -39,8 +38,4 @@ export default function TimelineFrameComponent({
       </div>
     </div>
   );
-}
-
-function newAccount() {
-  return new Account(generateLocalUUID(), [], 'Untitled');
 }

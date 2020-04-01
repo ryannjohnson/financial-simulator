@@ -10,6 +10,7 @@ import styles from './Inspector.css';
 type Props = {
   exportTimeline: typeof actions.forecast.exportTimeline;
   importTimeline: typeof actions.forecast.importTimeline;
+  removeAccount: typeof actions.forecast.removeAccount;
   removeEffect: typeof actions.forecast.removeEffect;
   removeEvent: typeof actions.forecast.removeEvent;
   selectedAccountId: string | null;
@@ -19,6 +20,7 @@ type Props = {
 export default function InspectorComponent({
   exportTimeline,
   importTimeline,
+  removeAccount,
   removeEffect,
   removeEvent,
   selectedAccountId,
@@ -67,7 +69,18 @@ export default function InspectorComponent({
 
       {selectedAccountId && (
         <>
-          <Header title="Account" />
+          <Header title="Account">
+            <HeaderButton
+              onClick={() => {
+                const message = 'Are you sure you want to delete this account?';
+                if (window.confirm(message)) {
+                  removeAccount(selectedAccountId);
+                }
+              }}
+            >
+              🗑
+            </HeaderButton>
+          </Header>
           <AccountContainer accountId={selectedAccountId} />
         </>
       )}

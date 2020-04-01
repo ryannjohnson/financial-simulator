@@ -8,9 +8,9 @@ import SelectComponent from '../../components/Select.component';
 import StringComponent from '../../components/String.component';
 import NullableCalendarDateComponent from '../../components/NullableCalendarDate.component';
 import FormElementComponent from '../../components/FormElement.component';
+import { newEvent } from '../../defaults';
 import EventAccountIdsContainer from './EventAccountIds.container';
 import FormulaComponent from './Formula.component';
-import { newEvent } from './utils';
 
 type Props = EventJSON & {
   setEvent: typeof actions.forecast.setEvent;

@@ -7,8 +7,8 @@ import SelectComponent from '../../components/Select.component';
 import StringComponent from '../../components/String.component';
 import NullableCalendarDateComponent from '../../components/NullableCalendarDate.component';
 import FormElementComponent from '../../components/FormElement.component';
+import { newEffect } from '../../defaults';
 import FormulaComponent from './Formula.component';
-import { newEffect } from './utils';
 
 type Props = EffectJSON & {
   accountId: string | null;

@@ -39,6 +39,10 @@ export function importTimeline(
   return { data, type: types.forecast.IMPORT_TIMELINE };
 }
 
+export function removeAccount(accountId: string): types.forecast.RemoveAccount {
+  return { accountId, type: types.forecast.REMOVE_ACCOUNT };
+}
+
 export function removeEffect(effectId: string): types.forecast.RemoveEffect {
   return { effectId, type: types.forecast.REMOVE_EFFECT };
 }
