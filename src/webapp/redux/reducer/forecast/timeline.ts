@@ -26,7 +26,7 @@ export function exportTimeline(
   a.style.display = 'none';
   a.href = url;
   const date = new Date().toISOString();
-  a.download = `${date.split('T')[0]}_ForecastEvents.json`;
+  a.download = `${date.split('T')[0]}_FinancialPlannerExport.json`;
   document.body.appendChild(a);
   a.click();
   window.URL.revokeObjectURL(url);
