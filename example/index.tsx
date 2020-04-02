@@ -42,7 +42,7 @@ console.info(`               .''.
 
 Hi!
 
-Thanks for checking out this app. I made it with a few goals in mind:
+I made this financial planning app with a few goals in mind:
 
 1. To view how my finances fit into the context of my life.
 2. To retain control over my data.
