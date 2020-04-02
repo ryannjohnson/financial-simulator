@@ -1,6 +1,7 @@
 import { Currency } from '../../../../amount';
 import { CalendarDate } from '../../../../calendar-date';
-import { EffectFormulaType } from '../../../../timeline';
+import { newAccount } from '../../../defaults';
+import * as actions from '../../actions';
 import * as types from '../../types';
 import * as account from './account';
 import * as effect from './effect';
@@ -11,7 +12,7 @@ import * as timeline from './timeline';
 export * from './props';
 
 export function reducer(
-  state: State = demoState,
+  state: State = initialState,
   action: types.forecast.Action,
 ): State {
   switch (action.type) {
@@ -81,76 +82,16 @@ export function reducer(
   }
 }
 
-const demoState: State = {
-  accountWrappers: [
-    {
-      account: {
-        effectIds: ['effect-inflation-1'],
-        id: 'account-checking-1',
-        name: 'Checking',
-      },
-      tracks: [
-        {
-          id: 'track-1',
-          items: [{ id: 'effect-inflation-1', type: TrackItemType.Effect }],
-          name: 'Untitled',
-        },
-        { id: 'track-2', items: [], name: '' },
-        { id: 'track-3', items: [], name: '' },
-      ],
-    },
-    {
-      account: {
-        effectIds: ['effect-inflation-1', 'effect-interest-1'],
-        id: 'account-investment-1',
-        name: 'Investment',
-      },
-      tracks: [
-        {
-          id: 'track-4',
-          items: [{ id: 'effect-inflation-1', type: TrackItemType.Effect }],
-          name: 'Untitled',
-        },
-        {
-          id: 'track-5',
-          items: [{ id: 'effect-interest-1', type: TrackItemType.Effect }],
-          name: 'Untitled',
-        },
-        { id: 'track-6', items: [], name: '' },
-      ],
-    },
-  ],
+let initialState: State = {
+  accountWrappers: [],
   chart: {
     currency: Currency.USD,
   },
-  effects: {
-    'effect-inflation-1': {
-      endsOn: null,
-      id: 'effect-inflation-1',
-      formula: {
-        compoundingFrequencyPerYear: null,
-        nominalAnnualInterestRate: -0.03,
-      },
-      formulaType: EffectFormulaType.Compounding,
-      name: 'Inflation',
-      startsOn: null,
-    },
-    'effect-interest-1': {
-      endsOn: null,
-      id: 'effect-interest-1',
-      formula: {
-        compoundingFrequencyPerYear: null,
-        nominalAnnualInterestRate: 0.1,
-      },
-      formulaType: EffectFormulaType.Compounding,
-      name: 'Investment',
-      startsOn: null,
-    },
-  },
+  effects: {},
   events: {},
   selectedTrackItem: null,
   timeline: {
-    accountId: 'account-checking-1',
+    accountId: null,
     chartSampleSize: ChartSampleSize.Month,
     endsOn: CalendarDate.today()
       .addYears(5)
@@ -158,3 +99,8 @@ const demoState: State = {
     startsOn: CalendarDate.today().toJSON(),
   },
 };
+
+initialState = account.add(
+  initialState,
+  actions.forecast.addAccount(newAccount()),
+);
