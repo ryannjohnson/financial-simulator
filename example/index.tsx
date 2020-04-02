@@ -22,3 +22,31 @@ const appContainerStyle: React.CSSProperties = {
 };
 
 ReactDOM.render(<AppContainer />, document.getElementById('root'));
+
+console.info(`               .''.
+             .'....'.
+           .'.      .'.
+         .'.          .'.
+       .'.              .'.
+     .'.                  .'.
+   .'.                      .'.
+ .'.                          .'.
+,l.            :dd:            .l,
+.dO;        .:OWMMWO:.        ;Od.
+ '0NO:.    :OWMMMMMMWO:    .:ON0'
+  ;KWNO;.;OWMMMNKKNMMMWO;.;ONWK;
+   .oKWNXNMMMNk,..,kNMMMNXNWKo.
+     .oKWMMNk,      ,kNMMWKo.
+       .o0x,          ,x0o.
+         .              .
+
+Hi!
+
+Thanks for checking out this app. I made it with a few goals in mind:
+
+1. To view how my finances fit into the context of my life.
+2. To retain control over my data.
+
+I hope you find it useful. Email me with feedback 👍
+
+-Ryan`);
