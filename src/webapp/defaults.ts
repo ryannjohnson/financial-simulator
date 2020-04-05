@@ -45,7 +45,7 @@ export function newEvent(
 ) {
   const amount = Amount.zero(Currency.USD);
   const startsOn = CalendarDate.today();
-  const endsOn = startsOn.addMonths(1);
+  const endsOn = startsOn.addYears(1).addDays(-1);
   let formula: EventFormula;
 
   if (formulaType === EventFormulaType.LumpSum) {
