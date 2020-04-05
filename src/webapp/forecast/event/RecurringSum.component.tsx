@@ -13,15 +13,6 @@ export default function RecurringSumComponent({
 }: EventFormulaProps & timeline.RecurringSumFormulaJSON) {
   return (
     <>
-      <FormElementComponent title="Amount">
-        <AmountComponent
-          {...amount}
-          min={0}
-          setAmount={newAmount => {
-            setFormula(new timeline.RecurringSumFormula(newAmount, everyXDays));
-          }}
-        />
-      </FormElementComponent>
       <FormElementComponent title="Every X days">
         <NumberComponent
           setValue={newEveryXDays => {
@@ -35,6 +26,15 @@ export default function RecurringSumComponent({
           min={0}
           step={1}
           value={everyXDays}
+        />
+      </FormElementComponent>
+      <FormElementComponent title="Amount">
+        <AmountComponent
+          {...amount}
+          min={0}
+          setAmount={newAmount => {
+            setFormula(new timeline.RecurringSumFormula(newAmount, everyXDays));
+          }}
         />
       </FormElementComponent>
     </>

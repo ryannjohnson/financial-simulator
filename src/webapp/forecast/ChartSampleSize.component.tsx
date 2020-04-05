@@ -87,5 +87,6 @@ const frequencies = [
   { label: 'Daily', value: ChartSampleSize.Day },
   { label: 'Weekly', value: ChartSampleSize.Week },
   { label: 'Monthly', value: ChartSampleSize.Month },
+  { label: 'Quarterly', value: ChartSampleSize.Quarter },
   { label: 'Yearly', value: ChartSampleSize.Year },
 ];

@@ -101,6 +101,19 @@ export function ChartComponent({
       continue;
     }
 
+    if (chartSampleSize === ChartSampleSize.Quarter) {
+      const date = startsOn.addDays(i);
+
+      if (date.day === 1 && (date.month - 1) % 3 === 0) {
+        values.push({
+          time: toTime(date),
+          value,
+        });
+      }
+
+      continue;
+    }
+
     if (chartSampleSize === ChartSampleSize.Year) {
       const year = Math.floor(i / DAYS_PER_YEAR);
 

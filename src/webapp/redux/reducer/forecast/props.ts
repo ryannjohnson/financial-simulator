@@ -47,6 +47,7 @@ export enum ChartSampleSize {
   Day = 'DAILY',
   Week = 'WEEKLY',
   Month = 'MONTHLY',
+  Quarter = 'QUARTERLY',
   Year = 'YEARLY',
 }
 
