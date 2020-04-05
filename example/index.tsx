@@ -40,13 +40,6 @@ console.info(`               .''.
        .o0x,          ,x0o.
          .              .
 
-Hi!
-
-I made this financial planning app with a few goals in mind:
-
-1. To view how my finances fit into the context of my life.
-2. To retain control over my data.
-
-I hope you find it useful. Email me with feedback 👍
+Thanks for using this app! Email me at ryan [at] ryannjohnson [dot] com with feedback 👍
 
 -Ryan`);
