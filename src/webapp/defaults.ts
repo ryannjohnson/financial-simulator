@@ -40,11 +40,11 @@ export function newEffect(formulaType: EffectFormulaType) {
 
 export function newEvent(
   accountId: string,
+  startsOn: CalendarDate,
   formulaType: EventFormulaType,
   isIncome: boolean,
 ) {
   const amount = Amount.zero(Currency.USD);
-  const startsOn = CalendarDate.today();
   const endsOn = startsOn.addYears(1).addDays(-1);
   let formula: EventFormula;
 

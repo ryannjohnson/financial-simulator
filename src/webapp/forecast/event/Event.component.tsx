@@ -24,7 +24,7 @@ export default function EventComponent(props: Props) {
         <EventAccountIdsContainer eventId={id} />
         <FormElementComponent title="Name">
           <StringComponent
-            setValue={value => {
+            setValue={(value) => {
               setEvent(Event.fromJSON({ ...props, name: value }));
             }}
             value={name}
@@ -32,7 +32,7 @@ export default function EventComponent(props: Props) {
         </FormElementComponent>
         <FormElementComponent title="Starts">
           <CalendarDateComponent
-            setValue={value => {
+            setValue={(value) => {
               let newEndsOn = endsOn;
               if (newEndsOn) {
                 if (CalendarDate.fromJSON(newEndsOn).daysBefore(value) > 0) {
@@ -52,7 +52,7 @@ export default function EventComponent(props: Props) {
         </FormElementComponent>
         <FormElementComponent title="Ends">
           <NullableCalendarDateComponent
-            setValue={value => {
+            setValue={(value) => {
               let newStartsOn = startsOn;
               if (value) {
                 if (CalendarDate.fromJSON(startsOn).daysAfter(value) > 0) {
@@ -77,12 +77,17 @@ export default function EventComponent(props: Props) {
               { name: 'Monthly Sum', value: EventFormulaType.MonthlySum },
               { name: 'Recurring Sum', value: EventFormulaType.RecurringSum },
             ]}
-            setValue={value => {
+            setValue={(value) => {
               if (value === formulaType) {
                 return;
               }
 
-              const { formula: newFormula } = newEvent('0', value, true);
+              const { formula: newFormula } = newEvent(
+                '0',
+                CalendarDate.fromJSON(startsOn),
+                value,
+                true,
+              );
 
               setEvent(
                 Event.fromJSON({
@@ -98,7 +103,7 @@ export default function EventComponent(props: Props) {
         <FormulaComponent
           formula={formula}
           formulaType={formulaType}
-          setFormula={value => {
+          setFormula={(value) => {
             setEvent(
               Event.fromJSON({
                 ...props,

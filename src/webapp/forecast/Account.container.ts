@@ -17,6 +17,7 @@ const mapState = (state: State, props: Props) => {
 
   return {
     name: accountWrapper.account.name,
+    timelineStartsOn: state.forecast.timeline.startsOn,
   };
 };
 

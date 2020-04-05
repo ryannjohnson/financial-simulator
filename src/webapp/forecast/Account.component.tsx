@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import * as React from 'react';
 
+import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
 import { EffectFormulaType, EventFormulaType } from '../../timeline';
 import FormElementComponent from '../components/FormElement.component';
 import StringComponent from '../components/String.component';
@@ -14,6 +15,7 @@ type Props = {
   addEvent: typeof actions.forecast.addEvent;
   name: string;
   setAccountName: typeof actions.forecast.setAccountName;
+  timelineStartsOn: CalendarDateJSON;
 };
 
 export default function AccountComponent({
@@ -22,6 +24,7 @@ export default function AccountComponent({
   addEvent,
   name,
   setAccountName,
+  timelineStartsOn,
 }: Props) {
   return (
     <div className={styles.content}>
@@ -29,7 +32,7 @@ export default function AccountComponent({
         <tbody>
           <FormElementComponent title="Name">
             <StringComponent
-              setValue={value => {
+              setValue={(value) => {
                 setAccountName(accountId, value);
               }}
               value={name}
@@ -54,7 +57,14 @@ export default function AccountComponent({
           styles['wide-button-EVENT-IN'],
         )}
         onClick={() =>
-          addEvent(newEvent(accountId, EventFormulaType.MonthlySum, true))
+          addEvent(
+            newEvent(
+              accountId,
+              CalendarDate.fromJSON(timelineStartsOn),
+              EventFormulaType.MonthlySum,
+              true,
+            ),
+          )
         }
       >
         + Add Income
@@ -65,7 +75,14 @@ export default function AccountComponent({
           styles['wide-button-EVENT-OUT'],
         )}
         onClick={() =>
-          addEvent(newEvent(accountId, EventFormulaType.MonthlySum, false))
+          addEvent(
+            newEvent(
+              accountId,
+              CalendarDate.fromJSON(timelineStartsOn),
+              EventFormulaType.MonthlySum,
+              false,
+            ),
+          )
         }
       >
         + Add Expense
