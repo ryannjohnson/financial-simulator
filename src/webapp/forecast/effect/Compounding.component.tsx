@@ -23,7 +23,7 @@ export default function CompoundingComponent({
       <FormElementComponent title="Frequency per year">
         <NumberComponent
           min={0}
-          setValue={value =>
+          setValue={(value) =>
             setFormula(
               CompoundingEffectFormula.fromJSON({
                 ...formulaProps,
@@ -37,7 +37,7 @@ export default function CompoundingComponent({
       </FormElementComponent>
       <FormElementComponent title="Annual interest (%)">
         <NumberComponent
-          setValue={value =>
+          setValue={(value) =>
             setFormula(
               CompoundingEffectFormula.fromJSON({
                 ...formulaProps,
@@ -46,7 +46,7 @@ export default function CompoundingComponent({
             )
           }
           step={0.1}
-          value={nominalAnnualInterestRate * 100}
+          value={Math.round(nominalAnnualInterestRate * 1000) / 10}
         />
       </FormElementComponent>
     </>
