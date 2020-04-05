@@ -82,13 +82,13 @@ export default function EventComponent(props: Props) {
                 return;
               }
 
-              const { formula } = newEvent('0', value, true);
+              const { formula: newFormula } = newEvent('0', value, true);
 
               setEvent(
                 Event.fromJSON({
                   ...props,
                   formulaType: value,
-                  formula: formula.toJSON(),
+                  formula: newFormula.toJSON(),
                 }),
               );
             }}
