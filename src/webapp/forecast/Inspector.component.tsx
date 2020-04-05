@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import * as colors from '../colors';
 import * as actions from '../redux/actions';
 import { TrackItem, TrackItemType } from '../redux/reducer/forecast/props';
 import EffectContainer from './effect/Effect.container';
@@ -48,6 +49,14 @@ export default function InspectorComponent({
           <button className={styles['wide-button']} onClick={exportTimeline}>
             ⇱ Export
           </button>
+          <a
+            className={styles['wide-button']}
+            href="https://youtu.be/7IEB6aaAf3E"
+            style={{ color: colors.YELLOW, textAlign: 'center' }}
+            target="_blank"
+          >
+            Demo
+          </a>
           <label
             className={styles['wide-button']}
             style={{ display: 'block', overflow: 'hidden', textAlign: 'right' }}
