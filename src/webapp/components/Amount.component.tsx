@@ -28,6 +28,9 @@ export default function AmountComponent({
         if (currency === Currency.USD) {
           newValue = Math.round(newValue * 100);
         }
+        if (props.min !== undefined) {
+          newValue = Math.max(newValue, props.min);
+        }
         setAmount(Amount.fromJSON({ currency, value: newValue }));
       }}
       step={step}
