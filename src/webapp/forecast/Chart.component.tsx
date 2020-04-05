@@ -1,11 +1,7 @@
 import * as React from 'react';
 
 import { Currency } from '../../amount';
-import {
-  CalendarDate,
-  CalendarDateJSON,
-  DAYS_PER_YEAR,
-} from '../../calendar-date';
+import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
 import {
   calculateDailyBalanceValues,
   Effect,
@@ -63,7 +59,6 @@ export function ChartComponent({
 
   const values: ChartValue[] = [];
 
-  let yearsElapsed = -1;
   let i = -1;
   for (const value of valueGenerator) {
     i += 1;
@@ -104,28 +99,30 @@ export function ChartComponent({
     if (chartSampleSize === ChartSampleSize.Quarter) {
       const date = startsOn.addDays(i);
 
-      if (date.day === 1 && (date.month - 1) % 3 === 0) {
+      if (
+        date.isSameDayOfMonthAs(startsOn) &&
+        (startsOn.month - date.month) % 3 === 0
+      ) {
         values.push({
           time: toTime(date),
           value,
         });
       }
-
       continue;
     }
 
     if (chartSampleSize === ChartSampleSize.Year) {
-      const year = Math.floor(i / DAYS_PER_YEAR);
+      const date = startsOn.addDays(i);
 
-      if (yearsElapsed < year) {
-        const date = startsOn.addDays(i);
+      if (
+        date.isSameDayOfMonthAs(startsOn) &&
+        (startsOn.month - date.month) % 12 === 0
+      ) {
         values.push({
           time: toTime(date),
           value,
         });
-        yearsElapsed = year;
       }
-
       continue;
     }
 
