@@ -9,25 +9,39 @@ export type Props = {
   value: number;
 };
 
+const numberPattern = /^-?\d+(\.\d+)?$/;
+
 export default function NumberComponent({ min, setValue, step, value }: Props) {
+  const [typedValue, setTypedValue] = React.useState(value.toString());
+
+  React.useEffect(() => setTypedValue(value.toString()), [value]);
+
   return (
     <input
       className={styles.input}
       min={min}
       onChange={event => {
+        const { value: targetValue } = event.target;
+
+        setTypedValue(targetValue);
+
+        if (!numberPattern.test(targetValue)) {
+          return;
+        }
+
         let newValue: number;
 
-        if (step && step >= 1) {
-          newValue = parseInt(event.target.value, 10);
+        if (step && step >= 1 && step % 1 === 0) {
+          newValue = parseInt(targetValue, 10);
         } else {
-          newValue = parseFloat(event.target.value);
+          newValue = parseFloat(targetValue);
         }
 
         setValue(newValue);
       }}
       step={step}
       type="number"
-      value={value}
+      value={typedValue}
     />
   );
 }
