@@ -1,13 +1,13 @@
 import { Effect } from '../../../../timeline';
+import { TrackItem, TrackItemType } from '../../../track-item';
 import * as types from '../../types';
 import * as actions from '../../actions';
 import { selectTrackItem } from './account';
-import { AccountWrapper, State, TrackItem, TrackItemType } from './props';
+import { AccountWrapper, State } from './props';
 import * as utils from './utils';
 
 export function add(state: State, action: types.forecast.AddEffect): State {
   const effect = Effect.fromJSON(action.effect);
-  console.log(state);
 
   state = {
     ...state,
@@ -22,7 +22,7 @@ export function add(state: State, action: types.forecast.AddEffect): State {
   state = addEffectIdToAccount(state, action.effect.id, action.accountId);
   state = utils.addTrackItemToEarliestTrack(state, trackItem, action.accountId);
   state = selectTrackItem(state, actions.forecast.selectTrackItem(trackItem));
-  console.log(state);
+
   return state;
 }
 

@@ -12,6 +12,11 @@ type Options = {
   startsOn: CalendarDate;
 };
 
+export type DailyBalanceResults = {
+  effectStates: EffectState[];
+  eventStates: EventState[];
+};
+
 export function* calculateDailyBalanceValues({
   accountId,
   currency,
@@ -19,7 +24,7 @@ export function* calculateDailyBalanceValues({
   effects,
   events,
   startsOn,
-}: Options): Generator<number> {
+}: Options): Generator<number, DailyBalanceResults> {
   for (const event of events) {
     if (event.formula.getCurrency() !== currency) {
       throw new Error(
@@ -28,27 +33,64 @@ export function* calculateDailyBalanceValues({
     }
   }
 
-  const eventGenerators = events
+  const eventStates: EventState[] = events
     .filter(e => e.fromAccountId === accountId || e.toAccountId === accountId)
-    .map(e => ({
-      generator: e.yieldBalanceValues(startsOn, durationInDays),
-      multiplier: e.toAccountId === accountId ? 1 : -1,
+    .map(event => ({
+      accruedValue: 0,
+      event,
+      generator: event.yieldBalanceValues(startsOn, durationInDays),
+      multiplier: event.toAccountId === accountId ? 1 : -1,
     }));
+
+  const effectStates: EffectState[] = effects.map(effect => ({
+    accruedValue: 0,
+    effect,
+  }));
 
   let accruedEffects = 0;
 
   for (let i = 0; i < durationInDays; i++) {
-    const newBalance = eventGenerators
-      .map(({ generator, multiplier }) => generator.next().value * multiplier)
+    const newBalance = eventStates
+      .map(eventState => {
+        const value = eventState.generator.next().value * eventState.multiplier;
+
+        eventState.accruedValue = value;
+
+        return value;
+      })
       .reduce(sum, 0);
 
-    accruedEffects += effects
-      .map(e => e.yieldsValueOnDay(newBalance + accruedEffects, i, startsOn))
+    accruedEffects += effectStates
+      .map(effectState => {
+        const value = effectState.effect.yieldsValueOnDay(
+          newBalance + accruedEffects,
+          i,
+          startsOn,
+        );
+
+        effectState.accruedValue += value;
+
+        return value;
+      })
       .reduce(sum, 0);
 
     yield Math.round(newBalance + accruedEffects);
   }
+
+  return { effectStates, eventStates };
 }
+
+type EventState = {
+  accruedValue: number;
+  event: Event;
+  generator: Generator<number>;
+  multiplier: number;
+};
+
+type EffectState = {
+  accruedValue: number;
+  effect: Effect;
+};
 
 function sum(acc: number, value: number) {
   return acc + value;

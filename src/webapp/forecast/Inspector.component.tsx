@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import * as colors from '../colors';
 import * as actions from '../redux/actions';
-import { TrackItem, TrackItemType } from '../redux/reducer/forecast/props';
+import { TrackItem, TrackItemType } from '../track-item';
 import EffectContainer from './effect/Effect.container';
 import EventContainer from './event/Event.container';
 import AccountContainer from './Account.container';

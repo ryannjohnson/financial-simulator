@@ -1,12 +1,13 @@
 import { Currency } from '../../../../amount';
 import { CalendarDate } from '../../../../calendar-date';
 import { newAccount } from '../../../defaults';
+import { TrackItemType } from '../../../track-item';
 import * as actions from '../../actions';
 import * as types from '../../types';
 import * as account from './account';
 import * as effect from './effect';
 import * as event from './event';
-import { ChartSampleSize, State, TrackItemType } from './props';
+import { ChartSampleSize, State } from './props';
 import * as timeline from './timeline';
 
 export * from './props';
@@ -50,6 +51,11 @@ export function reducer(
       return timeline.setTimelineCalendarDates(state, action);
     case types.forecast.SET_TIMELINE_CHART_SAMPLE_SIZE:
       return timeline.setTimelineChartSampleSize(state, action);
+    case types.forecast.SET_TRACK_ITEM_ACCRUED_AMOUNTS:
+      return {
+        ...state,
+        trackItemAccruedAmounts: action.trackItemAccruedAmounts,
+      };
     case types.forecast.SET_TRACK_ITEM_CALENDAR_DATES:
       switch (action.trackItem.type) {
         case TrackItemType.Effect:
@@ -98,6 +104,7 @@ let initialState: State = {
       .toJSON(),
     startsOn: CalendarDate.today().toJSON(),
   },
+  trackItemAccruedAmounts: {},
 };
 
 initialState = account.add(

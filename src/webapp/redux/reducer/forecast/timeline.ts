@@ -143,4 +143,5 @@ const emptyState: State = {
       .toJSON(),
     startsOn: CalendarDate.today().toJSON(),
   },
+  trackItemAccruedAmounts: {},
 };

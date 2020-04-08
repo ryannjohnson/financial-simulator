@@ -1,3 +1,4 @@
+import { AmountJSON } from '../../../amount';
 import { CalendarDateJSON } from '../../../calendar-date';
 import {
   CompoundingEffectFormula,
@@ -7,8 +8,8 @@ import {
   MonthlySumFormula,
   RecurringSumFormula,
 } from '../../../timeline';
+import { toString, TrackItem, TrackItemType } from '../../track-item';
 import { State } from '../reducer';
-import { TrackItem, TrackItemType } from '../reducer/forecast/props';
 
 export function getChart(state: State) {
   return state.forecast.chart;
@@ -218,4 +219,11 @@ export function getTrack(state: State, id: string) {
   }
 
   throw new Error(`Track not found by id "${id}"`);
+}
+
+export function getTrackItemAccruedAmount(
+  state: State,
+  trackItem: TrackItem,
+): AmountJSON | null {
+  return state.forecast.trackItemAccruedAmounts[toString(trackItem)] || null;
 }

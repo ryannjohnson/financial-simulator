@@ -1,6 +1,8 @@
+import { AmountJSON } from '../../../amount';
 import { CalendarDateJSON } from '../../../calendar-date';
 import { AccountJSON, EffectJSON, EventJSON } from '../../../timeline';
-import { ChartSampleSize, Track, TrackItem } from '../reducer/forecast/props';
+import { TrackItem } from '../../track-item';
+import { ChartSampleSize, Track } from '../reducer/forecast/props';
 
 export const ADD_ACCOUNT = 'FORECAST_ADD_ACCOUNT';
 export const ADD_EFFECT = 'FORECAST_ADD_EFFECT';
@@ -22,6 +24,8 @@ export const SET_TIMELINE_CALENDAR_DATES =
   'FORECAST_SET_TIMELINE_CALENDAR_DATES';
 export const SET_TIMELINE_CHART_SAMPLE_SIZE =
   'FORECAST_SET_TIMELINE_CHART_SAMPLE_SIZE';
+export const SET_TRACK_ITEM_ACCRUED_AMOUNTS =
+  'FORECAST_SET_TRACK_ITEM_ACCRUED_AMOUNTS';
 export const SET_TRACK = 'FORECAST_SET_TRACK';
 export const SET_TRACK_ITEM_CALENDAR_DATES =
   'FORECAST_SET_TRACK_ITEM_CALENDAR_DATES';
@@ -156,6 +160,11 @@ export interface SetTimelineChartSampleSize {
   type: typeof SET_TIMELINE_CHART_SAMPLE_SIZE;
 }
 
+export interface SetTrackItemAccruedAmounts {
+  trackItemAccruedAmounts: { [trackItemId: string]: AmountJSON };
+  type: typeof SET_TRACK_ITEM_ACCRUED_AMOUNTS;
+}
+
 export interface SetTrack {
   track: Track;
   type: typeof SET_TRACK;
@@ -180,6 +189,7 @@ export type Action =
   | SetEventAccountIds
   | SetTimelineCalendarDates
   | SetTimelineChartSampleSize
+  | SetTrackItemAccruedAmounts
   | SetTrackItemCalendarDates
   | SetTrackItemEndsOn
   | SetTrackItemStartsOn

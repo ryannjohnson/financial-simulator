@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../redux/actions';
 import { State } from '../../redux/reducer';
-import { TrackItem } from '../../redux/reducer/forecast/props';
 import * as selectors from '../../redux/selectors';
+import { TrackItem } from '../../track-item';
 import SpanComponent from './Span.component';
 
 type Props = TrackItem & {};
@@ -35,8 +35,15 @@ const mapState = (state: State, props: Props) => {
     selectedTrackItem.type === props.type &&
     selectedTrackItem.id === props.id;
 
+  const accruedAmount = selectors.forecast.getTrackItemAccruedAmount(
+    state,
+    props,
+  );
+
   return {
     accountId: accountWrapper.account.id,
+    accruedAmountCurrency: accruedAmount ? accruedAmount.currency : null,
+    accruedAmountValue: accruedAmount ? accruedAmount.value : null,
     endsOn,
     isSelected,
     name,

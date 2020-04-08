@@ -4,14 +4,17 @@ import { Currency } from '../../amount';
 import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
 import {
   calculateDailyBalanceValues,
+  DailyBalanceResults,
   Effect,
   EffectJSON,
   Event,
   EventJSON,
 } from '../../timeline';
+import { isNumber } from '../../utils';
 import GenericChartComponent, {
   Value as ChartValue,
 } from '../components/Chart.component';
+import * as actions from '../redux/actions';
 import { ChartSampleSize } from '../redux/reducer/forecast/props';
 
 export default React.memo(ChartComponent, areEqual);
@@ -23,6 +26,7 @@ type Props = {
   effects: EffectJSON[];
   events: EventJSON[];
   endsOn: CalendarDateJSON;
+  setDailyBalanceResults: typeof actions.forecast.setDailyBalanceResults;
   startsOn: CalendarDateJSON;
 };
 
@@ -33,6 +37,7 @@ export function ChartComponent({
   effects: effectsJSON,
   endsOn: endsOnJSON,
   events: eventsJSON,
+  setDailyBalanceResults,
   startsOn: startsOnJSON,
 }: Props) {
   const startsOn = CalendarDate.fromJSON(startsOnJSON);
@@ -59,8 +64,17 @@ export function ChartComponent({
 
   const values: ChartValue[] = [];
 
+  let generatorResults: DailyBalanceResults;
+
   let i = -1;
-  for (const value of valueGenerator) {
+  while (true) {
+    const { value } = valueGenerator.next();
+
+    if (!isNumber(value)) {
+      generatorResults = value as DailyBalanceResults;
+      break;
+    }
+
     i += 1;
 
     if (chartSampleSize === ChartSampleSize.Day) {
@@ -128,6 +142,9 @@ export function ChartComponent({
 
     throw new Error(`ChartSampleSize "${chartSampleSize}" is not supported`);
   }
+
+  // TODO: Move all this number crunching somewhere else?
+  setTimeout(() => setDailyBalanceResults(currency, generatorResults), 0);
 
   return <GenericChartComponent startsOn={startsOnJSON} values={values} />;
 }

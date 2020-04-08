@@ -1,8 +1,9 @@
 import { CalendarDate, CalendarDateJSON } from '../../../../../calendar-date';
 import { Effect, Event } from '../../../../../timeline';
+import { TrackItem, TrackItemType } from '../../../../track-item';
 import * as actions from '../../../actions';
 import * as types from '../../../types';
-import { State, Track, TrackItem, TrackItemType } from '../props';
+import { State, Track } from '../props';
 
 export function getAccountWrapper(state: State, accountId: string) {
   const accountWrapper = state.accountWrappers.find(

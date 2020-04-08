@@ -1,5 +1,8 @@
 export { Account, AccountJSON } from './account';
-export { calculateDailyBalanceValues } from './daily-balance';
+export {
+  calculateDailyBalanceValues,
+  DailyBalanceResults,
+} from './daily-balance';
 export { Effect, EffectJSON } from './effect/effect';
 export {
   CompoundingEffectFormula,

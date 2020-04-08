@@ -1,6 +1,8 @@
+import { Amount, AmountJSON, Currency } from '../../../amount';
 import { CalendarDate } from '../../../calendar-date';
-import { Account, Effect, Event } from '../../../timeline';
-import { ChartSampleSize, Track, TrackItem } from '../reducer/forecast/props';
+import { Account, DailyBalanceResults, Effect, Event } from '../../../timeline';
+import { toString, TrackItem, TrackItemType } from '../../track-item';
+import { ChartSampleSize, Track } from '../reducer/forecast/props';
 import * as types from '../types';
 
 export function addAccount(account: Account): types.forecast.AddAccount {
@@ -37,6 +39,36 @@ export function importTimeline(
   data: types.forecast.ImportTimelineData,
 ): types.forecast.ImportTimeline {
   return { data, type: types.forecast.IMPORT_TIMELINE };
+}
+
+export function setDailyBalanceResults(
+  currency: Currency,
+  results: DailyBalanceResults,
+): types.forecast.SetTrackItemAccruedAmounts {
+  let trackItemAccruedAmounts: { [key: string]: AmountJSON } = {};
+
+  for (const { accruedValue, effect } of results.effectStates) {
+    const trackItem: TrackItem = { id: effect.id, type: TrackItemType.Effect };
+    const key = toString(trackItem);
+    trackItemAccruedAmounts[key] = new Amount(
+      currency,
+      Math.round(accruedValue),
+    ).toJSON();
+  }
+
+  for (const { accruedValue, event } of results.eventStates) {
+    const trackItem: TrackItem = { id: event.id, type: TrackItemType.Event };
+    const key = toString(trackItem);
+    trackItemAccruedAmounts[key] = new Amount(
+      currency,
+      Math.round(accruedValue),
+    ).toJSON();
+  }
+
+  return {
+    trackItemAccruedAmounts,
+    type: types.forecast.SET_TRACK_ITEM_ACCRUED_AMOUNTS,
+  };
 }
 
 export function removeAccount(accountId: string): types.forecast.RemoveAccount {

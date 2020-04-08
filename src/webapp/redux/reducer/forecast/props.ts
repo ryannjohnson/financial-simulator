@@ -1,6 +1,7 @@
-import { Currency } from '../../../../amount';
+import { AmountJSON, Currency } from '../../../../amount';
 import { CalendarDateJSON } from '../../../../calendar-date';
 import { AccountJSON, EffectJSON, EventJSON } from '../../../../timeline';
+import { TrackItem } from '../../../track-item';
 
 export type State = {
   accountWrappers: AccountWrapper[];
@@ -20,6 +21,7 @@ export type State = {
     endsOn: CalendarDateJSON;
     startsOn: CalendarDateJSON;
   };
+  trackItemAccruedAmounts: { [trackItemString: string]: AmountJSON };
 };
 
 export type AccountWrapper = {
@@ -32,16 +34,6 @@ export type Track = {
   items: TrackItem[];
   name: string;
 };
-
-export type TrackItem = {
-  id: string;
-  type: TrackItemType;
-};
-
-export enum TrackItemType {
-  Effect = 'EFFECT',
-  Event = 'EVENT',
-}
 
 export enum ChartSampleSize {
   Day = 'DAILY',

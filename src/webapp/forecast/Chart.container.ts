@@ -2,6 +2,7 @@ import debounceRender from 'react-debounce-render';
 import { connect } from 'react-redux';
 
 import { EffectJSON, EventJSON } from '../../timeline';
+import * as actions from '../redux/actions';
 import { State } from '../redux/reducer';
 import * as selectors from '../redux/selectors';
 import ChartComponent from './Chart.component';
@@ -43,6 +44,10 @@ const mapState = (state: State) => {
   };
 };
 
+const mapDispatch = {
+  setDailyBalanceResults: actions.forecast.setDailyBalanceResults,
+};
+
 const debounced = debounceRender(ChartComponent, 100, { leading: false });
 
-export default connect(mapState)(debounced);
+export default connect(mapState, mapDispatch)(debounced);

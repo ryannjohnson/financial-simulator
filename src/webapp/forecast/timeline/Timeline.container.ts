@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 
 import * as actions from '../../redux/actions';
 import { State } from '../../redux/reducer';
-import { TrackItem } from '../../redux/reducer/forecast/props';
 import * as selectors from '../../redux/selectors';
+import { TrackItem } from '../../track-item';
 import TimelineComponent from './Timeline.component';
 
 type Props = {

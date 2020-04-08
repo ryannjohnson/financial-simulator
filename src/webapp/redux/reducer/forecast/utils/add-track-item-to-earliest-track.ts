@@ -1,9 +1,10 @@
 import { rangesOverlap } from '../../../../../calendar-date';
 import { generateLocalUUID } from '../../../../../utils';
+import { TrackItem } from '../../../../track-item';
 import * as actions from '../../../actions';
 import { addTrack, setTrack } from '../account';
 import { getAccountWrapper, trackItemToDateRange } from './common';
-import { State, Track, TrackItem } from '../props';
+import { State, Track } from '../props';
 
 const TRACK_DEFAULT_NAME = 'Untitled';
 

@@ -1,6 +1,7 @@
 import { CalendarDate, rangesOverlap } from '../../../../../calendar-date';
+import { TrackItem } from '../../../../track-item';
 import * as types from '../../../types';
-import { AccountWrapper, State, TrackItem } from '../props';
+import { AccountWrapper, State } from '../props';
 import {
   getAccountWrapper,
   trackHasItem,

@@ -1,9 +1,10 @@
 import { CalendarDate } from '../../../../calendar-date';
 import { Event } from '../../../../timeline';
+import { TrackItem, TrackItemType } from '../../../track-item';
 import * as types from '../../types';
 import * as actions from '../../actions';
 import { selectTrackItem } from './account';
-import { State, TrackItem, TrackItemType } from './props';
+import { State } from './props';
 import * as utils from './utils';
 
 export function add(state: State, action: types.forecast.AddEvent): State {

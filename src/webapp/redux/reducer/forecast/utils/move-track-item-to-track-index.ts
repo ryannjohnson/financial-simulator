@@ -1,4 +1,5 @@
-import { AccountWrapper, State, TrackItem } from '../props';
+import { TrackItem } from '../../../../track-item';
+import { AccountWrapper, State } from '../props';
 import { removeTrackItemFromTracks } from './remove-track-item-from-tracks';
 
 export function moveTrackItemToTrackIndex(

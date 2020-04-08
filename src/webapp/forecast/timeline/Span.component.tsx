@@ -1,10 +1,11 @@
 import classnames from 'classnames';
 import * as React from 'react';
 
+import { Amount, Currency } from '../../../amount';
 import { CalendarDate, CalendarDateJSON } from '../../../calendar-date';
 import * as actions from '../../redux/actions';
-import { TrackItem, TrackItemType } from '../../redux/reducer/forecast/props';
 import { Orientation } from '../../redux/selectors/forecast';
+import { TrackItem, TrackItemType } from '../../track-item';
 import { TRACK_PIXEL_HEIGHT } from './constants';
 import styles from './Span.css';
 
@@ -13,6 +14,8 @@ const STICKY_PIXELS = 10;
 
 type Props = {
   accountId: string;
+  accruedAmountCurrency: Currency | null;
+  accruedAmountValue: number | null;
   endsOn: CalendarDateJSON | null;
   isSelected: boolean;
   name: string;
@@ -245,6 +248,8 @@ export default class SpanComponent extends React.Component<Props, State> {
 
   render() {
     const {
+      accruedAmountCurrency,
+      accruedAmountValue,
       endsOn: endsOnJSON,
       startsOn: startsOnJSON,
       timelineStartsOn,
@@ -291,6 +296,10 @@ export default class SpanComponent extends React.Component<Props, State> {
           <em>{this.props.shortDescription}</em>
         </div>
         <div className={styles.bottom}>
+          <AccruedAmount
+            currency={accruedAmountCurrency}
+            value={accruedAmountValue}
+          />
           <div
             className={classnames(styles['left-date-handle'], selected)}
             ref={ref => (this.leftHandleRef = ref)}
@@ -303,4 +312,26 @@ export default class SpanComponent extends React.Component<Props, State> {
       </div>
     );
   }
+}
+
+type AccruedAmountProps = {
+  currency: Currency | null;
+  value: number | null;
+};
+
+function AccruedAmount({ currency, value }: AccruedAmountProps) {
+  if (!currency || !value) {
+    return null;
+  }
+
+  const amount = new Amount(currency, value);
+  const icon = amount.value > 0 ? 'Δ' : '∇';
+  const sign = amount.value > 0 ? '+' : '';
+
+  return (
+    <div className={styles['accrued-amount']}>
+      {icon} {sign}
+      {amount.toString()}
+    </div>
+  );
 }

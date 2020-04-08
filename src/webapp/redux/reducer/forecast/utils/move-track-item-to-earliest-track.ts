@@ -1,5 +1,6 @@
 import { rangesOverlap } from '../../../../../calendar-date';
-import { State, TrackItem } from '../props';
+import { TrackItem } from '../../../../track-item';
+import { State } from '../props';
 import { addTrackItemToEarliestTrack } from './add-track-item-to-earliest-track';
 import {
   getAccountWrapper,

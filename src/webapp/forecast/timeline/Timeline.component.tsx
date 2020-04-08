@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { generateLocalUUID } from '../../../utils';
 import * as actions from '../../redux/actions';
-import { TrackItem } from '../../redux/reducer/forecast/props';
+import { TrackItem } from '../../track-item';
 import { TRACK_PIXEL_HEIGHT } from './constants';
 import styles from './Timeline.css';
 import SpanContainer from './Span.container';
