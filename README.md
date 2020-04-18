@@ -9,8 +9,8 @@ Use it at <https://ryannjohnson.github.io/financial-simulator>.
 
 This project helped me achieve "play" with my finances. Before I made this, I
 was accustomed to creating Excel spreadsheets to simulate my personal financial
-scenarios. Working with timelines and graphs feels more intuitive to me, and it
-has helped abstract calculations away from my exploratory process.
+scenarios. Working with timelines and graphs feels more intuitive to me, and
+doing so helps me focus on the scenarios I want to run.
 
 _DISCLAIMER: This project was lightly-researched! Do not try to glean any
 financial advice from it, because I'm not qualified to give any!_
@@ -19,9 +19,6 @@ financial advice from it, because I'm not qualified to give any!_
 
 This video demonstrates the web app's core features:
 <https://youtu.be/7IEB6aaAf3E>.
-
-Once you're comfortable with the component parts, play around with them and
-watch your account balances rise and fall over time.
 
 - **Accounts are places you keep your money in real life.** You might have a
   cash account, a savings account, a 401k, money invested in bonds, stocks,
