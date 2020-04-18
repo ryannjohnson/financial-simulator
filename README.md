@@ -1,40 +1,42 @@
 # Financial simulator
 
+This is a single-page web app for rapidly prototyping financial scenarios. Works
+best on desktop browsers.
+
 Use it at <https://ryannjohnson.github.io/financial-simulator>.
 
-_DISCLAIMER: This project was lightly-researched! Do not try to glean any
-financial adviice from it, because I'm not qualified to give any!_
+## Motivation
 
-On that note, feel free to open issues/PRs to fix some of my assumptions about
-how financial tools work.
+This project helped me achieve "play" with my finances. Before I made this, I
+was accustomed to creating Excel spreadsheets to simulate my personal financial
+scenarios. Working with timelines and graphs feels more intuitive to me, and it
+has helped abstract calculations away from my exploratory process.
+
+_DISCLAIMER: This project was lightly-researched! Do not try to glean any
+financial advice from it, because I'm not qualified to give any!_
 
 ## How it works
 
-Here's a demo video of its core features: <https://youtu.be/7IEB6aaAf3E>.
+This video demonstrates the web app's core features:
+<https://youtu.be/7IEB6aaAf3E>.
 
 Once you're comfortable with the component parts, play around with them and
 watch your account balances rise and fall over time.
 
-### Accounts
+- **Accounts are places you keep your money in real life.** You might have a
+  cash account, a savings account, a 401k, money invested in bonds, stocks,
+  mutual funds, etc. Each of these places should be their own "account" in the
+  simulator.
+- **Effects are the ways that accounts affect your money over time.** Add
+  effects to simulate inflation and returns on investments.
+- **Events move money into, out of, and between your accounts.** Use them to
+  represent your recurring income and expenses, investments in financial
+  products (represented by your other accounts), one-time transfers, or whatever
+  you move money for. Events are also how you should manually represent complex
+  transactions like taxes.
 
-**Accounts are places you keep your money in real life.** You might have a cash
-account, a savings account, a 401k, money invested in bonds, stocks, mutual
-funds, etc. Each of these places should be their own "account" in the simulator.
-
-### Effects
-
-**Effects are the ways that accounts affect your money over time.** Add effects
-to simulate inflation and returns on investments.
-
-### Events
-
-**Events move money into, out of, and between your accounts.** Use them to
-represent your recurring income and expenses, investments in financial products
-(represented by your other accounts), one-time transfers, or whatever you move
-money for.
-
-Events are also how you should manually represent complex transactions like
-taxes.
+The application stays in your browser and requires no server-side component to
+run.
 
 ## Development
 

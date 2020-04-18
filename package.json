@@ -26,9 +26,10 @@
     "singleQuote": true,
     "trailingComma": "all"
   },
-  "name": "financial-planner",
+  "name": "financial-simulator",
+  "license": "MIT",
   "author": "Ryan N Johnson <ryan@ryannjohnson.com>",
-  "module": "dist/financial-planner.esm.js",
+  "module": "dist/financial-simulator.esm.js",
   "devDependencies": {
     "@types/classnames": "^2.2.10",
     "@types/jest": "^25.1.4",
