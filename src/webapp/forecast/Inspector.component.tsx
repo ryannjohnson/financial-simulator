@@ -51,11 +51,11 @@ export default function InspectorComponent({
           </button>
           <a
             className={styles['wide-button']}
-            href="https://youtu.be/7IEB6aaAf3E"
+            href="https://github.com/ryannjohnson/financial-simulator"
             style={{ color: colors.YELLOW, textAlign: 'center' }}
             target="_blank"
           >
-            Demo
+            Github
           </a>
           <label
             className={styles['wide-button']}
