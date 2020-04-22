@@ -45,8 +45,8 @@ export default function CompoundingComponent({
               }),
             )
           }
-          step={0.1}
-          value={Math.round(nominalAnnualInterestRate * 1000) / 10}
+          step={0.01}
+          value={Math.round(nominalAnnualInterestRate * 10000) / 100}
         />
       </FormElementComponent>
     </>
