@@ -81,6 +81,7 @@
   position: absolute;
   right: 0;
   top: 0;
+  white-space: nowrap;
 }
 
 .date-handle {
