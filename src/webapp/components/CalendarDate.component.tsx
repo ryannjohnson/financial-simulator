@@ -2,7 +2,8 @@ import * as React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { CalendarDate, CalendarDateJSON } from '../../calendar-date';
-import NullableCalendarDateComponent, {
+import * as styles from './CalendarDate.css';
+import {
   Props as NullableProps,
 } from './NullableCalendarDate.component';
 
@@ -17,17 +18,16 @@ export default function CalendarDateComponent({
   ...props
 }: Props) {
   return (
-    <NullableCalendarDateComponent
-      isClearable={false}
-      selected={new Date(value)}
-      setValue={value => {
-        if (!value) {
-          throw new Error('CalendarDate cannot be null');
+    <input
+      className={styles.input}
+      onChange={event => {
+        const date = new Date(event.target.value);
+        if (!isNaN(date as any)) {
+          setValue(CalendarDate.fromDate(date));
         }
-        setValue(value);
       }}
+      type="date"
       value={value}
-      {...props}
     />
   );
 }
