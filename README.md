@@ -5,6 +5,8 @@ best on desktop browsers.
 
 Use it at <https://ryannjohnson.github.io/financial-simulator>.
 
+Watch a 6-minute demo at <https://youtu.be/7IEB6aaAf3E>.
+
 ## Motivation
 
 This project helped me achieve "play" with my finances. Before I made this, I
