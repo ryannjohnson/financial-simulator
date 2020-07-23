@@ -47,7 +47,6 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
-    "csv": "^5.3.2",
     "lightweight-charts": "^2.0.0",
     "react": "^16.13.0",
     "react-datepicker": "^2.14.0",
