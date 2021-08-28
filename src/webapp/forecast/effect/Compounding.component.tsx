@@ -9,30 +9,47 @@ import FormElementComponent from '../../components/FormElement.component';
 import { EffectFormulaProps } from './props';
 
 export default function CompoundingComponent({
-  compoundingFrequencyPerYear,
+  compoundingFrequencyPerPeriod,
   nominalAnnualInterestRate,
+  periodsPerYear,
   setFormula,
 }: EffectFormulaProps & CompoundingEffectFormulaJSON) {
   const formulaProps = {
-    compoundingFrequencyPerYear,
+    compoundingFrequencyPerPeriod,
     nominalAnnualInterestRate,
+    periodsPerYear,
   };
 
   return (
     <>
-      <FormElementComponent title="Frequency per year">
+      <FormElementComponent title="Periods per year">
+        <NumberComponent
+          min={1}
+          setValue={(value) =>
+            setFormula(
+              CompoundingEffectFormula.fromJSON({
+                ...formulaProps,
+                periodsPerYear: value,
+              }),
+            )
+          }
+          step={1}
+          value={periodsPerYear}
+        />
+      </FormElementComponent>
+      <FormElementComponent title="Frequency per period">
         <NumberComponent
           min={0}
           setValue={(value) =>
             setFormula(
               CompoundingEffectFormula.fromJSON({
                 ...formulaProps,
-                compoundingFrequencyPerYear: value || null,
+                compoundingFrequencyPerPeriod: value || null,
               }),
             )
           }
           step={1}
-          value={compoundingFrequencyPerYear || 0}
+          value={compoundingFrequencyPerPeriod || 0}
         />
       </FormElementComponent>
       <FormElementComponent title="Annual interest (%)">

@@ -25,7 +25,7 @@ export function newEffect(formulaType: EffectFormulaType) {
   let formula: EffectFormula;
 
   if (formulaType === EffectFormulaType.Compounding) {
-    formula = new CompoundingEffectFormula(0, null);
+    formula = new CompoundingEffectFormula(0, null, 1);
   } else {
     throw new Error(`FormulaType "${formulaType}" has not been implemented`);
   }

@@ -2,11 +2,10 @@ import { CalendarDate, DAYS_PER_YEAR } from '../../calendar-date';
 import { numberFromJSON } from '../../utils';
 import { EffectFormula, EffectFormulaType } from './formula';
 
-const DAYS_PER_YEAR_RECIPROCAL = 1 / DAYS_PER_YEAR;
-
 export type CompoundingEffectFormulaJSON = {
-  compoundingFrequencyPerYear: number | null;
+  compoundingFrequencyPerPeriod: number | null;
   nominalAnnualInterestRate: number;
+  periodsPerYear: number;
 };
 
 /**
@@ -19,48 +18,52 @@ export class CompoundingEffectFormula implements EffectFormula {
     const nominalAnnualInterestRate = numberFromJSON(
       value.nominalAnnualInterestRate,
     );
-    let compoundingFrequencyPerYear = null;
-    if (value.compoundingFrequencyPerYear !== null) {
-      compoundingFrequencyPerYear = numberFromJSON(
-        value.compoundingFrequencyPerYear,
+    let compoundingFrequencyPerPeriod = null;
+    if (value.compoundingFrequencyPerPeriod !== null) {
+      compoundingFrequencyPerPeriod = numberFromJSON(
+        value.compoundingFrequencyPerPeriod,
       );
     }
+    const periodsPerYear = numberFromJSON(value.periodsPerYear);
     return new CompoundingEffectFormula(
       nominalAnnualInterestRate,
-      compoundingFrequencyPerYear,
+      compoundingFrequencyPerPeriod,
+      periodsPerYear,
     );
   }
 
-  protected readonly daysPerPeriod: number;
+  protected readonly daysPerCompound: number;
   protected readonly increment: number;
 
   constructor(
     public readonly nominalAnnualInterestRate: number, // 1.0 = 100% annual interest.
-    public readonly compoundingFrequencyPerYear: number | null, // Null means continuous.
+    public readonly compoundingFrequencyPerPeriod: number | null, // Null means continuous.
+    public readonly periodsPerYear: number,
   ) {
     if (
-      compoundingFrequencyPerYear !== null &&
-      (!Number.isInteger(compoundingFrequencyPerYear) ||
-        compoundingFrequencyPerYear < 1)
+      compoundingFrequencyPerPeriod !== null &&
+      (!Number.isInteger(compoundingFrequencyPerPeriod) ||
+        compoundingFrequencyPerPeriod < 1)
     ) {
       throw new Error(
         `compoundingFrequencyPerYear must be null or a positive integer`,
       );
     }
-    if (compoundingFrequencyPerYear === null) {
-      this.daysPerPeriod = 0;
+    const daysPerPeriod = DAYS_PER_YEAR / periodsPerYear;
+    if (compoundingFrequencyPerPeriod === null) {
+      this.daysPerCompound = 0;
       this.increment =
         totalContinuousAccumulation(
           nominalAnnualInterestRate,
-          DAYS_PER_YEAR_RECIPROCAL,
+          1 / daysPerPeriod,
         ) - 1;
     } else {
-      this.daysPerPeriod = DAYS_PER_YEAR / compoundingFrequencyPerYear;
+      this.daysPerCompound = daysPerPeriod / compoundingFrequencyPerPeriod;
       this.increment =
         totalPeriodicAccumulation(
           nominalAnnualInterestRate,
-          compoundingFrequencyPerYear,
-          1 / compoundingFrequencyPerYear,
+          compoundingFrequencyPerPeriod,
+          1 / compoundingFrequencyPerPeriod,
         ) - 1;
     }
   }
@@ -71,8 +74,9 @@ export class CompoundingEffectFormula implements EffectFormula {
 
   public toJSON(): CompoundingEffectFormulaJSON {
     return {
-      compoundingFrequencyPerYear: this.compoundingFrequencyPerYear,
+      compoundingFrequencyPerPeriod: this.compoundingFrequencyPerPeriod,
       nominalAnnualInterestRate: this.nominalAnnualInterestRate,
+      periodsPerYear: this.periodsPerYear,
     };
   }
 
@@ -84,11 +88,11 @@ export class CompoundingEffectFormula implements EffectFormula {
     day: number,
     _: CalendarDate,
   ): number {
-    if (this.compoundingFrequencyPerYear === null) {
+    if (this.compoundingFrequencyPerPeriod === null) {
       return balanceValue * this.increment;
     }
 
-    const isInterestDay = day > 0 && day % this.daysPerPeriod < 1;
+    const isInterestDay = day > 0 && day % this.daysPerCompound < 1;
     if (isInterestDay) {
       return balanceValue * this.increment;
     }

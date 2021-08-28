@@ -102,14 +102,15 @@ function effectToShortDescription(effect: Effect): string {
   if (effect.formula instanceof CompoundingEffectFormula) {
     const sign = effect.formula.nominalAnnualInterestRate >= 0 ? '+' : '';
     let percent = (effect.formula.nominalAnnualInterestRate * 100).toFixed(1);
-    const frequency = effect.formula.compoundingFrequencyPerYear;
+    const frequency = effect.formula.compoundingFrequencyPerPeriod;
+    const periods = effect.formula.periodsPerYear;
 
     if (frequency === null) {
       return `${sign}${percent}% compounded continuously`;
     }
 
     const s = frequency === 1 ? '' : 's';
-    return `${sign}${percent}% compounded ${frequency} time${s} annually`;
+    return `${sign}${percent}% compounded ${frequency} time${s} ${periods}x per year`;
   }
 
   return '';
